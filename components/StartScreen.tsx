@@ -118,6 +118,10 @@ export function StartScreen(props: Props) {
       <footer className={styles.footer}>
         <p>Not legal advice. Nothing you upload is stored on our side; recent reads stay on your device.</p>
         <p>Gym memberships, leases, phone plans and pay-over-time loans read best.</p>
+        <p className={styles.version}>
+          v{process.env.NEXT_PUBLIC_VERSION} · {process.env.NEXT_PUBLIC_BUILT} UTC
+          {process.env.NEXT_PUBLIC_COMMIT && <> · {process.env.NEXT_PUBLIC_COMMIT}</>}
+        </p>
       </footer>
     </main>
   );
