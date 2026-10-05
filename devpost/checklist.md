@@ -109,6 +109,16 @@ Build mode: fast
   Learner check: Switch the language to Українська or Deutsch and walk from the Start screen to a report.
   Commit: `Whole interface in five languages, honesty section, contrast fix`
 
+- [x] **11. Marks on your own photo**
+  Becomes usable: A report made from photos can show its highlights over the original photo, with tappable marks.
+  Why now: The learner asked to keep expanding; this was the biggest deferred "wow" item for the video.
+  PRD ref: `prd.md > On your photo`
+  Spec ref: `spec.md > Photo boxes`
+  Build: separate detection request, `cleanBoxes` with a test, PhotoView, text/photo toggle, strings in five languages.
+  Verify (mechanical): `npm test` (22 pass) and `npm run build` pass; boxes drawn onto the test photo with a script: in-analysis boxes ~1 paragraph off (rejected), separate request mostly on the right sections; end to end in the browser the photo report shows 10 tappable marks and the note opens. Accuracy varies between runs, recorded in the spec.
+  Learner check: Upload a photo of a contract, switch to "On your photo", tap a mark.
+  Commit: `Show marks on the original photo (approximate)`
+
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 3 the learner tried it and asked for a phone version and an expanded web version (slices 5–6)
@@ -144,3 +154,4 @@ Activity mode: Recap. Map checked in a browser; all paths and symbols verified a
 - Added slice 6 (web expansion) — learner asked to "expand the web version"; the agent proposed language, calendar reminder and printable report, and cut offer comparison as too big.
 - Added slice 7 (compare, top three, read aloud) after the final review — learner asked to keep expanding; "Side-by-side comparison" moved from Later into the build.
 - Added slice 8 (sharing, recent reads, German sample) — learner asked to keep expanding. Sharing is done inside the URL fragment and history in localStorage, so "nothing stored on a server" still holds; the PRD's persistence line was updated.
+- Photo boxes moved to a separate request — boxes requested inside the main analysis landed about a paragraph below the quoted text; a dedicated detection prompt placed them far better, though still not exactly, so the photo view is optional and labelled approximate.

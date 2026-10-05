@@ -1,4 +1,4 @@
-import type { Analysis, LocatedClause, Report, Severity } from './schema.ts';
+import type { Analysis, LocatedClause, PhotoBox, Report, Severity } from './schema.ts';
 
 const rank: Record<Severity, number> = { red: 3, yellow: 2, green: 1 };
 
@@ -61,6 +61,20 @@ function findRange(
   return { start: text.map[at], end: text.map[endFolded - 1] + 1 };
 }
 
+/** Keeps only boxes that make sense: four numbers in 0–1000, positive size, on a photo that exists. */
+export function cleanBoxes(boxes: { image: number; box: number[] }[] | null | undefined, imageCount: number): PhotoBox[] {
+  if (!boxes || imageCount === 0) return [];
+  const out: PhotoBox[] = [];
+  for (const b of boxes) {
+    if (!Number.isInteger(b.image) || b.image < 0 || b.image >= imageCount) continue;
+    if (!Array.isArray(b.box) || b.box.length !== 4) continue;
+    const [y0, x0, y1, x1] = b.box.map((n) => Math.min(1000, Math.max(0, n)));
+    if (!(y1 - y0 > 2 && x1 - x0 > 2)) continue;
+    out.push({ image: b.image, box: [y0, x0, y1, x1] });
+  }
+  return out;
+}
+
 export function locateQuotes(
   text: string,
   clauses: Analysis['clauses'],
@@ -70,7 +84,7 @@ export function locateQuotes(
   let dropped = 0;
   for (const clause of clauses) {
     const range = findRange(folded, clause.quote);
-    if (range) found.push({ ...clause, ...range });
+    if (range) found.push({ ...clause, ...range, boxes: [] });
     else dropped++;
   }
 

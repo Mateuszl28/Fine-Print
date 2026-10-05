@@ -14,11 +14,23 @@ import { addToHistory, clearHistory, loadHistory, removeFromHistory, type Histor
 type View =
   | { name: 'start' }
   | { name: 'reading' }
-  | { name: 'report'; report: Report; lang: Lang; fromCompare?: boolean; shared?: boolean; saved?: boolean }
+  | {
+      name: 'report';
+      report: Report;
+      lang: Lang;
+      fromCompare?: boolean;
+      shared?: boolean;
+      saved?: boolean;
+      photos?: { mediaType: string; data: string }[];
+    }
   | { name: 'compare'; reports: [Report, Report]; lang: Lang }
   | { name: 'error'; error: AnalyzeError['error'] };
 
 const LANG_KEY = 'fineprint.lang';
+
+function photosOf(input: ContractInput) {
+  return input.kind === 'files' ? input.files.filter((f) => f.mediaType.startsWith('image/')) : undefined;
+}
 
 function clearShareHash() {
   window.history.replaceState(null, '', location.pathname);
@@ -71,7 +83,7 @@ export default function Home() {
       const result = await analyzeContract(input, lang, controller.signal);
       if (result.ok) {
         setHistory(addToHistory(result.report, lang));
-        setView({ name: 'report', report: result.report, lang, saved: true });
+        setView({ name: 'report', report: result.report, lang, saved: true, photos: photosOf(input) });
       } else {
         setView({ name: 'error', error: result.error });
       }
@@ -141,6 +153,7 @@ export default function Home() {
         onStartOver={startOver}
         shared={view.shared}
         saved={view.saved}
+        photos={view.photos}
         onBackToCompare={
           view.fromCompare && comparison
             ? () => {

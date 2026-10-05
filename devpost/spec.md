@@ -150,6 +150,10 @@ PRD ref: `prd.md > Compare two offers`.
 `lib/topClauses.ts` picks the clauses (red, then yellow, in contract order); `components/TopThree.tsx` shows them; `components/ReadAloud.tsx` uses the browser's Web Speech API (`speechSynthesis`) with the report language's voice.
 PRD ref: `prd.md > If you read nothing else`, `prd.md > Read it out loud`.
 
+### Photo boxes
+After the main analysis, photo inputs get a second, narrow request (`placeOnPhotos` in `app/api/analyze/route.ts`, prompt `DETECT_PROMPT`): the photos plus the verified quotes, asking for `box_2d` [ymin, xmin, ymax, xmax] 0–1000 per quote. `cleanBoxes` in `lib/checkReport.ts` (tested) drops malformed ones. `components/PhotoView.tsx` draws them over the photo, which the page keeps in memory from the input. Measured: asking for boxes inside the main analysis put them about a paragraph off; the separate request lands most boxes on the right section, but runs vary (in one run about half were exact, some a line or two off, one on blank space). Hence text view by default and an "approximate" note. Adds ~7 s for photos only; failure leaves the report unchanged.
+PRD ref: `prd.md > On your photo`.
+
 ### Sharing and recent reads
 `lib/share.ts` (pure, unit-tested): the report + language are JSON-encoded, deflate-compressed (`CompressionStream`) and base64url'd into `/#r=…`; the #fragment never reaches the server. `app/page.tsx` decodes it on load and shows the report with a banner. `components/ShareButton.tsx` uses the Web Share API, falling back to the clipboard. `lib/history.ts` keeps up to 8 reports in `localStorage` (`fineprint.history`), dropping the oldest if storage is full; `components/RecentReads.tsx` lists them on the Start screen.
 PRD ref: `prd.md > Send it to someone`, `prd.md > Your recent reads`.
@@ -254,7 +258,7 @@ fine-print/                     (repo root = this folder)
 - **Wrong arithmetic** → impossible by design: totals are computed in code from itemized amounts.
 
 ## What Was Simplified and Why
-- **Highlights on transcribed text** instead of on the original photo: positioning marks on a photo needs layout/OCR coordinates. Transcribed text proves the same kernel. The fuller version would need an OCR service returning bounding boxes.
+- **Highlights on transcribed text first**, photo marks second and approximate: the model's boxes aren't reliable enough to be the main view. Exact photo marks would need an OCR service returning word-level boxes.
 - **No storage, no accounts**: privacy and time; reports live in the tab only.
 - **One model call** returns everything (transcript + analysis + letter) instead of a multi-step pipeline: simpler and faster; the checker covers the reliability gap.
 - **Samples are fictional contracts analyzed live** (not pre-baked results), so the demo shows the real system.

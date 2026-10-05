@@ -114,6 +114,11 @@ Added during the build ("rozbuduj dalej"; agent proposal, learner delegated the 
 ### Read it out loud
 - [ ] "Read it out loud" speaks the verdict, the true cost and the top three in the report's language, using the device's built-in voices; it can be stopped. Hidden where the browser has no speech support.
 
+### On your photo
+Added during the build ("rozbuduj dalej"); this was "Highlights drawn on the original photo" in the deferred list.
+- [ ] When the report came from photos, a toggle switches between "On the text" (default, exact) and "On your photo", which draws each clause's colour over the person's own photo; tapping a mark opens its note.
+- [ ] The photo view says its marks are approximate. It's never shared, saved, or printed (photos stay in memory).
+
 ### Send it to someone
 Added during the build ("rozbuduj dalej"; agent proposal, learner delegated the choice).
 - [ ] "Send it to someone" on a report opens the phone's share sheet (or copies the link). The link opens the same report for the recipient, with a note that it was sent to them and lives only in the link.
@@ -157,7 +162,6 @@ Added during the build at the learner's request ("zrób wersję również na tel
 Start screen with photo/PDF/paste input and four sample contracts → analysis → Report with verdict strip (true cost, score, verdict), the contract text with tappable severity highlights and notes, "Before you sign, ask" questions, and a copyable letter. Responsive (phone single column, laptop two columns), with the reading, error, and no-money states above. English UI.
 
 ## Deferred From the POC
-- **Highlights drawn on the original photo** (instead of the transcribed text): much harder to get right; transcribed text proves the kernel.
 
 ## Possible Later Enhancements
 - Compare two offers side by side.

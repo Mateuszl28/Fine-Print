@@ -70,7 +70,13 @@ export const analysisSchema = z.object({
 export type Analysis = z.infer<typeof analysisSchema>;
 export type Severity = 'red' | 'yellow' | 'green';
 
-export type LocatedClause = Analysis['clauses'][number] & { start: number; end: number };
+export type PhotoBox = { image: number; box: [ymin: number, xmin: number, ymax: number, xmax: number] };
+
+export type LocatedClause = Analysis['clauses'][number] & {
+  start: number;
+  end: number;
+  boxes: PhotoBox[];
+};
 
 export type Report = Omit<Analysis, 'transcript' | 'clauses'> & {
   text: string;

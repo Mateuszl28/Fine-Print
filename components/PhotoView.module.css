@@ -1,0 +1,62 @@
+.wrap {
+  display: grid;
+  gap: 16px;
+}
+
+.photo {
+  position: relative;
+  margin: 0;
+  border: 1px solid var(--rule);
+  box-shadow: var(--shadow-sheet);
+  background: var(--paper-sheet);
+  line-height: 0;
+}
+
+.img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.box {
+  position: absolute;
+  padding: 0;
+  border: 0;
+  border-radius: 4px 2px 5px 3px;
+  mix-blend-mode: multiply;
+  cursor: pointer;
+  transition: box-shadow 0.12s ease;
+}
+
+.red {
+  background: rgb(255 138 122 / 0.5);
+}
+
+.yellow {
+  background: rgb(255 214 64 / 0.5);
+}
+
+.green {
+  background: rgb(150 222 140 / 0.5);
+}
+
+.box:hover,
+.box:focus-visible {
+  box-shadow: 0 0 0 2px var(--ink);
+}
+
+.selected {
+  box-shadow: 0 0 0 3px var(--ink);
+}
+
+.note {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--ink-faint);
+}
+
+@media print {
+  .wrap {
+    display: none;
+  }
+}

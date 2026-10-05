@@ -19,6 +19,7 @@ Built for [Build With AI: Basics](https://learn-ai-basics.devpost.com/) with the
 - **Send it to someone:** the link carries the report itself (compressed into the `#fragment`), so nothing is stored on a server.
 - **Recent reads** kept on your device only, with "Forget".
 - **Any contract language:** try the German lease sample explained in English, Polish or Ukrainian.
+- **On your photo:** for photo input, the marks can also be shown over your own photo (approximate; the text view is exact).
 - **Photo, PDF or text.** Photos are resized in the browser before upload.
 - **Five languages** for the report: English, Polski, Українська, Español, Deutsch. Quotes stay in the contract's language.
 - **Calendar reminder** (.ics) for the last day to give notice.

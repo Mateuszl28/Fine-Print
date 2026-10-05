@@ -12,6 +12,7 @@ import { Reminder } from './Reminder';
 import { TopThree } from './TopThree';
 import { ReadAloud } from './ReadAloud';
 import { ShareButton } from './ShareButton';
+import { PhotoView } from './PhotoView';
 import styles from './Report.module.css';
 
 type Props = {
@@ -21,11 +22,15 @@ type Props = {
   onBackToCompare?: () => void;
   shared?: boolean;
   saved?: boolean;
+  /** The photos this report was made from, if any (kept in memory only, never shared or saved). */
+  photos?: { mediaType: string; data: string }[];
 };
 
-export function ReportView({ report, lang, onStartOver, onBackToCompare, shared, saved }: Props) {
+export function ReportView({ report, lang, onStartOver, onBackToCompare, shared, saved, photos }: Props) {
   const t = strings[lang];
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const canShowPhoto = Boolean(photos?.length) && report.clauses.some((c) => c.boxes.length > 0);
+  const [onPhoto, setOnPhoto] = useState(false);
   const selected = report.clauses.find((c) => c.id === selectedId) ?? null;
   const count = (s: 'red' | 'yellow' | 'green') => report.clauses.filter((c) => c.severity === s).length;
 
@@ -83,14 +88,36 @@ export function ReportView({ report, lang, onStartOver, onBackToCompare, shared,
 
       <div className={styles.grid}>
         <div className={styles.docCol}>
-          <p className={styles.tapHint}>{t.tapHint}</p>
-          <HighlightedDoc
-            text={report.text}
-            clauses={report.clauses}
-            selectedId={selectedId}
-            onSelect={setSelectedId}
-            lang={lang}
-          />
+          <div className={styles.docHead}>
+            <p className={styles.tapHint}>{t.tapHint}</p>
+            {canShowPhoto && (
+              <div className={styles.toggle} role="group">
+                <button type="button" aria-pressed={!onPhoto} onClick={() => setOnPhoto(false)}>
+                  {t.viewText}
+                </button>
+                <button type="button" aria-pressed={onPhoto} onClick={() => setOnPhoto(true)}>
+                  {t.viewPhoto}
+                </button>
+              </div>
+            )}
+          </div>
+          {canShowPhoto && onPhoto ? (
+            <PhotoView
+              photos={photos!}
+              clauses={report.clauses}
+              selectedId={selectedId}
+              onSelect={setSelectedId}
+              lang={lang}
+            />
+          ) : (
+            <HighlightedDoc
+              text={report.text}
+              clauses={report.clauses}
+              selectedId={selectedId}
+              onSelect={setSelectedId}
+              lang={lang}
+            />
+          )}
 
           {/* On paper there's nothing to tap, so print every note after the contract. */}
           <section className={styles.printNotes} aria-hidden="true">

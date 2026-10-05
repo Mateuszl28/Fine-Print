@@ -67,6 +67,9 @@ type Strings = {
   shareNote: string;
   sharedBanner: string;
   savedHere: string;
+  viewText: string;
+  viewPhoto: string;
+  photoNote: string;
 };
 
 export const strings: Record<Lang, Strings> = {
@@ -123,6 +126,9 @@ export const strings: Record<Lang, Strings> = {
     shareNote: 'The link carries the whole report, contract text included. It isn’t stored anywhere else.',
     sharedBanner: 'Someone sent you this report. It lives only in the link.',
     savedHere: 'Kept on this device under “Your recent reads”.',
+    viewText: 'On the text',
+    viewPhoto: 'On your photo',
+    photoNote: 'Marks on the photo are approximate; the text view is exact.',
   },
   pl: {
     scanAnother: '← Sprawdź kolejną',
@@ -177,6 +183,9 @@ export const strings: Record<Lang, Strings> = {
     shareNote: 'Link zawiera cały raport, razem z treścią umowy. Nie jest nigdzie indziej zapisywany.',
     sharedBanner: 'Ktoś wysłał ci ten raport. Istnieje tylko w linku.',
     savedHere: 'Zapisany na tym urządzeniu w „Your recent reads”.',
+    viewText: 'Na tekście',
+    viewPhoto: 'Na twoim zdjęciu',
+    photoNote: 'Zaznaczenia na zdjęciu są przybliżone; widok tekstu jest dokładny.',
   },
   uk: {
     scanAnother: '← Перевірити інший',
@@ -231,6 +240,9 @@ export const strings: Record<Lang, Strings> = {
     shareNote: 'Посилання містить увесь звіт разом із текстом договору. Більше ніде не зберігається.',
     sharedBanner: 'Хтось надіслав вам цей звіт. Він існує лише в посиланні.',
     savedHere: 'Збережено на цьому пристрої в «Your recent reads».',
+    viewText: 'На тексті',
+    viewPhoto: 'На вашому фото',
+    photoNote: 'Позначки на фото приблизні; текстовий вигляд точний.',
   },
   es: {
     scanAnother: '← Revisar otro',
@@ -285,6 +297,9 @@ export const strings: Record<Lang, Strings> = {
     shareNote: 'El enlace lleva todo el informe, con el texto del contrato. No se guarda en ningún otro sitio.',
     sharedBanner: 'Alguien te envió este informe. Solo existe en el enlace.',
     savedHere: 'Guardado en este dispositivo en «Your recent reads».',
+    viewText: 'En el texto',
+    viewPhoto: 'En tu foto',
+    photoNote: 'Las marcas en la foto son aproximadas; la vista de texto es exacta.',
   },
   de: {
     scanAnother: '← Anderen prüfen',
@@ -339,5 +354,8 @@ export const strings: Record<Lang, Strings> = {
     shareNote: 'Der Link enthält den ganzen Bericht samt Vertragstext. Er wird nirgends sonst gespeichert.',
     sharedBanner: 'Jemand hat dir diesen Bericht geschickt. Er existiert nur im Link.',
     savedHere: 'Auf diesem Gerät unter „Your recent reads“ gespeichert.',
+    viewText: 'Im Text',
+    viewPhoto: 'Auf deinem Foto',
+    photoNote: 'Die Markierungen auf dem Foto sind ungefähr; die Textansicht ist genau.',
   },
 };

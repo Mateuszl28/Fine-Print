@@ -86,8 +86,38 @@
   gap: 28px;
 }
 
+.docHead {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px 16px;
+  margin-bottom: 8px;
+}
+
+.toggle {
+  display: inline-flex;
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.toggle button {
+  background: transparent;
+  border: 0;
+  padding: 6px 12px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.toggle button[aria-pressed='true'] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
 .tapHint {
-  margin: 0 0 8px;
+  margin: 0;
   color: var(--ink-faint);
   font-size: 0.85rem;
 }
@@ -188,6 +218,7 @@
   .back,
   .save,
   .banner,
+  .toggle,
   .tapHint,
   .panel,
   .sheetWrap {
