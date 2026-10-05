@@ -59,7 +59,7 @@ Build mode: fast
   Learner check: On your phone, open Fine Print from the home screen, tap "Scan a contract", photograph any contract (or a sample shown on your laptop screen), and read the report.
   Commit: `Add installable web app and Android app`
 
-- [ ] **6. The web version, expanded: your language, a calendar reminder, and a printable report**
+- [x] **6. The web version, expanded: your language, a calendar reminder, and a printable report**
   Becomes usable: Pick a language and get the whole report in it; add the notice deadline to your calendar; save the report as a PDF. Plus the share image and app icons.
   Why now: The learner asked to expand the web version after the first look; these are the cheapest additions that strengthen Impact (non-native speakers) and the demo.
   PRD ref: `prd.md > Explain it in my language`, `prd.md > Calendar reminder`, `prd.md > Save as PDF`
