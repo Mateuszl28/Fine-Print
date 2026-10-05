@@ -39,7 +39,7 @@ Build mode: fast
   Learner check: Take a phone photo of a printed/on-screen sample (or any real contract you have) and upload it through the app on your laptop. Try a random photo too and read the error.
   Commit: `Accept photos and PDFs with reading and error states`
 
-- [ ] **4. Feels right on a phone and on a laptop**
+- [x] **4. Feels right on a phone and on a laptop**
   Becomes usable: Phone: single column with the clause note as a bottom sheet. Laptop (≥1024px): sheet on the left, sticky analysis panel on the right. Keyboard-focusable highlights, a basic dark mode, favicon/OG image, and copy polish in the Fine Print voice.
   Why now: Layout polish matters for Design and Presentation scores, but only once the behavior is final, so nothing gets restyled twice.
   PRD ref: `prd.md > Screens and Layout`, `prd.md > Look and Feel`
@@ -71,24 +71,25 @@ Build mode: fast
 
 ## Hands-on Checkpoints
 
-- [ ] Early usable behavior explored — after slice 1 (the highlighted contract), where the look and the highlight quality can still change the rest of the build
-- [ ] Final kick-the-tires exploration and feedback completed
+- [x] Early usable behavior explored — after slice 3 the learner tried it and asked for a phone version and an expanded web version (slices 5–6)
+- [x] Final kick-the-tires exploration and feedback completed — learner tried the web app and the installed Android app on their phone: "jest ok"
 
 ## Final Review
 
-- [ ] Final review complete — feedback resolved and learner confirms ready to ship
+- No revisions requested at final review.
+- [x] Final review complete — feedback resolved and learner confirms ready to ship
 
 ## Code Tour and App Map
 
-- [ ] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
-- [ ] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
-- [ ] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
+- [x] Learning activity complete — guided route, focused alternative, prior practice connected, or brief recap
+- [x] Optional edit and transfer reflection addressed — offered/declined/already covered/not applicable as appropriate
+- [x] `devpost/app-map.html` generated from finished code, checked, and shown, including a project-grounded practice to reuse
 
-Activity and evidence: 
-Route and stops: 
-Edit outcome: 
-Reflection: 
-Activity mode: 
+Activity and evidence: Brief evidence-based recap (learner asked to keep moving). Practice connected: "let the model write, let code check" — `spec.md > Report checker`, `lib/checkReport.ts`, `lib/checkReport.test.ts`, and the sample runs that exposed the double-counted deposit/fee (`Revisions`).
+Route and stops: Reference route only, not toured live — `app/api/analyze/route.ts` analyze(), `lib/checkReport.ts` locateQuotes()/totalCost(), `components/HighlightedDoc.tsx`.
+Edit outcome: Not applicable (no live tour).
+Reflection: Offered once in chat.
+Activity mode: Recap. Map checked in a browser; all paths and symbols verified against source.
 
 ## Revisions
 

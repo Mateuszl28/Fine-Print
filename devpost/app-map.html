@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fine Print — App Map</title>
+<style>
+  :root {
+    --paper: #f4efe6; --sheet: #fbf8f2; --ink: #1c1a17; --soft: #5b554c; --rule: #d9d1c3;
+    --red: #ff8a7a; --yellow: #ffd640; --green: #96de8c; --code: #ece5d8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1a1815; --sheet: #23201c; --ink: #ede6da; --soft: #b3aa9c; --rule: #3a352e;
+      --red: #c44a3c; --yellow: #a88414; --green: #3e8040; --code: #2c2823;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.55 Georgia, 'Times New Roman', serif; }
+  main { max-width: 820px; margin: 0 auto; padding: 24px 16px 64px; }
+  header { border-bottom: 2px solid var(--ink); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .word { font-style: italic; font-weight: 700; font-size: 1.5rem; }
+  .label { font: 600 0.72rem/1.4 system-ui, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: var(--soft); }
+  h1 { font-size: clamp(1.8rem, 6vw, 2.6rem); line-height: 1.1; margin: 28px 0 10px; }
+  h2 { font-size: 1.4rem; margin: 36px 0 8px; }
+  p { margin: 0 0 12px; }
+  .hl { padding: 0 .2em; border-radius: .3em; }
+  .r { background: var(--red); } .y { background: var(--yellow); } .g { background: var(--green); }
+  code { font: 0.88em/1.4 ui-monospace, Consolas, monospace; background: var(--code); padding: 1px 5px; border-radius: 3px; overflow-wrap: anywhere; }
+  .card { background: var(--sheet); border: 1px solid var(--rule); padding: 16px; margin: 12px 0; border-radius: 3px; }
+  ol.route { padding-left: 1.4em; }
+  ol.route li { margin-bottom: 14px; }
+  details { border-top: 1px solid var(--rule); padding: 10px 0; }
+  summary { cursor: pointer; font-weight: 700; }
+  svg { width: 100%; height: auto; display: block; }
+  svg text { font: 13px system-ui, sans-serif; fill: var(--ink); }
+  svg .box { fill: var(--sheet); stroke: var(--ink); stroke-width: 1.5; }
+  svg .ext { fill: var(--sheet); stroke: var(--soft); stroke-dasharray: 4 3; stroke-width: 1.5; }
+  svg .arrow { stroke: var(--ink); stroke-width: 1.5; fill: none; marker-end: url(#a); }
+  svg .small { font-size: 11px; fill: var(--soft); }
+  footer { margin-top: 40px; border-top: 1px solid var(--rule); padding-top: 12px; color: var(--soft); font-size: .9rem; }
+</style>
+</head>
+<body>
+<main>
+  <header><span class="word">Fine Print</span><span class="label">App map · a snapshot of the code</span></header>
+
+  <h1>Where everything lives</h1>
+  <p>Fine Print reads a contract (pasted text, a photo or a PDF), marks risky clauses on the contract text in
+    <span class="hl r">red</span>, <span class="hl y">yellow</span> and <span class="hl g">green</span>, adds up what it really costs,
+    and writes a letter. It's one Next.js app with two halves: the <strong>page</strong> in your browser and one <strong>server route</strong>
+    that asks a language model (Gemini 2.5 Flash through Vercel AI Gateway) and then <strong>checks the model's work in code</strong>.
+    Nothing is stored.</p>
+
+  <h2>One action, end to end: tap the Gym sample</h2>
+  <div class="card">
+    <svg viewBox="0 0 760 300" role="img" aria-labelledby="dtitle">
+      <title id="dtitle">Tapping a sample sends its text to the analyze route, which calls the model, checks quotes and totals, and returns a report the page draws with highlights.</title>
+      <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+      <g style="color: var(--ink)">
+        <rect class="box" x="10" y="20" width="200" height="70" rx="3"/>
+        <text x="22" y="46">Sample card tapped</text>
+        <text class="small" x="22" y="66">components/SampleCards.tsx</text>
+        <text class="small" x="22" y="80">app/page.tsx → run()</text>
+
+        <rect class="box" x="280" y="20" width="200" height="70" rx="3"/>
+        <text x="292" y="46">POST /api/analyze</text>
+        <text class="small" x="292" y="66">app/api/analyze/route.ts</text>
+        <text class="small" x="292" y="80">analyze()</text>
+
+        <rect class="ext" x="550" y="20" width="200" height="70" rx="3"/>
+        <text x="562" y="46">Language model</text>
+        <text class="small" x="562" y="66">AI Gateway → Gemini 2.5 Flash</text>
+        <text class="small" x="562" y="80">returns JSON (lib/schema.ts)</text>
+
+        <rect class="box" x="280" y="160" width="200" height="80" rx="3"/>
+        <text x="292" y="186">Check the model's work</text>
+        <text class="small" x="292" y="206">lib/checkReport.ts</text>
+        <text class="small" x="292" y="220">locateQuotes() · totalCost()</text>
+
+        <rect class="box" x="10" y="160" width="200" height="80" rx="3"/>
+        <text x="22" y="186">Report on screen</text>
+        <text class="small" x="22" y="206">components/Report.tsx</text>
+        <text class="small" x="22" y="220">HighlightedDoc · VerdictStrip</text>
+
+        <path class="arrow" d="M210 55 H272"/>
+        <path class="arrow" d="M480 45 H542"/>
+        <path class="arrow" d="M550 70 C 520 110, 430 120, 400 152"/>
+        <path class="arrow" d="M280 200 H218"/>
+        <text class="small" x="490" y="112">quotes + money items</text>
+        <text class="small" x="220" y="262">only verified quotes, total computed in code</text>
+      </g>
+    </svg>
+  </div>
+
+  <h2>Reference route (3 stops)</h2>
+  <p class="label">Not toured live — open these to follow the same action yourself</p>
+  <ol class="route">
+    <li><strong><code>app/api/analyze/route.ts</code> → <code>analyze()</code></strong><br>
+      Builds the request (text, or the photo/PDF as file parts), asks the model for an object matching <code>analysisSchema</code>
+      with <code>generateText</code> + <code>Output.object</code>, then hands the result to <code>buildReport</code>. Search for <code>const MODEL</code> to see which model runs.</li>
+    <li><strong><code>lib/checkReport.ts</code> → <code>locateQuotes()</code> and <code>totalCost()</code></strong><br>
+      The trust layer. <code>fold()</code> normalises spacing, quotes and case so each quoted clause can be found in the real contract text;
+      anything not found is dropped and counted in <code>droppedQuotes</code>. The true cost is summed here in cents, never by the model.
+      Tests: <code>lib/checkReport.test.ts</code> (<code>npm test</code>).</li>
+    <li><strong><code>components/HighlightedDoc.tsx</code> → <code>HighlightedDoc</code></strong><br>
+      Splits the contract text at each clause's <code>start</code>/<code>end</code> and wraps those ranges in <code>&lt;mark class="hl hl-red"&gt;</code>.
+      The highlighter look itself is the <code>.hl</code> rule in <code>app/globals.css</code>.</li>
+  </ol>
+
+  <h2>To change this, start here</h2>
+  <details><summary>What the model is told (voice, rules, what counts as a trap)</summary>
+    <p><code>lib/prompt.ts</code> → <code>SYSTEM_PROMPT</code>. Rule 5 decides what goes into the true cost.</p></details>
+  <details><summary>The fields the model must return</summary>
+    <p><code>lib/schema.ts</code> → <code>analysisSchema</code>. Add a field here, then use it in a component.</p></details>
+  <details><summary>Report labels and the five languages</summary>
+    <p><code>lib/i18n.ts</code> → <code>strings</code>. Add a language to <code>LANGUAGES</code> and a matching entry in <code>strings</code>.</p></details>
+  <details><summary>The sample contracts</summary>
+    <p><code>lib/samples.ts</code> → <code>samples</code>. Fictional companies; each hides at least one real-world trick.</p></details>
+  <details><summary>Colours, fonts, paper texture</summary>
+    <p><code>app/globals.css</code> (<code>:root</code> tokens) and <code>app/layout.tsx</code> (fonts).</p></details>
+  <details><summary>Calendar reminder</summary>
+    <p><code>lib/ics.ts</code> → <code>noticeDeadline()</code>, <code>buildIcs()</code>; UI in <code>components/Reminder.tsx</code>. Tests: <code>lib/ics.test.ts</code>.</p></details>
+  <details><summary>Android app</summary>
+    <p><code>capacitor.config.ts</code> (<code>server.url</code> points at the deployed site) and <code>android/</code>. Build with JDK 21: <code>cd android &amp;&amp; gradlew assembleDebug</code>.</p></details>
+
+  <h2>A practice to reuse</h2>
+  <div class="card">
+    <p><strong>Let the model write; let code check.</strong> The spec decided early (<code>spec.md &gt; Report checker</code>) that every quote must be found verbatim
+      in the contract and that the total is added up in code. That made the model's output measurable: each test run printed
+      <code>located</code>, <code>dropped</code> and whether the total matched the itemised lines. When the first real runs counted a refundable deposit
+      and a financed fee twice, the breakdown made it visible and the prompt was fixed (<code>checklist.md &gt; Revisions</code>).</p>
+    <p>On another project: whenever an AI produces facts you'll show to people (quotes, numbers, dates), decide up front what can be
+      verified deterministically, write that check and a test for it, and print a pass rate on real examples before trusting the output.</p>
+  </div>
+
+  <h2>Run it again</h2>
+  <p><code>npm install</code>, put <code>AI_GATEWAY_API_KEY=…</code> in <code>.env.local</code>, then <code>npm run dev</code> and open <code>http://localhost:3000</code>.
+    Live: <code>https://fine-print-khaki.vercel.app</code>. Tests: <code>npm test</code>.</p>
+
+  <footer>Snapshot of the code at commit <code>c9dfff5</code> (plus this map). Paths and names can drift as the project changes.</footer>
+</main>
+</body>
+</html>
