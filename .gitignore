@@ -1,0 +1,12 @@
+# Personal learning context (kept out of commits)
+/devpost/learner-profile.md
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies / build
+node_modules/
+.next/
+.vercel/
