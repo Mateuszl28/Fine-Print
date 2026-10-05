@@ -4,6 +4,8 @@ import { useRef, useState } from 'react';
 import type { ContractInput } from '@/lib/api';
 import { prepareFiles } from '@/lib/prepareFiles';
 import { phonePlanB, samples } from '@/lib/samples';
+import type { Lang } from '@/lib/i18n';
+import { ui } from '@/lib/ui';
 import styles from './CompareSetup.module.css';
 
 type Slot = ContractInput | null;
@@ -12,27 +14,31 @@ type Props = {
   onCompare: (a: ContractInput, b: ContractInput) => void;
   onError: (error: 'too_long' | 'bad_input') => void;
   onClose: () => void;
+  lang: Lang;
 };
 
 const MIN_CHARS = 200;
 
-function describe(slot: Slot) {
+function describe(slot: Slot, lang: Lang) {
   if (!slot) return null;
-  if (slot.kind === 'text') return slot.label ?? `Pasted text · ${slot.text.length.toLocaleString('en-US')} characters`;
+  const u = ui[lang];
+  if (slot.kind === 'text') return slot.label ?? u.pastedText(slot.text.length);
   return slot.files.length === 1 && slot.files[0].mediaType === 'application/pdf'
     ? `PDF · ${slot.files[0].name}`
-    : `${slot.files.length} photo${slot.files.length === 1 ? '' : 's'}`;
+    : u.photos(slot.files.length);
 }
 
-function SlotPicker({ name, slot, onChange, onError }: {
+function SlotPicker({ name, slot, onChange, onError, lang }: {
   name: string;
   slot: Slot;
   onChange: (s: Slot) => void;
   onError: Props['onError'];
+  lang: Lang;
 }) {
+  const u = ui[lang];
   const [text, setText] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
-  const ready = describe(slot);
+  const ready = describe(slot, lang);
 
   async function handleFiles(list: FileList | null) {
     if (!list || list.length === 0) return;
@@ -49,13 +55,13 @@ function SlotPicker({ name, slot, onChange, onError }: {
         <div className={styles.ready}>
           <span className="hl hl-green">{ready}</span>
           <button type="button" className={styles.link} onClick={() => onChange(null)}>
-            Change
+            {u.change}
           </button>
         </div>
       ) : (
         <>
           <button type="button" className={styles.upload} onClick={() => fileRef.current?.click()}>
-            Photo or PDF
+            {u.photoOrPdf}
           </button>
           <input
             ref={fileRef}
@@ -69,7 +75,7 @@ function SlotPicker({ name, slot, onChange, onError }: {
             className={styles.textarea}
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="…or paste the text"
+            placeholder={u.orPaste}
             rows={4}
             aria-label={`${name}: paste the contract text`}
           />
@@ -79,7 +85,7 @@ function SlotPicker({ name, slot, onChange, onError }: {
             disabled={text.trim().length < MIN_CHARS}
             onClick={() => onChange({ kind: 'text', text })}
           >
-            Use this text
+            {u.useText}
           </button>
         </>
       )}
@@ -87,7 +93,8 @@ function SlotPicker({ name, slot, onChange, onError }: {
   );
 }
 
-export function CompareSetup({ onCompare, onError, onClose }: Props) {
+export function CompareSetup({ onCompare, onError, onClose, lang }: Props) {
+  const u = ui[lang];
   const [a, setA] = useState<Slot>(null);
   const [b, setB] = useState<Slot>(null);
   const phoneA = samples.find((s) => s.id === 'phone')!;
@@ -96,22 +103,22 @@ export function CompareSetup({ onCompare, onError, onClose }: Props) {
     <section className={styles.box} aria-labelledby="compare-heading">
       <div className={styles.head}>
         <h2 id="compare-heading" className={styles.heading}>
-          Compare two offers
+          {u.compareHeading}
         </h2>
         <button type="button" className={styles.link} onClick={onClose}>
-          Close
+          {u.close}
         </button>
       </div>
-      <p className={styles.lede}>Two gyms, two phone plans, two flats. The cheaper sticker isn&rsquo;t always the cheaper deal.</p>
+      <p className={styles.lede}>{u.compareLede}</p>
 
       <div className={styles.slots}>
-        <SlotPicker name="Offer A" slot={a} onChange={setA} onError={onError} />
-        <SlotPicker name="Offer B" slot={b} onChange={setB} onError={onError} />
+        <SlotPicker name={u.offerA} slot={a} onChange={setA} onError={onError} lang={lang} />
+        <SlotPicker name={u.offerB} slot={b} onChange={setB} onError={onError} lang={lang} />
       </div>
 
       <div className={styles.actions}>
         <button type="button" className={styles.primary} disabled={!a || !b} onClick={() => a && b && onCompare(a, b)}>
-          Compare them
+          {u.compareGo}
         </button>
         <button
           type="button"
@@ -123,7 +130,7 @@ export function CompareSetup({ onCompare, onError, onClose }: Props) {
             )
           }
         >
-          Or try it with two phone plans &rarr;
+          {u.compareDemo}
         </button>
       </div>
     </section>

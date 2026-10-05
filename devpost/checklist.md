@@ -99,6 +99,16 @@ Build mode: fast
   Learner check: In the app, open a sample, tap "Send it to someone" (share sheet appears) and "Read it out loud" (the phone speaks).
   Commit: `Native share and speech in the app; rate limit the analyze API`
 
+- [x] **10. The whole app in your language, an honesty note, and an accessibility pass**
+  Becomes usable: Picking Українська (or any of the five) changes the entire interface, not only the report; the Start screen explains how the app keeps itself honest; text contrast meets WCAG AA.
+  Why now: The learner asked to keep expanding; a half-translated interface undercut the "your language" feature, and Design is a judging criterion.
+  PRD ref: `prd.md > Explain it in my language`
+  Spec ref: `spec.md > Language`, `spec.md > Look and Feel`
+  Build: `lib/ui.ts` in five languages, all start/reading/compare/recent components on it, `<html lang>` synced, honesty section, `--ink-faint` darkened (#6e665a light, #a39a8c dark).
+  Verify (mechanical): `npm run build` passes; Lighthouse mobile before → after: accessibility 96 → 100 (contrast 3.57 → 5.34), performance 92, best practices 100, SEO 100; desktop performance 100; the Start screen renders fully in Ukrainian with `html lang="uk"`.
+  Learner check: Switch the language to Українська or Deutsch and walk from the Start screen to a report.
+  Commit: `Whole interface in five languages, honesty section, contrast fix`
+
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 3 the learner tried it and asked for a phone version and an expanded web version (slices 5–6)

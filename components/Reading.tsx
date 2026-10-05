@@ -1,19 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import type { Lang } from '@/lib/i18n';
+import { ui } from '@/lib/ui';
 import styles from './Reading.module.css';
 
-const LINES = [
-  'Reading the small print…',
-  'Looking for the auto-renewal…',
-  'Finding out how hard it is to leave…',
-  'Checking which fees are “non-refundable”…',
-  'Adding up what it really costs…',
-  'Writing your letter…',
-];
-
-export function Reading({ onCancel, fromPhoto }: { onCancel: () => void; fromPhoto?: boolean }) {
-  const lines = fromPhoto ? ['Typing up your photo…', ...LINES] : LINES;
+export function Reading({ onCancel, fromPhoto, lang }: { onCancel: () => void; fromPhoto?: boolean; lang: Lang }) {
+  const u = ui[lang];
+  const lines = fromPhoto ? [u.readingPhoto, ...u.reading] : u.reading;
   const [i, setI] = useState(0);
 
   useEffect(() => {
@@ -22,7 +16,7 @@ export function Reading({ onCancel, fromPhoto }: { onCancel: () => void; fromPho
   }, [lines.length]);
 
   return (
-    <main className={styles.page} aria-busy="true">
+    <main className={styles.page} aria-busy="true" lang={lang}>
       <div className={styles.sheet} aria-hidden="true">
         {Array.from({ length: 9 }, (_, n) => (
           <span key={n} className={styles.line} style={{ width: `${[92, 100, 76, 98, 64, 100, 88, 95, 52][n]}%` }} />
@@ -32,9 +26,9 @@ export function Reading({ onCancel, fromPhoto }: { onCancel: () => void; fromPho
       <p className={styles.status} role="status" aria-live="polite">
         {lines[i]}
       </p>
-      <p className={styles.sub}>Usually 20–40 seconds. Longer contracts take longer, which is sort of the point.</p>
+      <p className={styles.sub}>{u.readingSub}</p>
       <button type="button" className={styles.cancel} onClick={onCancel}>
-        Cancel
+        {u.cancel}
       </button>
     </main>
   );

@@ -1,0 +1,431 @@
+// Everything outside the report (start screen, reading screen, compare setup), in the
+// reader's language. The report's own labels live in lib/i18n.ts.
+
+import type { Lang } from './i18n';
+
+type UI = {
+  tagline: string;
+  headline: [before: string, highlighted: string, after: string];
+  lede: [before: string, emphasis: string, after: string];
+  scan: string;
+  scanBusy: string;
+  upload: string;
+  uploadHint: string;
+  pasteToggle: string;
+  pasteLabel: string;
+  pastePlaceholder: string;
+  pasteShort: string;
+  readIt: string;
+  explainIn: string;
+  anyLanguage: string;
+  compareLinkLead: string;
+  compareLink: string;
+  samplesHeading: string;
+  samplesNote: string;
+  readThis: string;
+  footerPrivacy: string;
+  footerBest: string;
+  honestHeading: string;
+  honest: [title: string, body: string][];
+  errors: Record<'not_a_contract' | 'too_long' | 'bad_input' | 'failed' | 'rate_limited', [string, string]>;
+  tryAgain: string;
+  reading: string[];
+  readingPhoto: string;
+  readingSub: string;
+  cancel: string;
+  compareHeading: string;
+  compareLede: string;
+  offerA: string;
+  offerB: string;
+  photoOrPdf: string;
+  orPaste: string;
+  useText: string;
+  change: string;
+  compareGo: string;
+  compareDemo: string;
+  close: string;
+  recentHeading: string;
+  forget: string;
+  forgetAll: string;
+  pastedText: (n: number) => string;
+  photos: (n: number) => string;
+  sampleBlurbs: Record<string, [label: string, blurb: string]>;
+};
+
+export const ui: Record<Lang, UI> = {
+  en: {
+    tagline: 'Read it before you sign it',
+    headline: ['The ', 'small print', ', read out loud.'],
+    lede: [
+      'Snap the contract you’re about to sign. Fine Print marks the traps on the page, adds up what it will ',
+      'really',
+      ' cost, and writes the letter you’ll need to get out of it.',
+    ],
+    scan: 'Scan a contract',
+    scanBusy: 'Getting the photo ready…',
+    upload: 'Upload a PDF or photos',
+    uploadHint: 'Up to 4 photos, or one PDF. Flat, in good light, every page with numbers on it.',
+    pasteToggle: 'Or paste the text instead',
+    pasteLabel: 'Paste the contract',
+    pastePlaceholder: 'Paste the whole thing. Terms, fees, the bit in grey at the bottom.',
+    pasteShort: 'Keep going — that looks shorter than a contract.',
+    readIt: 'Read it',
+    explainIn: 'Explain it to me in',
+    anyLanguage: 'The contract can be in any language.',
+    compareLinkLead: 'Choosing between two offers?',
+    compareLink: 'Compare them side by side →',
+    samplesHeading: 'No contract handy? Read one of ours',
+    samplesNote: 'Made-up companies, real tricks.',
+    readThis: 'Read this one →',
+    footerPrivacy: 'Not legal advice. Nothing you upload is stored on our side; recent reads stay on your device.',
+    footerBest: 'Gym memberships, leases, phone plans and pay-over-time loans read best.',
+    honestHeading: 'How Fine Print keeps itself honest',
+    honest: [
+      ['Every mark is checked', 'Each highlighted line has to appear, word for word, in your contract. If it doesn’t, it’s thrown out before you see it.'],
+      ['The maths is ours', 'The AI lists the charges; plain code adds them up. The total can’t be made up.'],
+      ['It reads, it doesn’t advise', 'It tells you what the contract says and what it costs. Whether to sign is still your call.'],
+    ],
+    errors: {
+      not_a_contract: ['I couldn’t read a contract here.', 'Try a sharper photo in good light, flat on a table. Or paste the text.'],
+      too_long: ['That one is too long for me.', 'Up to 4 photos or a PDF of about 10 pages. Try just the pages with the terms and fees.'],
+      bad_input: ['I can’t open that file.', 'Photos (JPG, PNG) and PDFs work. Or paste the text.'],
+      failed: ['Something went wrong on our side.', 'Nothing you did. Give it another go.'],
+      rate_limited: ['That’s a lot of contracts for one hour.', 'Fine Print runs on a small budget, so it takes a breather after 20 reads an hour. Try again a bit later.'],
+    },
+    tryAgain: 'Try again',
+    reading: [
+      'Reading the small print…',
+      'Looking for the auto-renewal…',
+      'Finding out how hard it is to leave…',
+      'Checking which fees are “non-refundable”…',
+      'Adding up what it really costs…',
+      'Writing your letter…',
+    ],
+    readingPhoto: 'Typing up your photo…',
+    readingSub: 'Usually 20–40 seconds. Longer contracts take longer, which is sort of the point.',
+    cancel: 'Cancel',
+    compareHeading: 'Compare two offers',
+    compareLede: 'Two gyms, two phone plans, two flats. The cheaper sticker isn’t always the cheaper deal.',
+    offerA: 'Offer A',
+    offerB: 'Offer B',
+    photoOrPdf: 'Photo or PDF',
+    orPaste: '…or paste the text',
+    useText: 'Use this text',
+    change: 'Change',
+    compareGo: 'Compare them',
+    compareDemo: 'Or try it with two phone plans →',
+    close: 'Close',
+    recentHeading: 'Your recent reads · on this device only',
+    forget: 'Forget',
+    forgetAll: 'Forget all',
+    pastedText: (n) => `Pasted text · ${n.toLocaleString('en-US')} characters`,
+    photos: (n) => `${n} photo${n === 1 ? '' : 's'}`,
+    sampleBlurbs: {
+      gym: ['Gym membership', '$29.99 a month. Allegedly.'],
+      lease: ['Apartment lease', '12 months in Portland, OR.'],
+      phone: ['Phone plan', 'Unlimited, with a free phone.'],
+      loan: ['Pay-over-time loan', 'A laptop, in 18 easy payments.'],
+      miet: ['Mietvertrag (German)', 'A Berlin flat. In German.'],
+    },
+  },
+  pl: {
+    tagline: 'Przeczytaj, zanim podpiszesz',
+    headline: ['', 'Drobny druk', ', przeczytany na głos.'],
+    lede: [
+      'Zrób zdjęcie umowy, którą masz podpisać. Fine Print zaznaczy pułapki na stronie, policzy, ile ',
+      'naprawdę',
+      ' zapłacisz, i napisze list, który pozwoli ci z niej wyjść.',
+    ],
+    scan: 'Zeskanuj umowę',
+    scanBusy: 'Przygotowuję zdjęcie…',
+    upload: 'Wgraj PDF lub zdjęcia',
+    uploadHint: 'Do 4 zdjęć albo jeden PDF. Płasko, w dobrym świetle, każda strona z kwotami.',
+    pasteToggle: 'Albo wklej tekst',
+    pasteLabel: 'Wklej umowę',
+    pastePlaceholder: 'Wklej całość. Warunki, opłaty, ten szary tekst na dole.',
+    pasteShort: 'Jeszcze trochę — to wygląda na krótsze niż umowa.',
+    readIt: 'Przeczytaj',
+    explainIn: 'Wyjaśnij mi po',
+    anyLanguage: 'Umowa może być w dowolnym języku.',
+    compareLinkLead: 'Wybierasz między dwiema ofertami?',
+    compareLink: 'Porównaj je obok siebie →',
+    samplesHeading: 'Nie masz umowy pod ręką? Przeczytaj naszą',
+    samplesNote: 'Zmyślone firmy, prawdziwe sztuczki.',
+    readThis: 'Przeczytaj tę →',
+    footerPrivacy: 'To nie jest porada prawna. Niczego nie przechowujemy u siebie; ostatnie raporty zostają na twoim urządzeniu.',
+    footerBest: 'Najlepiej działa z umowami na siłownię, najem, telefon i zakupy na raty.',
+    honestHeading: 'Jak Fine Print pilnuje uczciwości',
+    honest: [
+      ['Każde zaznaczenie jest sprawdzane', 'Każdy zaznaczony fragment musi występować słowo w słowo w twojej umowie. Jeśli nie, odpada, zanim go zobaczysz.'],
+      ['Rachunki liczymy sami', 'AI wypisuje opłaty, a zwykły kod je sumuje. Kwota nie może być zmyślona.'],
+      ['Czyta, nie doradza', 'Mówi, co jest w umowie i ile kosztuje. Czy podpisać, decydujesz ty.'],
+    ],
+    errors: {
+      not_a_contract: ['Nie widzę tu umowy.', 'Zrób ostrzejsze zdjęcie w dobrym świetle, na płasko. Albo wklej tekst.'],
+      too_long: ['Ta jest dla mnie za długa.', 'Do 4 zdjęć albo PDF do ok. 10 stron. Wybierz strony z warunkami i opłatami.'],
+      bad_input: ['Nie mogę otworzyć tego pliku.', 'Działają zdjęcia (JPG, PNG) i PDF-y. Albo wklej tekst.'],
+      failed: ['Coś poszło nie tak po naszej stronie.', 'To nie twoja wina. Spróbuj jeszcze raz.'],
+      rate_limited: ['Sporo umów jak na godzinę.', 'Fine Print działa na małym budżecie, więc po 20 analizach na godzinę robi przerwę. Spróbuj za chwilę.'],
+    },
+    tryAgain: 'Spróbuj ponownie',
+    reading: [
+      'Czytam drobny druk…',
+      'Szukam automatycznego przedłużenia…',
+      'Sprawdzam, jak trudno się wypisać…',
+      'Sprawdzam, które opłaty są „bezzwrotne”…',
+      'Liczę, ile to naprawdę kosztuje…',
+      'Piszę twój list…',
+    ],
+    readingPhoto: 'Przepisuję twoje zdjęcie…',
+    readingSub: 'Zwykle 20–40 sekund. Dłuższe umowy trwają dłużej, i właśnie o to chodzi.',
+    cancel: 'Anuluj',
+    compareHeading: 'Porównaj dwie oferty',
+    compareLede: 'Dwie siłownie, dwa abonamenty, dwa mieszkania. Niższa cena na plakacie nie zawsze oznacza tańszą umowę.',
+    offerA: 'Oferta A',
+    offerB: 'Oferta B',
+    photoOrPdf: 'Zdjęcie lub PDF',
+    orPaste: '…albo wklej tekst',
+    useText: 'Użyj tego tekstu',
+    change: 'Zmień',
+    compareGo: 'Porównaj',
+    compareDemo: 'Albo wypróbuj na dwóch abonamentach →',
+    close: 'Zamknij',
+    recentHeading: 'Twoje ostatnie raporty · tylko na tym urządzeniu',
+    forget: 'Usuń',
+    forgetAll: 'Usuń wszystkie',
+    pastedText: (n) => `Wklejony tekst · ${n.toLocaleString('pl-PL')} znaków`,
+    photos: (n) => `${n} ${n === 1 ? 'zdjęcie' : n < 5 ? 'zdjęcia' : 'zdjęć'}`,
+    sampleBlurbs: {
+      gym: ['Karnet na siłownię', '29,99 $ miesięcznie. Podobno.'],
+      lease: ['Najem mieszkania', '12 miesięcy w Portland, OR.'],
+      phone: ['Abonament telefoniczny', 'Bez limitu, z darmowym telefonem.'],
+      loan: ['Zakup na raty', 'Laptop w 18 wygodnych ratach.'],
+      miet: ['Mietvertrag (niemiecki)', 'Mieszkanie w Berlinie. Po niemiecku.'],
+    },
+  },
+  uk: {
+    tagline: 'Прочитайте, перш ніж підписати',
+    headline: ['', 'Дрібний шрифт', ', прочитаний уголос.'],
+    lede: [
+      'Сфотографуйте договір, який збираєтеся підписати. Fine Print позначить пастки на сторінці, порахує, скільки він коштуватиме ',
+      'насправді',
+      ', і напише лист, щоб із нього вийти.',
+    ],
+    scan: 'Сканувати договір',
+    scanBusy: 'Готую фото…',
+    upload: 'Завантажити PDF або фото',
+    uploadHint: 'До 4 фото або один PDF. Рівно, при доброму світлі, кожна сторінка з сумами.',
+    pasteToggle: 'Або вставте текст',
+    pasteLabel: 'Вставте договір',
+    pastePlaceholder: 'Вставте все повністю. Умови, платежі, сірий текст унизу.',
+    pasteShort: 'Ще трохи — це коротше за договір.',
+    readIt: 'Прочитати',
+    explainIn: 'Поясніть мені',
+    anyLanguage: 'Договір може бути будь-якою мовою.',
+    compareLinkLead: 'Обираєте між двома пропозиціями?',
+    compareLink: 'Порівняйте їх поруч →',
+    samplesHeading: 'Немає договору під рукою? Прочитайте наш',
+    samplesNote: 'Вигадані компанії, справжні хитрощі.',
+    readThis: 'Прочитати цей →',
+    footerPrivacy: 'Це не юридична консультація. Ми нічого не зберігаємо в себе; останні звіти лишаються на вашому пристрої.',
+    footerBest: 'Найкраще працює з договорами спортзалу, оренди, мобільного зв’язку та покупок у розстрочку.',
+    honestHeading: 'Як Fine Print лишається чесним',
+    honest: [
+      ['Кожна позначка перевіряється', 'Кожен виділений фрагмент має бути у вашому договорі слово в слово. Якщо ні — його відкидають, перш ніж ви побачите.'],
+      ['Рахуємо ми самі', 'ШІ перелічує платежі, а звичайний код їх додає. Суму не можна вигадати.'],
+      ['Читає, а не радить', 'Каже, що написано в договорі і скільки це коштує. Підписувати чи ні — вирішуєте ви.'],
+    ],
+    errors: {
+      not_a_contract: ['Тут не видно договору.', 'Спробуйте чіткіше фото при доброму світлі, рівно на столі. Або вставте текст.'],
+      too_long: ['Цей задовгий для мене.', 'До 4 фото або PDF приблизно на 10 сторінок. Оберіть сторінки з умовами та платежами.'],
+      bad_input: ['Не можу відкрити цей файл.', 'Підходять фото (JPG, PNG) і PDF. Або вставте текст.'],
+      failed: ['Щось пішло не так на нашому боці.', 'Ви нічого не зробили неправильно. Спробуйте ще раз.'],
+      rate_limited: ['Забагато договорів за годину.', 'Fine Print працює з невеликим бюджетом, тож після 20 аналізів на годину робить перерву. Спробуйте трохи пізніше.'],
+    },
+    tryAgain: 'Спробувати ще раз',
+    reading: [
+      'Читаю дрібний шрифт…',
+      'Шукаю автоматичне продовження…',
+      'Перевіряю, як важко звідси піти…',
+      'Перевіряю, які платежі «не повертаються»…',
+      'Рахую, скільки це коштує насправді…',
+      'Пишу ваш лист…',
+    ],
+    readingPhoto: 'Розпізнаю ваше фото…',
+    readingSub: 'Зазвичай 20–40 секунд. Довші договори — довше, у цьому й суть.',
+    cancel: 'Скасувати',
+    compareHeading: 'Порівняйте дві пропозиції',
+    compareLede: 'Два спортзали, два тарифи, дві квартири. Дешевша ціна на рекламі — не завжди дешевша угода.',
+    offerA: 'Пропозиція A',
+    offerB: 'Пропозиція B',
+    photoOrPdf: 'Фото або PDF',
+    orPaste: '…або вставте текст',
+    useText: 'Використати цей текст',
+    change: 'Змінити',
+    compareGo: 'Порівняти',
+    compareDemo: 'Або спробуйте на двох тарифах →',
+    close: 'Закрити',
+    recentHeading: 'Ваші останні звіти · лише на цьому пристрої',
+    forget: 'Видалити',
+    forgetAll: 'Видалити всі',
+    pastedText: (n) => `Вставлений текст · ${n.toLocaleString('uk-UA')} символів`,
+    photos: (n) => `${n} фото`,
+    sampleBlurbs: {
+      gym: ['Абонемент у спортзал', '29,99 $ на місяць. Нібито.'],
+      lease: ['Оренда квартири', '12 місяців у Портленді, штат Орегон.'],
+      phone: ['Мобільний тариф', 'Безліміт і безкоштовний телефон.'],
+      loan: ['Покупка в розстрочку', 'Ноутбук за 18 зручних платежів.'],
+      miet: ['Mietvertrag (німецькою)', 'Квартира в Берліні. Німецькою.'],
+    },
+  },
+  es: {
+    tagline: 'Léelo antes de firmar',
+    headline: ['La ', 'letra pequeña', ', leída en voz alta.'],
+    lede: [
+      'Haz una foto del contrato que vas a firmar. Fine Print marca las trampas en la página, suma lo que te costará ',
+      'de verdad',
+      ' y escribe la carta que necesitarás para salir de él.',
+    ],
+    scan: 'Escanear un contrato',
+    scanBusy: 'Preparando la foto…',
+    upload: 'Subir un PDF o fotos',
+    uploadHint: 'Hasta 4 fotos o un PDF. Plano, con buena luz, cada página con cifras.',
+    pasteToggle: 'O pega el texto',
+    pasteLabel: 'Pega el contrato',
+    pastePlaceholder: 'Pégalo entero. Condiciones, cargos, la parte en gris del final.',
+    pasteShort: 'Sigue — parece más corto que un contrato.',
+    readIt: 'Léelo',
+    explainIn: 'Explícamelo en',
+    anyLanguage: 'El contrato puede estar en cualquier idioma.',
+    compareLinkLead: '¿Dudas entre dos ofertas?',
+    compareLink: 'Compáralas lado a lado →',
+    samplesHeading: '¿No tienes un contrato a mano? Lee uno nuestro',
+    samplesNote: 'Empresas inventadas, trucos reales.',
+    readThis: 'Leer este →',
+    footerPrivacy: 'No es asesoría legal. No guardamos nada de lo que subes; tus lecturas recientes se quedan en tu dispositivo.',
+    footerBest: 'Funciona mejor con gimnasios, alquileres, planes de móvil y préstamos a plazos.',
+    honestHeading: 'Cómo Fine Print se mantiene honesto',
+    honest: [
+      ['Cada marca se comprueba', 'Cada línea resaltada tiene que aparecer, palabra por palabra, en tu contrato. Si no, se descarta antes de que la veas.'],
+      ['Las cuentas son nuestras', 'La IA enumera los cargos; un código simple los suma. El total no se puede inventar.'],
+      ['Lee, no aconseja', 'Te dice qué dice el contrato y cuánto cuesta. Firmar o no sigue siendo cosa tuya.'],
+    ],
+    errors: {
+      not_a_contract: ['No veo un contrato aquí.', 'Prueba una foto más nítida, con buena luz y plana sobre la mesa. O pega el texto.'],
+      too_long: ['Este es demasiado largo para mí.', 'Hasta 4 fotos o un PDF de unas 10 páginas. Prueba solo con las páginas de condiciones y cargos.'],
+      bad_input: ['No puedo abrir ese archivo.', 'Funcionan fotos (JPG, PNG) y PDF. O pega el texto.'],
+      failed: ['Algo ha fallado por nuestra parte.', 'No es culpa tuya. Vuelve a intentarlo.'],
+      rate_limited: ['Muchos contratos para una hora.', 'Fine Print funciona con poco presupuesto y descansa tras 20 lecturas por hora. Inténtalo un poco más tarde.'],
+    },
+    tryAgain: 'Reintentar',
+    reading: [
+      'Leyendo la letra pequeña…',
+      'Buscando la renovación automática…',
+      'Viendo lo difícil que es salir…',
+      'Comprobando qué cargos son «no reembolsables»…',
+      'Sumando lo que cuesta de verdad…',
+      'Escribiendo tu carta…',
+    ],
+    readingPhoto: 'Transcribiendo tu foto…',
+    readingSub: 'Normalmente 20–40 segundos. Los contratos largos tardan más, que es justo la cuestión.',
+    cancel: 'Cancelar',
+    compareHeading: 'Compara dos ofertas',
+    compareLede: 'Dos gimnasios, dos planes de móvil, dos pisos. El precio más bajo del cartel no siempre es el trato más barato.',
+    offerA: 'Oferta A',
+    offerB: 'Oferta B',
+    photoOrPdf: 'Foto o PDF',
+    orPaste: '…o pega el texto',
+    useText: 'Usar este texto',
+    change: 'Cambiar',
+    compareGo: 'Compararlas',
+    compareDemo: 'O pruébalo con dos planes de móvil →',
+    close: 'Cerrar',
+    recentHeading: 'Tus lecturas recientes · solo en este dispositivo',
+    forget: 'Olvidar',
+    forgetAll: 'Olvidar todo',
+    pastedText: (n) => `Texto pegado · ${n.toLocaleString('es-ES')} caracteres`,
+    photos: (n) => `${n} foto${n === 1 ? '' : 's'}`,
+    sampleBlurbs: {
+      gym: ['Gimnasio', '29,99 $ al mes. Supuestamente.'],
+      lease: ['Alquiler de piso', '12 meses en Portland, Oregón.'],
+      phone: ['Plan de móvil', 'Ilimitado, con móvil gratis.'],
+      loan: ['Préstamo a plazos', 'Un portátil en 18 cómodos pagos.'],
+      miet: ['Mietvertrag (alemán)', 'Un piso en Berlín. En alemán.'],
+    },
+  },
+  de: {
+    tagline: 'Erst lesen, dann unterschreiben',
+    headline: ['Das ', 'Kleingedruckte', ', laut vorgelesen.'],
+    lede: [
+      'Fotografiere den Vertrag, den du unterschreiben willst. Fine Print markiert die Fallen auf der Seite, rechnet aus, was er ',
+      'wirklich',
+      ' kostet, und schreibt den Brief, mit dem du wieder rauskommst.',
+    ],
+    scan: 'Vertrag scannen',
+    scanBusy: 'Foto wird vorbereitet…',
+    upload: 'PDF oder Fotos hochladen',
+    uploadHint: 'Bis zu 4 Fotos oder ein PDF. Flach, bei gutem Licht, jede Seite mit Zahlen.',
+    pasteToggle: 'Oder Text einfügen',
+    pasteLabel: 'Vertrag einfügen',
+    pastePlaceholder: 'Alles einfügen. Bedingungen, Gebühren, das Graue ganz unten.',
+    pasteShort: 'Weiter — das ist kürzer als ein Vertrag.',
+    readIt: 'Lesen',
+    explainIn: 'Erklär es mir auf',
+    anyLanguage: 'Der Vertrag kann in jeder Sprache sein.',
+    compareLinkLead: 'Zwei Angebote zur Wahl?',
+    compareLink: 'Nebeneinander vergleichen →',
+    samplesHeading: 'Kein Vertrag zur Hand? Lies einen von uns',
+    samplesNote: 'Erfundene Firmen, echte Tricks.',
+    readThis: 'Diesen lesen →',
+    footerPrivacy: 'Keine Rechtsberatung. Wir speichern nichts von dem, was du hochlädst; deine letzten Berichte bleiben auf deinem Gerät.',
+    footerBest: 'Am besten für Fitnessstudio, Miete, Handyvertrag und Ratenkauf.',
+    honestHeading: 'Wie Fine Print ehrlich bleibt',
+    honest: [
+      ['Jede Markierung wird geprüft', 'Jede markierte Stelle muss wörtlich in deinem Vertrag stehen. Sonst fliegt sie raus, bevor du sie siehst.'],
+      ['Wir rechnen selbst', 'Die KI listet die Kosten auf, einfacher Code zählt sie zusammen. Die Summe kann nicht erfunden sein.'],
+      ['Es liest, es berät nicht', 'Es sagt dir, was im Vertrag steht und was er kostet. Ob du unterschreibst, entscheidest du.'],
+    ],
+    errors: {
+      not_a_contract: ['Hier ist kein Vertrag zu erkennen.', 'Versuch ein schärferes Foto bei gutem Licht, flach auf dem Tisch. Oder füge den Text ein.'],
+      too_long: ['Der ist mir zu lang.', 'Bis zu 4 Fotos oder ein PDF mit etwa 10 Seiten. Nimm nur die Seiten mit Bedingungen und Gebühren.'],
+      bad_input: ['Diese Datei kann ich nicht öffnen.', 'Fotos (JPG, PNG) und PDFs funktionieren. Oder füge den Text ein.'],
+      failed: ['Bei uns ist etwas schiefgegangen.', 'Nicht deine Schuld. Versuch es noch mal.'],
+      rate_limited: ['Ganz schön viele Verträge für eine Stunde.', 'Fine Print läuft mit kleinem Budget und macht nach 20 Analysen pro Stunde Pause. Versuch es etwas später.'],
+    },
+    tryAgain: 'Noch mal versuchen',
+    reading: [
+      'Lese das Kleingedruckte…',
+      'Suche die automatische Verlängerung…',
+      'Prüfe, wie schwer der Ausstieg ist…',
+      'Prüfe, welche Gebühren „nicht erstattungsfähig“ sind…',
+      'Rechne aus, was es wirklich kostet…',
+      'Schreibe deinen Brief…',
+    ],
+    readingPhoto: 'Tippe dein Foto ab…',
+    readingSub: 'Meist 20–40 Sekunden. Längere Verträge dauern länger — genau darum geht’s.',
+    cancel: 'Abbrechen',
+    compareHeading: 'Zwei Angebote vergleichen',
+    compareLede: 'Zwei Studios, zwei Handyverträge, zwei Wohnungen. Der günstigere Werbepreis ist nicht immer der günstigere Vertrag.',
+    offerA: 'Angebot A',
+    offerB: 'Angebot B',
+    photoOrPdf: 'Foto oder PDF',
+    orPaste: '…oder Text einfügen',
+    useText: 'Diesen Text nehmen',
+    change: 'Ändern',
+    compareGo: 'Vergleichen',
+    compareDemo: 'Oder mit zwei Handyverträgen ausprobieren →',
+    close: 'Schließen',
+    recentHeading: 'Deine letzten Berichte · nur auf diesem Gerät',
+    forget: 'Vergessen',
+    forgetAll: 'Alle vergessen',
+    pastedText: (n) => `Eingefügter Text · ${n.toLocaleString('de-DE')} Zeichen`,
+    photos: (n) => `${n} Foto${n === 1 ? '' : 's'}`,
+    sampleBlurbs: {
+      gym: ['Fitnessstudio', '29,99 $ im Monat. Angeblich.'],
+      lease: ['Mietwohnung', '12 Monate in Portland, Oregon.'],
+      phone: ['Handyvertrag', 'Unbegrenzt, mit Gratis-Handy.'],
+      loan: ['Ratenkauf', 'Ein Laptop in 18 bequemen Raten.'],
+      miet: ['Mietvertrag', 'Eine Berliner Wohnung. Auf Deutsch.'],
+    },
+  },
+};

@@ -131,7 +131,7 @@ Inline in `app/page.tsx` view state: not-a-contract, too long, failed (with Retr
 PRD ref: `prd.md > States and Boundaries`.
 
 ### Language
-`lib/i18n.ts` (language list + report labels in 5 languages), `lib/prompt.ts` (`systemPrompt(lang)` injects the language), `app/page.tsx` (picker state, saved in `localStorage` under `fineprint.lang`, first visit follows the browser language). `/api/analyze` takes `lang` and falls back to English.
+`lib/i18n.ts` (language list + report labels in 5 languages), `lib/ui.ts` (everything outside the report: Start screen, reading screen, compare setup, recent reads, errors, sample card titles), `lib/prompt.ts` (`systemPrompt(lang)` injects the language), `app/page.tsx` (picker state, saved in `localStorage` under `fineprint.lang`, first visit follows the browser language). `/api/analyze` takes `lang` and falls back to English.
 PRD ref: `prd.md > Explain it in my language`.
 
 ### Reminder

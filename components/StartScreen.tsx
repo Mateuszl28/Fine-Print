@@ -4,35 +4,13 @@ import { useState } from 'react';
 import type { ContractInput as Input } from '@/lib/api';
 import type { AnalyzeError } from '@/lib/schema';
 import { LANGUAGES, type Lang } from '@/lib/i18n';
+import { ui } from '@/lib/ui';
+import type { HistoryEntry } from '@/lib/history';
 import { ContractInput } from './ContractInput';
 import { SampleCards } from './SampleCards';
 import { CompareSetup } from './CompareSetup';
 import { RecentReads } from './RecentReads';
-import type { HistoryEntry } from '@/lib/history';
 import styles from './StartScreen.module.css';
-
-const errorCopy: Record<AnalyzeError['error'], { title: string; body: string }> = {
-  not_a_contract: {
-    title: "I couldn't read a contract here.",
-    body: 'Try a sharper photo in good light, flat on a table. Or paste the text.',
-  },
-  too_long: {
-    title: 'That one is too long for me.',
-    body: 'Up to 4 photos or a PDF of about 10 pages. Try just the pages with the terms and fees.',
-  },
-  bad_input: {
-    title: "I can't open that file.",
-    body: 'Photos (JPG, PNG) and PDFs work. Or paste the text.',
-  },
-  rate_limited: {
-    title: 'That’s a lot of contracts for one hour.',
-    body: 'Fine Print runs on a small budget, so it takes a breather after 20 reads an hour. Try again a bit later.',
-  },
-  failed: {
-    title: 'Something went wrong on our side.',
-    body: 'Nothing you did. Give it another go.',
-  },
-};
 
 type Props = {
   onSubmit: (input: Input) => void;
@@ -51,41 +29,46 @@ type Props = {
 
 export function StartScreen(props: Props) {
   const { onSubmit, onError, initial, error, onRetry, lang, onLangChange, onCompare } = props;
+  const u = ui[lang];
   const [comparing, setComparing] = useState(false);
+
   return (
-    <main className={styles.page}>
+    <main className={styles.page} lang={lang}>
       <header className={styles.masthead}>
         <span className={styles.wordmark}>Fine Print</span>
-        <span className="label">Read it before you sign it</span>
+        <span className="label">{u.tagline}</span>
       </header>
 
       <section className={styles.hero}>
         <h1 className={styles.headline}>
-          The <span className="hl hl-yellow">small print</span>, read out loud.
+          {u.headline[0]}
+          <span className="hl hl-yellow">{u.headline[1]}</span>
+          {u.headline[2]}
         </h1>
         <p className={styles.lede}>
-          Snap the contract you&rsquo;re about to sign. Fine Print marks the traps on the page, adds up what it will{' '}
-          <em>really</em> cost, and writes the letter you&rsquo;ll need to get out of it.
+          {u.lede[0]}
+          <em>{u.lede[1]}</em>
+          {u.lede[2]}
         </p>
       </section>
 
       {error && (
         <div className={styles.error} role="alert">
-          <p className={styles.errorTitle}>{errorCopy[error].title}</p>
-          <p>{errorCopy[error].body}</p>
+          <p className={styles.errorTitle}>{u.errors[error][0]}</p>
+          <p>{u.errors[error][1]}</p>
           {onRetry && error === 'failed' && (
             <button type="button" className={styles.retry} onClick={onRetry}>
-              Try again
+              {u.tryAgain}
             </button>
           )}
         </div>
       )}
 
-      <ContractInput onSubmit={onSubmit} onError={onError} initial={initial} />
+      <ContractInput onSubmit={onSubmit} onError={onError} initial={initial} lang={lang} />
 
       <div className={styles.langRow}>
         <label htmlFor="lang" className={styles.langLabel}>
-          Explain it to me in
+          {u.explainIn}
         </label>
         <select
           id="lang"
@@ -94,19 +77,19 @@ export function StartScreen(props: Props) {
           onChange={(e) => onLangChange(e.target.value as Lang)}
         >
           {(Object.keys(LANGUAGES) as Lang[]).map((k) => (
-            <option key={k} value={k}>
+            <option key={k} value={k} lang={k}>
               {LANGUAGES[k].native}
             </option>
           ))}
         </select>
-        <span className={styles.langNote}>The contract can be in any language.</span>
+        <span className={styles.langNote}>{u.anyLanguage}</span>
       </div>
 
       {comparing ? (
-        <CompareSetup onCompare={onCompare} onError={onError} onClose={() => setComparing(false)} />
+        <CompareSetup onCompare={onCompare} onError={onError} onClose={() => setComparing(false)} lang={lang} />
       ) : (
         <button type="button" className={styles.compareLink} onClick={() => setComparing(true)}>
-          Choosing between two offers? <strong>Compare them side by side &rarr;</strong>
+          {u.compareLinkLead} <strong>{u.compareLink}</strong>
         </button>
       )}
 
@@ -115,13 +98,28 @@ export function StartScreen(props: Props) {
         onOpen={props.onOpenHistory}
         onForget={props.onForget}
         onForgetAll={props.onForgetAll}
+        lang={lang}
       />
 
-      <SampleCards onPick={(s) => onSubmit({ kind: 'text', text: s.text, label: s.label })} />
+      <SampleCards lang={lang} onPick={(s) => onSubmit({ kind: 'text', text: s.text, label: s.label })} />
+
+      <section className={styles.honest} aria-labelledby="honest-heading">
+        <h2 id="honest-heading" className={styles.honestHeading}>
+          {u.honestHeading}
+        </h2>
+        <ol className={styles.honestList}>
+          {u.honest.map(([title, body]) => (
+            <li key={title}>
+              <strong>{title}</strong>
+              <span>{body}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
 
       <footer className={styles.footer}>
-        <p>Not legal advice. Nothing you upload is stored on our side; recent reads stay on your device.</p>
-        <p>Gym memberships, leases, phone plans and pay-over-time loans read best.</p>
+        <p>{u.footerPrivacy}</p>
+        <p>{u.footerBest}</p>
         <p className={styles.version}>
           v{process.env.NEXT_PUBLIC_VERSION} · {process.env.NEXT_PUBLIC_BUILT} UTC
           {process.env.NEXT_PUBLIC_COMMIT && <> · {process.env.NEXT_PUBLIC_COMMIT}</>}

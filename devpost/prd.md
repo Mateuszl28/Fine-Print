@@ -91,6 +91,9 @@ Added during the build ("wersję web rozwiń"; features proposed by the agent, l
 - [ ] The whole report (labels, notes, verdict, questions, cost lines) comes back in that language; the contract text and quotes stay in the original language.
 - [ ] The letter stays in the contract's language (it goes to the other side), and the report says so.
 
+- [ ] The whole interface follows the chosen language, not just the report: Start screen, reading screen, compare setup, recent reads, errors and sample cards.
+- [ ] The Start screen explains in three short points how Fine Print keeps itself honest (quotes verified, totals computed in code, reads but doesn't advise).
+
 ### Calendar reminder
 - [ ] When the contract has a notice rule and a term, the report shows "Don't miss the way out": the notice rule, a start-date field (default today), and the computed last day to send notice.
 - [ ] "Add reminder to calendar" downloads an .ics all-day event on that day with alerts 7 days and 1 day before.

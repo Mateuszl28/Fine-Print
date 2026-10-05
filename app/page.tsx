@@ -49,6 +49,11 @@ export default function Home() {
     });
   }, []);
 
+  // Keep <html lang> in step so screen readers and hyphenation use the right language.
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
   function changeLang(next: Lang) {
     setLang(next);
     try {
@@ -115,7 +120,7 @@ export default function Home() {
     window.scrollTo({ top: 0 });
   }
 
-  if (view.name === 'reading') return <Reading onCancel={cancel} fromPhoto={lastInput?.kind === 'files'} />;
+  if (view.name === 'reading') return <Reading onCancel={cancel} fromPhoto={lastInput?.kind === 'files'} lang={lang} />;
   if (view.name === 'compare')
     return (
       <CompareView

@@ -2,6 +2,8 @@
 
 import type { HistoryEntry } from '@/lib/history';
 import { money } from '@/lib/format';
+import type { Lang } from '@/lib/i18n';
+import { ui } from '@/lib/ui';
 import styles from './RecentReads.module.css';
 
 type Props = {
@@ -9,18 +11,20 @@ type Props = {
   onOpen: (e: HistoryEntry) => void;
   onForget: (id: string) => void;
   onForgetAll: () => void;
+  lang: Lang;
 };
 
-export function RecentReads({ entries, onOpen, onForget, onForgetAll }: Props) {
+export function RecentReads({ entries, onOpen, onForget, onForgetAll, lang }: Props) {
+  const u = ui[lang];
   if (entries.length === 0) return null;
   return (
     <section className={styles.wrap} aria-labelledby="recent-heading">
       <div className={styles.head}>
         <h2 id="recent-heading" className="label">
-          Your recent reads · on this device only
+          {u.recentHeading}
         </h2>
         <button type="button" className={styles.link} onClick={onForgetAll}>
-          Forget all
+          {u.forgetAll}
         </button>
       </div>
       <ul className={styles.list}>
@@ -39,9 +43,9 @@ export function RecentReads({ entries, onOpen, onForget, onForgetAll }: Props) {
               type="button"
               className={styles.forget}
               onClick={() => onForget(e.id)}
-              aria-label={`Forget ${e.report.counterparty || e.report.title}`}
+              aria-label={`${u.forget}: ${e.report.counterparty || e.report.title}`}
             >
-              Forget
+              {u.forget}
             </button>
           </li>
         ))}
