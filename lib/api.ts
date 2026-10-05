@@ -1,4 +1,5 @@
 import type { AnalyzeError, Report } from './schema';
+import type { Lang } from './i18n';
 
 export type ContractInput =
   | { kind: 'text'; text: string; label?: string }
@@ -6,11 +7,15 @@ export type ContractInput =
 
 export type AnalyzeResult = { ok: true; report: Report } | { ok: false; error: AnalyzeError['error'] };
 
-export async function analyzeContract(input: ContractInput, signal: AbortSignal): Promise<AnalyzeResult> {
+export async function analyzeContract(
+  input: ContractInput,
+  lang: Lang,
+  signal: AbortSignal,
+): Promise<AnalyzeResult> {
   const body =
     input.kind === 'text'
-      ? { text: input.text }
-      : { files: input.files.map(({ mediaType, data }) => ({ mediaType, data })) };
+      ? { lang, text: input.text }
+      : { lang, files: input.files.map(({ mediaType, data }) => ({ mediaType, data })) };
   try {
     const res = await fetch('/api/analyze', {
       method: 'POST',

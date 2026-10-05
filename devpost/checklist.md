@@ -49,6 +49,26 @@ Build mode: fast
   Learner check: Open the app on your laptop and in the phone-sized view (or your phone, after deploy). Would a stranger think a person designed this?
   Commit: `Responsive layout, bottom sheet and finishing touches`
 
+- [ ] **5. Fine Print on your phone**
+  Becomes usable: The site is live on Vercel and installable; an Android app with the Fine Print icon is installed on the learner's connected phone and runs the full journey, camera included.
+  Why now: The learner asked for it at the first checkpoint, and it is also the most convincing setting for the demo video (snap a contract at the counter).
+  PRD ref: `prd.md > Phone app`
+  Spec ref: `spec.md > Android app`, `spec.md > Installable web app`, `spec.md > Where It Runs and How Someone Tries It`
+  Build: PWA manifest and icons, deploy to Vercel, Capacitor Android shell pointing at the deployed URL, camera permission, launcher icons, debug APK installed with adb.
+  Verify (mechanical): `npm run build` passes; the deployed `/api/analyze` returns a located report for the PDF test input; `gradlew assembleDebug` succeeds; `adb install` succeeds and `adb shell am start` launches the app; a screenshot from the phone shows the Start screen.
+  Learner check: On your phone, open Fine Print from the home screen, tap "Scan a contract", photograph any contract (or a sample shown on your laptop screen), and read the report.
+  Commit: `Add installable web app and Android app`
+
+- [ ] **6. The web version, expanded: your language, a calendar reminder, and a printable report**
+  Becomes usable: Pick a language and get the whole report in it; add the notice deadline to your calendar; save the report as a PDF. Plus the share image and app icons.
+  Why now: The learner asked to expand the web version after the first look; these are the cheapest additions that strengthen Impact (non-native speakers) and the demo.
+  PRD ref: `prd.md > Explain it in my language`, `prd.md > Calendar reminder`, `prd.md > Save as PDF`
+  Spec ref: `spec.md > Language`, `spec.md > Reminder`, `spec.md > Print`, `spec.md > Installable web app`
+  Build: i18n labels and prompt language, language picker, notice/counterparty in the schema, ics builder with tests, Reminder component, print styles, OG image, deploy.
+  Verify (mechanical): `npm test` and `npm run build` pass; the lease sample in English and Polish returns located quotes in the original language and Polish notes; the reminder shows the right deadline; the deployed site renders on the real phone (adb screenshot).
+  Learner check: Choose Polski, open the lease sample, read a note, add the reminder to your calendar, and try Save as PDF.
+  Commit: `Report in five languages, calendar reminder, printable report`
+
 ## Hands-on Checkpoints
 
 - [ ] Early usable behavior explored — after slice 1 (the highlighted contract), where the look and the highlight quality can still change the rest of the build
@@ -78,3 +98,6 @@ Activity mode:
 - The prompt now excludes refundable deposits and already-financed fees from the true cost, and uses the purchase price as the headline for loans — the first real runs counted the lease deposit and the loan origination fee twice.
 - The letter's repeated "Subject:" line is stripped in code (`buildReport`) — the model kept repeating it despite the prompt.
 - Reading-state Cancel and the bottom sheet / two-column layout were built early alongside slices 1 and 3; slice 4 keeps the polish and verification.
+- Added slice 5 (phone app) — scope change requested by the learner at the first checkpoint; reverses the "Native mobile app" cut in a thin form (Capacitor shell around the deployed site + PWA).
+- Android APK build paused — Capacitor 8 needs JDK 21 and only JDK 17 is installed; the learner chose to focus on the web version. The installable web app (PWA) covers the phone for now.
+- Added slice 6 (web expansion) — learner asked to "expand the web version"; the agent proposed language, calendar reminder and printable report, and cut offer comparison as too big.

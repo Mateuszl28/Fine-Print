@@ -78,7 +78,7 @@ test('removes a repeated subject line from the letter body', async () => {
       isContract: true, transcript: null, contractType: 'gym', title: 't', termMonths: 24,
       advertised: { label: '$1', amount: 1 }, currency: 'USD', costItems: [], costAssumption: '',
       score: 3, verdict: 'v', clauses: [], questions: [],
-      letter: { kind: 'cancellation', subject: 'Cancel', body: '[Your name]\n\nSubject: Cancel\n\nDear Gym,' },
+      counterparty: "Gym", notice: null, letter: { kind: "cancellation", subject: "Cancel", body: '[Your name]\n\nSubject: Cancel\n\nDear Gym,' },
     },
     'some contract text',
   );

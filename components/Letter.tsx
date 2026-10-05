@@ -2,11 +2,13 @@
 
 import { useState } from 'react';
 import type { Report } from '@/lib/schema';
+import { strings, type Lang } from '@/lib/i18n';
 import styles from './Letter.module.css';
 
-export function Letter({ letter }: { letter: Report['letter'] }) {
+export function Letter({ letter, lang }: { letter: Report['letter']; lang: Lang }) {
+  const t = strings[lang];
   const [copied, setCopied] = useState(false);
-  const full = `Subject: ${letter.subject}\n\n${letter.body}`;
+  const full = `${t.subject}: ${letter.subject}\n\n${letter.body}`;
 
   async function copy() {
     try {
@@ -30,21 +32,21 @@ export function Letter({ letter }: { letter: Report['letter'] }) {
     <section className={styles.wrap} aria-labelledby="letter-heading">
       <div className={styles.head}>
         <h2 id="letter-heading" className={styles.heading}>
-          {letter.kind === 'cancellation' ? 'Your way out, already written' : 'Ask them to change it'}
+          {letter.kind === 'cancellation' ? t.letterCancel : t.letterChange}
         </h2>
         <button type="button" className={styles.copy} onClick={copy}>
-          {copied ? 'Copied' : 'Copy letter'}
+          {copied ? t.copied : t.copy}
         </button>
       </div>
       <div className={styles.paper}>
         <p className={styles.subject}>
-          <span className="label">Subject</span> {letter.subject}
+          <span className="label">{t.subject}</span> {letter.subject}
         </p>
         <pre className={styles.body}>{letter.body}</pre>
       </div>
-      <p className={styles.tip}>Fill in the [brackets]. Send it the way the contract says, and keep a copy.</p>
+      <p className={styles.tip}>{t.letterTip}</p>
       <span className="sr-only" aria-live="polite">
-        {copied ? 'Letter copied to clipboard' : ''}
+        {copied ? t.copied : ''}
       </span>
     </section>
   );

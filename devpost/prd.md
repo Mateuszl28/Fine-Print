@@ -85,6 +85,25 @@ Source: `scope.md > The POC Boundary`.
 - [ ] The report names the detected type ("Gym membership · 24-month term").
 - [ ] Four realistic, fictional sample contracts ship with the app, one per type, each containing at least one genuine trap (auto-renewal, price-rise clause, early-exit fee, deposit deductions, etc.).
 
+### Explain it in my language
+Added during the build ("wersję web rozwiń"; features proposed by the agent, learner delegated the choice).
+- [ ] The Start screen has an "Explain it to me in" picker: English, Polski, Українська, Español, Deutsch. The choice is remembered on this device.
+- [ ] The whole report (labels, notes, verdict, questions, cost lines) comes back in that language; the contract text and quotes stay in the original language.
+- [ ] The letter stays in the contract's language (it goes to the other side), and the report says so.
+
+### Calendar reminder
+- [ ] When the contract has a notice rule and a term, the report shows "Don't miss the way out": the notice rule, a start-date field (default today), and the computed last day to send notice.
+- [ ] "Add reminder to calendar" downloads an .ics all-day event on that day with alerts 7 days and 1 day before.
+
+### Save as PDF
+- [ ] "Save as PDF" opens the print dialog; the printout shows the verdict, the highlighted contract (colours kept), every clause note, the questions, the reminder and the letter, without buttons.
+
+### Phone app
+Added during the build at the learner's request ("zrób wersję również na telefon i zainstaluj na podpiętym tele").
+- [ ] Fine Print installs on an Android phone with its own icon and opens full screen on the Start screen.
+- [ ] "Scan a contract" in the app opens the phone camera; the report works the same as on the web.
+- [ ] The website can also be added to a phone's home screen (installable web app).
+
 ## States and Boundaries
 - **First use:** the Start screen with samples, so a judge can see the result without owning a contract.
 - **Reading:** progress messages for the 5–30 seconds of analysis; the user can cancel and go back.
@@ -109,12 +128,9 @@ Start screen with photo/PDF/paste input and four sample contracts → analysis �
 - **Saved reports / history**: would need accounts or storage of private documents.
 - **Shareable report link**: needs storage; out for privacy and time.
 - **Highlights drawn on the original photo** (instead of the transcribed text): much harder to get right; transcribed text proves the kernel.
-- **Calendar (.ics) reminder for the notice deadline**: nice but not needed to prove the kernel (from `scope.md > Later`).
 
 ## Possible Later Enhancements
-- Explanations in the user's language (Polish contract → Polish report).
 - Compare two offers side by side.
-- Installable PWA.
 - Pick the letter type (cancel vs change vs complaint).
 
 ## Non-Goals

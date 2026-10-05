@@ -7,9 +7,14 @@ const serif = Source_Serif_4({ subsets: ['latin'], variable: '--font-serif' });
 const sans = Inter_Tight({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://fine-print-khaki.vercel.app'),
+  openGraph: { images: [{ url: '/og.png', width: 1200, height: 630 }], siteName: 'Fine Print', type: 'website' },
+  twitter: { card: 'summary_large_image', images: ['/og.png'] },
   title: 'Fine Print — read it before you sign it',
   description:
     'Snap a contract. See the traps marked on the page, what it really costs, and the letter to send. Gym, lease, phone plan, pay-over-time.',
+  icons: { icon: '/favicon.png', apple: '/apple-touch-icon.png' },
+  appleWebApp: { capable: true, title: 'Fine Print', statusBarStyle: 'default' },
 };
 
 export const viewport: Viewport = {

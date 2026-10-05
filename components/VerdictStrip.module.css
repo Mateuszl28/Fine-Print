@@ -148,3 +148,11 @@
   color: var(--ink-faint);
   font-size: 0.85rem;
 }
+
+@media print {
+  /* cost lines are buttons on screen; keep them on paper */
+  .itemLink {
+    display: inline !important;
+    text-decoration: none;
+  }
+}

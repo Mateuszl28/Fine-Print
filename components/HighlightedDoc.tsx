@@ -2,6 +2,7 @@
 
 import { Fragment } from 'react';
 import type { LocatedClause } from '@/lib/schema';
+import { strings, type Lang } from '@/lib/i18n';
 import styles from './HighlightedDoc.module.css';
 
 type Props = {
@@ -9,11 +10,12 @@ type Props = {
   clauses: LocatedClause[];
   selectedId: string | null;
   onSelect: (id: string) => void;
+  lang: Lang;
 };
 
-const severityName = { red: 'Trap', yellow: 'Watch out', green: 'Fair' } as const;
-
-export function HighlightedDoc({ text, clauses, selectedId, onSelect }: Props) {
+export function HighlightedDoc({ text, clauses, selectedId, onSelect, lang }: Props) {
+  const t = strings[lang];
+  const severityName = { red: t.tagRed, yellow: t.tagYellow, green: t.tagGreen };
   // Clauses arrive sorted and non-overlapping, so the text splits cleanly around them.
   const parts: React.ReactNode[] = [];
   let at = 0;

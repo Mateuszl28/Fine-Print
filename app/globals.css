@@ -134,3 +134,36 @@ a {
     transition: none !important;
   }
 }
+
+@media print {
+  :root {
+    --paper: #fff;
+    --paper-sheet: #fff;
+    --ink: #000;
+    --shadow-sheet: none;
+    --hl-red: 255 138 122;
+    --hl-yellow: 255 214 64;
+    --hl-green: 150 222 140;
+    --hl-blend: multiply;
+    color-scheme: light;
+  }
+
+  body {
+    background: #fff;
+    font-size: 11pt;
+  }
+
+  /* Browsers drop background colours when printing unless asked; the highlights are the point. */
+  .hl {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  button {
+    display: none !important;
+  }
+
+  details > *:not(summary) {
+    display: block;
+  }
+}

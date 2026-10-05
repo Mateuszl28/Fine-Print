@@ -2,6 +2,7 @@
 
 import type { ContractInput as Input } from '@/lib/api';
 import type { AnalyzeError } from '@/lib/schema';
+import { LANGUAGES, type Lang } from '@/lib/i18n';
 import { ContractInput } from './ContractInput';
 import { SampleCards } from './SampleCards';
 import styles from './StartScreen.module.css';
@@ -31,9 +32,11 @@ type Props = {
   initial: Input | null;
   error: AnalyzeError['error'] | null;
   onRetry?: () => void;
+  lang: Lang;
+  onLangChange: (lang: Lang) => void;
 };
 
-export function StartScreen({ onSubmit, onError, initial, error, onRetry }: Props) {
+export function StartScreen({ onSubmit, onError, initial, error, onRetry, lang, onLangChange }: Props) {
   return (
     <main className={styles.page}>
       <header className={styles.masthead}>
@@ -64,6 +67,25 @@ export function StartScreen({ onSubmit, onError, initial, error, onRetry }: Prop
       )}
 
       <ContractInput onSubmit={onSubmit} onError={onError} initial={initial} />
+
+      <div className={styles.langRow}>
+        <label htmlFor="lang" className={styles.langLabel}>
+          Explain it to me in
+        </label>
+        <select
+          id="lang"
+          className={styles.langSelect}
+          value={lang}
+          onChange={(e) => onLangChange(e.target.value as Lang)}
+        >
+          {(Object.keys(LANGUAGES) as Lang[]).map((k) => (
+            <option key={k} value={k}>
+              {LANGUAGES[k].native}
+            </option>
+          ))}
+        </select>
+        <span className={styles.langNote}>The contract can be in any language.</span>
+      </div>
 
       <SampleCards onPick={(s) => onSubmit({ kind: 'text', text: s.text, label: s.label })} />
 

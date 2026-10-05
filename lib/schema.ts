@@ -14,6 +14,17 @@ export const analysisSchema = z.object({
     ),
   contractType: z.enum(['gym', 'lease', 'phone_internet', 'installment_loan', 'other']),
   title: z.string().describe('Short label, e.g. "Gym membership · 24-month term"'),
+  counterparty: z.string().describe('Who the signer is dealing with, e.g. "IronHouse Fitness"'),
+  notice: z
+    .object({
+      daysBeforeEnd: z
+        .number()
+        .nullable()
+        .describe('Days of notice needed before the end of the term to cancel or stop renewal; null if not stated'),
+      how: z.string().describe('How to give notice, e.g. "In writing, by certified mail to P.O. Box 7781, Columbus, OH 43216"'),
+    })
+    .nullable()
+    .describe('Cancellation / non-renewal notice rule, null if the contract has none'),
   termMonths: z.number().nullable().describe('Minimum term in months, null if none'),
   advertised: z.object({
     label: z.string().describe('The headline price as the contract presents it, e.g. "$29.99 / month"'),

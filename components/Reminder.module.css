@@ -1,0 +1,78 @@
+.box {
+  margin-top: 36px;
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 18px;
+  background: var(--paper-sheet);
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+
+.body {
+  margin: 0;
+  font-family: var(--font-serif);
+  line-height: 1.5;
+}
+
+.how {
+  color: var(--ink-soft);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 28px;
+  align-items: flex-end;
+  margin: 16px 0;
+}
+
+.field {
+  display: grid;
+  gap: 4px;
+}
+
+.date {
+  font: inherit;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-bottom: 1.5px solid var(--ink);
+  padding: 4px 0;
+}
+
+.deadline {
+  margin: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.deadline strong {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  width: fit-content;
+}
+
+.button {
+  background: var(--ink);
+  color: var(--paper);
+  border: 0;
+  border-radius: var(--radius);
+  padding: 11px 16px;
+  font-weight: 650;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgb(var(--hl-yellow) / 0.9);
+}
+
+.button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 rgb(var(--hl-yellow) / 0.9);
+}
+
+.button:disabled {
+  opacity: 0.35;
+}

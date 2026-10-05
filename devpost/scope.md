@@ -43,13 +43,11 @@ A judge opens the link, picks one of the sample contracts (or uploads their own)
 - UI and outputs in English.
 
 ## Later
-- Calendar reminder (.ics) for the cancellation-notice deadline.
-- Explanations in the user's language (e.g., a Polish contract explained in Polish).
+- ~~Calendar reminder (.ics)~~ and ~~explanations in the user's language~~ — pulled into the build when the learner asked to expand the web version.
 - Side-by-side comparison of two offers.
-- Installable PWA.
 
 ## Explicitly Cut
 - **Accounts and saved history.** Contracts are private documents, and storing them adds risk and work without proving the kernel.
 - **Country-specific legal rules / legal database.** It's too big for a PoC, and we're not giving legal advice.
-- **Native mobile app.** Judges need a link they can open, and the phone camera already works in the browser.
+- ~~**Native mobile app.**~~ Reversed during the build: the learner asked for a phone version installed on their Android phone. Kept thin: an Android shell (Capacitor) around the deployed site, plus an installable web app (PWA). See `spec.md > Android app`.
 - **Negotiation chat / back-and-forth assistant.** It doesn't prove the kernel, and it's easy to get wrong in 2–4 hours.

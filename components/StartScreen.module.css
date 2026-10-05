@@ -88,3 +88,32 @@
 .footer p {
   margin: 0 0 4px;
 }
+
+.langRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 10px;
+  margin-top: 14px;
+  font-size: 0.95rem;
+}
+
+.langLabel {
+  font-weight: 600;
+}
+
+.langSelect {
+  font: inherit;
+  font-weight: 650;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid rgb(var(--hl-yellow));
+  padding: 2px 4px;
+  cursor: pointer;
+}
+
+.langNote {
+  color: var(--ink-faint);
+  font-size: 0.85rem;
+}

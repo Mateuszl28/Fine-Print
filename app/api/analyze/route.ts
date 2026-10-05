@@ -1,7 +1,8 @@
 import { generateText, Output, type ModelMessage } from 'ai';
 import { analysisSchema, type AnalyzeError, type Report } from '@/lib/schema';
 import { buildReport } from '@/lib/checkReport';
-import { STRICT_REMINDER, SYSTEM_PROMPT } from '@/lib/prompt';
+import { STRICT_REMINDER, systemPrompt } from '@/lib/prompt';
+import { isLang, type Lang } from '@/lib/i18n';
 
 export const maxDuration = 120;
 
@@ -13,6 +14,7 @@ const MAX_FILES = 4;
 const MAX_BASE64 = 5_600_000; // ~4.2 MB of file data in total
 
 type Body = {
+  lang?: string;
   text?: string;
   files?: { mediaType: string; data: string }[];
 };
@@ -29,6 +31,7 @@ export async function POST(req: Request) {
     return fail('bad_input', 400);
   }
 
+  const lang: Lang = isLang(body.lang) ? body.lang : 'en';
   const text = body.text?.trim();
   const files = body.files ?? [];
 
@@ -49,7 +52,7 @@ export async function POST(req: Request) {
 
   try {
     const messages: ModelMessage[] = [{ role: 'user', content }];
-    let report = await analyze(messages, text ?? null);
+    let report = await analyze(messages, text ?? null, lang);
     if (!report) return fail('not_a_contract', 422);
 
     // If most quotes didn't survive the check, ask once more, more strictly.
@@ -57,6 +60,7 @@ export async function POST(req: Request) {
       const retry = await analyze(
         [...messages, { role: 'user', content: STRICT_REMINDER }],
         text ?? null,
+        lang,
       );
       if (retry && retry.clauses.length > report.clauses.length) report = retry;
     }
@@ -68,10 +72,14 @@ export async function POST(req: Request) {
   }
 }
 
-async function analyze(messages: ModelMessage[], sourceText: string | null): Promise<Report | null> {
+async function analyze(
+  messages: ModelMessage[],
+  sourceText: string | null,
+  lang: Lang,
+): Promise<Report | null> {
   const { output } = await generateText({
     model: MODEL,
-    system: SYSTEM_PROMPT,
+    system: systemPrompt(lang),
     messages,
     output: Output.object({ schema: analysisSchema }),
     maxOutputTokens: 16_000,

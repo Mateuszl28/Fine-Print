@@ -1,11 +1,12 @@
 'use client';
 
 import type { Report } from '@/lib/schema';
+import { strings, type Lang } from '@/lib/i18n';
 import styles from './VerdictStrip.module.css';
 
-function money(n: number, currency: string) {
+function money(n: number, currency: string, lang: Lang) {
   try {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat(lang === 'en' ? 'en-US' : lang, {
       style: 'currency',
       currency,
       maximumFractionDigits: n % 1 === 0 ? 0 : 2,
@@ -15,32 +16,34 @@ function money(n: number, currency: string) {
   }
 }
 
-type Props = { report: Report; onJump: (clauseId: string) => void };
+type Props = { report: Report; lang: Lang; onJump: (clauseId: string) => void };
 
-export function VerdictStrip({ report, onJump }: Props) {
+export function VerdictStrip({ report, lang, onJump }: Props) {
+  const t = strings[lang];
   const { trueCost, currency, termMonths } = report;
-  const term = termMonths ? `over ${termMonths} months` : 'over the term';
+  const term = termMonths ? t.overMonths(termMonths) : t.overTerm;
+  const fmt = (n: number) => money(n, currency, lang);
 
   return (
     <section className={styles.strip} aria-label="What it really costs">
       <div className={styles.numbers}>
         <div>
-          <p className="label">They say</p>
+          <p className="label">{t.theySay}</p>
           <p className={styles.said}>{report.advertised.label}</p>
         </div>
         <div>
-          <p className="label">It really costs</p>
+          <p className="label">{t.reallyCosts}</p>
           {trueCost !== null ? (
             <p className={styles.real}>
-              <span className="hl hl-red">{money(trueCost, currency)}</span>
+              <span className="hl hl-red">{fmt(trueCost)}</span>
               <span className={styles.term}>{term}</span>
             </p>
           ) : (
-            <p className={styles.noMoney}>No prices in this document, so there&rsquo;s nothing to add up.</p>
+            <p className={styles.noMoney}>{t.noPrices}</p>
           )}
         </div>
         <div className={styles.scoreBox}>
-          <p className="label">Fairness</p>
+          <p className="label">{t.fairness}</p>
           <p className={styles.score}>
             {report.score}
             <span>/10</span>
@@ -52,7 +55,7 @@ export function VerdictStrip({ report, onJump }: Props) {
 
       {report.costItems.length > 0 && (
         <details className={styles.breakdown}>
-          <summary>How we got that number</summary>
+          <summary>{t.howWeGotIt}</summary>
           <ul>
             {report.costItems.map((item, i) => (
               <li key={i}>
@@ -64,15 +67,15 @@ export function VerdictStrip({ report, onJump }: Props) {
                   <span>{item.label}</span>
                 )}
                 <span className={styles.calc}>
-                  {item.times !== 1 && `${item.times} × ${money(item.amount, currency)} = `}
-                  <strong>{money(item.amount * item.times, currency)}</strong>
+                  {item.times !== 1 && `${item.times} × ${fmt(item.amount)} = `}
+                  <strong>{fmt(item.amount * item.times)}</strong>
                 </span>
               </li>
             ))}
             {trueCost !== null && (
               <li className={styles.total}>
-                <span>Total</span>
-                <strong>{money(trueCost, currency)}</strong>
+                <span>{t.total}</span>
+                <strong>{fmt(trueCost)}</strong>
               </li>
             )}
           </ul>
