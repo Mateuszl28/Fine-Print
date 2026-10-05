@@ -49,7 +49,7 @@ Build mode: fast
   Learner check: Open the app on your laptop and in the phone-sized view (or your phone, after deploy). Would a stranger think a person designed this?
   Commit: `Responsive layout, bottom sheet and finishing touches`
 
-- [ ] **5. Fine Print on your phone**
+- [x] **5. Fine Print on your phone**
   Becomes usable: The site is live on Vercel and installable; an Android app with the Fine Print icon is installed on the learner's connected phone and runs the full journey, camera included.
   Why now: The learner asked for it at the first checkpoint, and it is also the most convincing setting for the demo video (snap a contract at the counter).
   PRD ref: `prd.md > Phone app`
@@ -99,5 +99,5 @@ Activity mode:
 - The letter's repeated "Subject:" line is stripped in code (`buildReport`) — the model kept repeating it despite the prompt.
 - Reading-state Cancel and the bottom sheet / two-column layout were built early alongside slices 1 and 3; slice 4 keeps the polish and verification.
 - Added slice 5 (phone app) — scope change requested by the learner at the first checkpoint; reverses the "Native mobile app" cut in a thin form (Capacitor shell around the deployed site + PWA).
-- Android APK build paused — Capacitor 8 needs JDK 21 and only JDK 17 is installed; the learner chose to focus on the web version. The installable web app (PWA) covers the phone for now.
+- Android APK built with a portable JDK 21 (Eclipse Temurin, kept outside the repo) because Capacitor 8 needs Java 21 and the system has 17. Build: set `JAVA_HOME` to a JDK 21, then `cd android && gradlew assembleDebug`. Installed with `adb install -r` and launched on the learner's phone.
 - Added slice 6 (web expansion) — learner asked to "expand the web version"; the agent proposed language, calendar reminder and printable report, and cut offer comparison as too big.
