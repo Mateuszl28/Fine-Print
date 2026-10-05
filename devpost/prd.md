@@ -117,7 +117,7 @@ Added during the build ("rozbuduj dalej"; agent proposal, learner delegated the 
 ### On your photo
 Added during the build ("rozbuduj dalej"); this was "Highlights drawn on the original photo" in the deferred list.
 - [ ] When the report came from photos, a toggle switches between "On the text" (default, exact) and "On your photo", which draws each clause's colour over the person's own photo; tapping a mark opens its note.
-- [ ] The photo view says its marks are approximate. It's never shared, saved, or printed (photos stay in memory).
+- [ ] Marks on the photo are placed where the quoted words were actually found (text recognition on the device), line by line; a clause that can't be found on the photo gets no mark there and the view says so. The photo never leaves the device for this, and is never shared, saved, or printed.
 
 ### Send it to someone
 Added during the build ("rozbuduj dalej"; agent proposal, learner delegated the choice).

@@ -13,6 +13,7 @@ import { TopThree } from './TopThree';
 import { ReadAloud } from './ReadAloud';
 import { ShareButton } from './ShareButton';
 import { PhotoView } from './PhotoView';
+import type { PhotoBox } from '@/lib/schema';
 import styles from './Report.module.css';
 
 type Props = {
@@ -29,8 +30,29 @@ type Props = {
 export function ReportView({ report, lang, onStartOver, onBackToCompare, shared, saved, photos }: Props) {
   const t = strings[lang];
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const canShowPhoto = Boolean(photos?.length) && report.clauses.some((c) => c.boxes.length > 0);
+  const canShowPhoto = Boolean(photos?.length);
   const [onPhoto, setOnPhoto] = useState(false);
+  const [placed, setPlaced] = useState<Map<string, PhotoBox[]> | null>(null);
+  const [ocr, setOcr] = useState<'idle' | 'working' | 'done' | 'failed'>('idle');
+
+  // Read the photo only when someone asks for the photo view: it's a few MB of OCR data.
+  function showPhoto() {
+    setOnPhoto(true);
+    if (ocr !== 'idle' || !photos) return;
+    setOcr('working');
+    import('@/lib/ocr')
+      .then(({ placeOnPhotos }) => placeOnPhotos(photos, report.clauses, report.text))
+      .then((map) => {
+        setPlaced(map);
+        setOcr(map.size > 0 ? 'done' : 'failed');
+      })
+      .catch((err) => {
+        console.error('[photo] OCR failed', err);
+        setOcr('failed');
+      });
+  }
+
+  const photoClauses = report.clauses.map((c) => ({ ...c, boxes: placed?.get(c.id) ?? [] }));
   const selected = report.clauses.find((c) => c.id === selectedId) ?? null;
   const count = (s: 'red' | 'yellow' | 'green') => report.clauses.filter((c) => c.severity === s).length;
 
@@ -95,7 +117,7 @@ export function ReportView({ report, lang, onStartOver, onBackToCompare, shared,
                 <button type="button" aria-pressed={!onPhoto} onClick={() => setOnPhoto(false)}>
                   {t.viewText}
                 </button>
-                <button type="button" aria-pressed={onPhoto} onClick={() => setOnPhoto(true)}>
+                <button type="button" aria-pressed={onPhoto} onClick={showPhoto}>
                   {t.viewPhoto}
                 </button>
               </div>
@@ -104,7 +126,8 @@ export function ReportView({ report, lang, onStartOver, onBackToCompare, shared,
           {canShowPhoto && onPhoto ? (
             <PhotoView
               photos={photos!}
-              clauses={report.clauses}
+              clauses={photoClauses}
+              status={ocr}
               selectedId={selectedId}
               onSelect={setSelectedId}
               lang={lang}

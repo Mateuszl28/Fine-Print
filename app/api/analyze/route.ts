@@ -1,8 +1,7 @@
 import { generateText, Output, type ModelMessage } from 'ai';
 import { analysisSchema, type AnalyzeError, type Report } from '@/lib/schema';
-import { buildReport, cleanBoxes } from '@/lib/checkReport';
-import { z } from 'zod';
-import { DETECT_PROMPT, STRICT_REMINDER, systemPrompt } from '@/lib/prompt';
+import { buildReport } from '@/lib/checkReport';
+import { STRICT_REMINDER, systemPrompt } from '@/lib/prompt';
 import { isLang, type Lang } from '@/lib/i18n';
 import { clientKey, createLimiter } from '@/lib/rateLimit';
 
@@ -78,9 +77,6 @@ export async function POST(req: Request) {
       if (retry && retry.clauses.length > report.clauses.length) report = retry;
     }
 
-    const photos = text ? [] : files.filter((f) => f.mediaType.startsWith('image/'));
-    if (photos.length > 0) report = await placeOnPhotos(report, photos);
-
     return Response.json(report satisfies Report);
   } catch (err) {
     console.error('[analyze] failed', err);
@@ -106,45 +102,3 @@ async function analyze(
   return buildReport(output, sourceText);
 }
 
-const detectSchema = z.object({
-  items: z.array(z.object({ i: z.number(), image: z.number(), box_2d: z.array(z.number()) })),
-});
-
-/**
- * Finds where each verified quote sits on the photos, for the "on your photo" view.
- * A separate, narrow request: asking for boxes inside the main analysis put them a
- * paragraph off. Any failure just means no photo view; the report itself is unaffected.
- */
-async function placeOnPhotos(report: Report, photos: { mediaType: string; data: string }[]): Promise<Report> {
-  if (report.clauses.length === 0) return report;
-  try {
-    const list = report.clauses.map((c, i) => `${i}: ${c.quote}`).join('\n');
-    const { output } = await generateText({
-      model: MODEL,
-      temperature: 0,
-      output: Output.object({ schema: detectSchema }),
-      messages: [
-        {
-          role: 'user',
-          content: [
-            ...photos.map((f) => ({ type: 'file' as const, mediaType: f.mediaType, data: f.data })),
-            { type: 'text', text: `${DETECT_PROMPT}\n\n${list}` },
-          ],
-        },
-      ],
-    });
-    return {
-      ...report,
-      clauses: report.clauses.map((c, i) => ({
-        ...c,
-        boxes: cleanBoxes(
-          output.items.filter((it) => it.i === i).map((it) => ({ image: it.image, box: it.box_2d })),
-          photos.length,
-        ),
-      })),
-    };
-  } catch (err) {
-    console.error('[analyze] photo boxes failed', err);
-    return report;
-  }
-}

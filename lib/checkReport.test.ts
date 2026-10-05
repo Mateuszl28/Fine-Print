@@ -85,23 +85,3 @@ test('removes a repeated subject line from the letter body', async () => {
   assert.equal(r.letter.body, '[Your name]\n\nDear Gym,');
 });
 
-test('keeps only sensible photo boxes', async () => {
-  const { cleanBoxes } = await import('./checkReport.ts');
-  assert.deepEqual(
-    cleanBoxes(
-      [
-        { image: 0, box: [100, 50, 140, 900] },
-        { image: 0, box: [-20, 50, 40, 1200] },
-        { image: 3, box: [100, 50, 140, 900] },
-        { image: 0, box: [100, 50, 100, 900] },
-        { image: 0, box: [1, 2, 3] },
-      ],
-      1,
-    ),
-    [
-      { image: 0, box: [100, 50, 140, 900] },
-      { image: 0, box: [0, 50, 40, 1000] },
-    ],
-  );
-  assert.deepEqual(cleanBoxes(null, 1), []);
-});

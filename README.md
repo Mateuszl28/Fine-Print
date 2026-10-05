@@ -19,7 +19,7 @@ Built for [Build With AI: Basics](https://learn-ai-basics.devpost.com/) with the
 - **Send it to someone:** the link carries the report itself (compressed into the `#fragment`), so nothing is stored on a server.
 - **Recent reads** kept on your device only, with "Forget".
 - **Any contract language:** try the German lease sample explained in English, Polish or Ukrainian.
-- **On your photo:** for photo input, the marks can also be shown over your own photo (approximate; the text view is exact).
+- **On your photo:** for photo input, the marks can also be shown over your own photo, placed line by line with on-device OCR (Tesseract.js) — the photo isn't sent anywhere for this.
 - **Photo, PDF or text.** Photos are resized in the browser before upload.
 - **Five languages** for the report: English, Polski, Українська, Español, Deutsch. Quotes stay in the contract's language.
 - **Calendar reminder** (.ics) for the last day to give notice.
@@ -85,13 +85,14 @@ Report on screen ◄─────────────────┘  (com
 | `lib/checkReport.ts` | Quote matching and cost totals (tested) |
 | `lib/i18n.ts` | Report labels in five languages |
 | `lib/ics.ts` | Notice deadline and calendar file (tested) |
+| `lib/align.ts` | Quote ⇄ OCR word alignment for photo marks (tested) |
 | `lib/compare.ts` | Which of two offers is cheaper / fairer (tested) |
 | `lib/share.ts` | Report ⇄ link encoding (tested) |
 | `lib/history.ts` | Recent reads in localStorage |
 | `lib/samples.ts` | Fictional sample contracts (incl. a German lease and a second phone plan) |
 | `components/` | Start screen, report, highlighted contract, letter, reminder |
 
-Stack: Next.js 16, React 19, TypeScript, AI SDK 7, Zod, plain CSS modules, Capacitor 8.
+Stack: Next.js 16, React 19, TypeScript, AI SDK 7, Zod, Tesseract.js 7, plain CSS modules, Capacitor 8.
 
 ## License
 

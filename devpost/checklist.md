@@ -119,6 +119,16 @@ Build mode: fast
   Learner check: Upload a photo of a contract, switch to "On your photo", tap a mark.
   Commit: `Show marks on the original photo (approximate)`
 
+- [x] **12. Photo marks you can trust: on-device OCR**
+  Becomes usable: The photo view places every mark exactly on the quoted lines, found by reading the photo on the device.
+  Why now: Slice 11's model-guessed boxes contradicted "every mark is checked"; the learner asked to keep improving.
+  PRD ref: `prd.md > On your photo`
+  Spec ref: `spec.md > Photo boxes`
+  Build: `lib/align.ts` with tests, `lib/ocr.ts` (lazy Tesseract.js, language by script), Report/PhotoView status and messages in five languages; removed the model box request and `cleanBoxes`.
+  Verify (mechanical): `npm test` (24 pass) and `npm run build` pass; Node script: 10/10 quotes placed line-accurately on the test photo (drawn and inspected); browser end to end: photo report → "On your photo" → OCR ~6 s → 25 line marks on the right sentences.
+  Learner check: Photograph a contract, open "On your photo", and check the marks sit on the right lines.
+  Commit: `Place photo marks with on-device OCR instead of model guesses`
+
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 3 the learner tried it and asked for a phone version and an expanded web version (slices 5–6)
@@ -155,3 +165,4 @@ Activity mode: Recap. Map checked in a browser; all paths and symbols verified a
 - Added slice 7 (compare, top three, read aloud) after the final review — learner asked to keep expanding; "Side-by-side comparison" moved from Later into the build.
 - Added slice 8 (sharing, recent reads, German sample) — learner asked to keep expanding. Sharing is done inside the URL fragment and history in localStorage, so "nothing stored on a server" still holds; the PRD's persistence line was updated.
 - Photo boxes moved to a separate request — boxes requested inside the main analysis landed about a paragraph below the quoted text; a dedicated detection prompt placed them far better, though still not exactly, so the photo view is optional and labelled approximate.
+- Photo marks now come from on-device OCR + alignment; the model-box request was removed — measured: model boxes ~paragraph off or ~half exact, OCR alignment 10/10 line-accurate on the test photo.

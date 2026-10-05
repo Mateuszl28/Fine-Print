@@ -60,3 +60,18 @@
     display: none;
   }
 }
+
+.working {
+  margin: 0;
+  font-weight: 600;
+  padding: 8px 12px;
+  background: rgb(var(--hl-yellow) / 0.3);
+  border-left: 3px solid var(--ink);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.6;
+  }
+}

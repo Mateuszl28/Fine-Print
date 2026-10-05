@@ -10,14 +10,21 @@ type Props = {
   selectedId: string | null;
   onSelect: (id: string) => void;
   lang: Lang;
+  status: 'idle' | 'working' | 'done' | 'failed';
 };
 
 /** The person's own photo, with each clause's box drawn over it in its highlighter colour. */
-export function PhotoView({ photos, clauses, selectedId, onSelect, lang }: Props) {
+export function PhotoView({ photos, clauses, selectedId, onSelect, lang, status }: Props) {
   const t = strings[lang];
   const name = { red: t.tagRed, yellow: t.tagYellow, green: t.tagGreen };
+  const missing = clauses.filter((c) => c.boxes.length === 0).length;
   return (
-    <div className={styles.wrap}>
+    <div className={styles.wrap} aria-busy={status === 'working'}>
+      {status === 'working' && (
+        <p className={styles.working} role="status">
+          {t.photoWorking}
+        </p>
+      )}
       {photos.map((p, index) => (
         <figure key={index} className={styles.photo}>
           {/* eslint-disable-next-line @next/next/no-img-element -- a local data URL, nothing to optimise */}
@@ -42,7 +49,13 @@ export function PhotoView({ photos, clauses, selectedId, onSelect, lang }: Props
           )}
         </figure>
       ))}
-      <p className={styles.note}>{t.photoNote}</p>
+      {status === 'done' && (
+        <p className={styles.note}>
+          {t.photoNote}
+          {missing > 0 && <> {t.photoMissing(missing)}</>}
+        </p>
+      )}
+      {status === 'failed' && <p className={styles.note}>{t.photoFailed}</p>}
     </div>
   );
 }

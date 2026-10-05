@@ -70,6 +70,9 @@ type Strings = {
   viewText: string;
   viewPhoto: string;
   photoNote: string;
+  photoWorking: string;
+  photoMissing: (n: number) => string;
+  photoFailed: string;
 };
 
 export const strings: Record<Lang, Strings> = {
@@ -128,7 +131,10 @@ export const strings: Record<Lang, Strings> = {
     savedHere: 'Kept on this device under “Your recent reads”.',
     viewText: 'On the text',
     viewPhoto: 'On your photo',
-    photoNote: 'Marks on the photo are approximate; the text view is exact.',
+    photoNote: 'Each mark sits where its words were found on your photo, read right here on your device.',
+    photoWorking: 'Reading your photo to find the marks…',
+    photoMissing: (n) => `${n} ${n === 1 ? 'clause wasn’t' : 'clauses weren’t'} found on the photo; ${n === 1 ? 'it’s' : 'they’re'} still marked in the text view.`,
+    photoFailed: 'Couldn’t read the photo well enough to place the marks. The text view has them all.',
   },
   pl: {
     scanAnother: '← Sprawdź kolejną',
@@ -185,7 +191,10 @@ export const strings: Record<Lang, Strings> = {
     savedHere: 'Zapisany na tym urządzeniu w „Your recent reads”.',
     viewText: 'Na tekście',
     viewPhoto: 'Na twoim zdjęciu',
-    photoNote: 'Zaznaczenia na zdjęciu są przybliżone; widok tekstu jest dokładny.',
+    photoNote: 'Każde zaznaczenie leży tam, gdzie jego słowa znaleziono na zdjęciu, odczytanym tu, na twoim urządzeniu.',
+    photoWorking: 'Czytam zdjęcie, żeby znaleźć zaznaczenia…',
+    photoMissing: (n) => `${n} ${n === 1 ? 'zapisu nie znaleziono' : 'zapisów nie znaleziono'} na zdjęciu; nadal są zaznaczone w widoku tekstu.`,
+    photoFailed: 'Nie udało się odczytać zdjęcia na tyle dobrze. Wszystkie zaznaczenia są w widoku tekstu.',
   },
   uk: {
     scanAnother: '← Перевірити інший',
@@ -242,7 +251,10 @@ export const strings: Record<Lang, Strings> = {
     savedHere: 'Збережено на цьому пристрої в «Your recent reads».',
     viewText: 'На тексті',
     viewPhoto: 'На вашому фото',
-    photoNote: 'Позначки на фото приблизні; текстовий вигляд точний.',
+    photoNote: 'Кожна позначка там, де її слова знайдено на фото, прочитаному прямо на вашому пристрої.',
+    photoWorking: 'Читаю фото, щоб знайти позначки…',
+    photoMissing: (n) => `${n} пункт(и) не знайдено на фото; вони й далі позначені в текстовому вигляді.`,
+    photoFailed: 'Не вдалося достатньо добре прочитати фото. Усі позначки є в текстовому вигляді.',
   },
   es: {
     scanAnother: '← Revisar otro',
@@ -299,7 +311,10 @@ export const strings: Record<Lang, Strings> = {
     savedHere: 'Guardado en este dispositivo en «Your recent reads».',
     viewText: 'En el texto',
     viewPhoto: 'En tu foto',
-    photoNote: 'Las marcas en la foto son aproximadas; la vista de texto es exacta.',
+    photoNote: 'Cada marca está donde se encontraron sus palabras en tu foto, leída aquí mismo en tu dispositivo.',
+    photoWorking: 'Leyendo tu foto para encontrar las marcas…',
+    photoMissing: (n) => `${n} ${n === 1 ? 'cláusula no se encontró' : 'cláusulas no se encontraron'} en la foto; siguen marcadas en la vista de texto.`,
+    photoFailed: 'No se pudo leer la foto lo bastante bien. La vista de texto las tiene todas.',
   },
   de: {
     scanAnother: '← Anderen prüfen',
@@ -356,6 +371,9 @@ export const strings: Record<Lang, Strings> = {
     savedHere: 'Auf diesem Gerät unter „Your recent reads“ gespeichert.',
     viewText: 'Im Text',
     viewPhoto: 'Auf deinem Foto',
-    photoNote: 'Die Markierungen auf dem Foto sind ungefähr; die Textansicht ist genau.',
+    photoNote: 'Jede Markierung liegt dort, wo ihre Wörter auf deinem Foto gefunden wurden – gelesen direkt auf deinem Gerät.',
+    photoWorking: 'Lese dein Foto, um die Markierungen zu finden…',
+    photoMissing: (n) => `${n} ${n === 1 ? 'Klausel wurde' : 'Klauseln wurden'} auf dem Foto nicht gefunden; in der Textansicht sind sie markiert.`,
+    photoFailed: 'Das Foto ließ sich nicht gut genug lesen. Die Textansicht hat alle Markierungen.',
   },
 };

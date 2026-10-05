@@ -35,5 +35,3 @@ Rules:
 
 export const STRICT_REMINDER = `Your previous answer quoted passages that do not appear in the contract text. Copy every "quote" exactly, character for character, from the contract text. Shorter exact quotes are better than longer approximate ones.`;
 
-
-export const DETECT_PROMPT = `Detect where each of these text passages appears in the photo(s). For each passage, return box_2d as [ymin, xmin, ymax, xmax] normalized to 0-1000, tightly around the passage's text lines, and the 0-based index of the photo it is on. Skip passages you cannot find.`;
