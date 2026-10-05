@@ -107,6 +107,30 @@ Plan price: $35.00/month*   Device: $0 down, $27.50/month for 24 months
 
 Customer Signature: ____________________   Date: __________`;
 
+const phoneB = `ORBIT WIRELESS — PLAN AGREEMENT
+Plan: Orbit Everyday Unlimited   Device: Pixelon 9 Pro (256 GB)
+
+SUMMARY OF CHARGES
+Plan price: $42.00/month, fixed for 24 months   Device: $0 down, $27.50/month for 24 months
+
+1. PLAN PRICE. Your plan price is $42.00 per month and will not increase during the 24-month term of this agreement.
+
+2. FEES. There is no activation fee and no monthly administrative fee. Taxes and government-required charges are billed as they apply.
+
+3. DEVICE PAYMENTS. You agree to pay the device price of $660.00 in 24 equal monthly installments of $27.50. There is no interest.
+
+4. TERM AND CANCELLATION. This agreement has a 24-month term. You may cancel service at any time by phone, online, or in a store. If you cancel early, the remaining device balance becomes due. There is no early termination fee.
+
+5. DATA. Your plan includes unlimited data. After 50 GB of data use in a billing cycle, Orbit may slow your data speeds during times of network congestion.
+
+6. AUTOMATIC RENEWAL. After the 24-month term, your plan continues month to month at the same price until you cancel. Orbit will give you 60 days' notice before any price change.
+
+7. RETURN POLICY. You may cancel and return the device within thirty (30) days of purchase for a full refund.
+
+8. DISPUTES. You may bring disputes in small-claims court or through binding individual arbitration. You may opt out of arbitration within 30 days of signing.
+
+Customer Signature: ____________________   Date: __________`;
+
 const loan = `FLEXPAY RETAIL INSTALLMENT AGREEMENT
 Merchant: VoltCity Electronics   Purchase: Lumio X15 laptop   Purchase price: $1,200.00
 
@@ -137,6 +161,14 @@ Payment schedule: 18 monthly payments of $86.50
 11. ARBITRATION. Any dispute shall be resolved by binding individual arbitration. You may opt out of arbitration by sending written notice within 30 days of signing.
 
 Borrower Signature: ____________________   Date: __________`;
+
+// Not shown as a card: it's the second half of the "two phone plans" comparison.
+export const phonePlanB: Sample = {
+  id: 'phone-b',
+  label: 'Another phone plan',
+  blurb: '$42 a month, same phone.',
+  text: phoneB,
+};
 
 export const samples: Sample[] = [
   { id: 'gym', label: 'Gym membership', blurb: '$29.99 a month. Allegedly.', text: gym },

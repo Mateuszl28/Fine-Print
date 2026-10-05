@@ -51,6 +51,17 @@ type Strings = {
   save: string;
   footer: string;
   notesHeading: string;
+  topThree: string;
+  readAloud: string;
+  stopReading: string;
+  compareTitle: string;
+  cheaperBy: (amount: string) => string;
+  fairer: string;
+  perMonth: string;
+  openFull: string;
+  backToCompare: string;
+  currencyMismatch: string;
+  sameCost: string;
 };
 
 export const strings: Record<Lang, Strings> = {
@@ -91,6 +102,17 @@ export const strings: Record<Lang, Strings> = {
     save: 'Save as PDF',
     footer: 'Not legal advice. This report isn’t saved anywhere — close the tab and it’s gone.',
     notesHeading: 'Every marked clause',
+    topThree: 'If you read nothing else',
+    readAloud: 'Read it out loud',
+    stopReading: 'Stop reading',
+    compareTitle: 'Side by side',
+    cheaperBy: (a) => `Cheaper by ${a}`,
+    fairer: 'Fairer deal',
+    perMonth: 'a month, on average',
+    openFull: 'Open the full report',
+    backToCompare: '← Back to the comparison',
+    currencyMismatch: 'Different currencies, so the totals aren’t directly comparable.',
+    sameCost: 'Same total cost',
   },
   pl: {
     scanAnother: '← Sprawdź kolejną',
@@ -129,6 +151,17 @@ export const strings: Record<Lang, Strings> = {
     save: 'Zapisz jako PDF',
     footer: 'To nie jest porada prawna. Raport nie jest nigdzie zapisywany — zamknij kartę i znika.',
     notesHeading: 'Wszystkie zaznaczone zapisy',
+    topThree: 'Jeśli nic więcej nie przeczytasz',
+    readAloud: 'Przeczytaj na głos',
+    stopReading: 'Przestań czytać',
+    compareTitle: 'Obok siebie',
+    cheaperBy: (a) => `Taniej o ${a}`,
+    fairer: 'Uczciwsza umowa',
+    perMonth: 'miesięcznie, średnio',
+    openFull: 'Otwórz pełny raport',
+    backToCompare: '← Wróć do porównania',
+    currencyMismatch: 'Różne waluty, więc sum nie da się wprost porównać.',
+    sameCost: 'Ten sam koszt',
   },
   uk: {
     scanAnother: '← Перевірити інший',
@@ -167,6 +200,17 @@ export const strings: Record<Lang, Strings> = {
     save: 'Зберегти як PDF',
     footer: 'Це не юридична консультація. Звіт ніде не зберігається — закрийте вкладку, і його немає.',
     notesHeading: 'Усі виділені пункти',
+    topThree: 'Якщо більше нічого не прочитаєте',
+    readAloud: 'Прочитати вголос',
+    stopReading: 'Зупинити',
+    compareTitle: 'Поруч',
+    cheaperBy: (a) => `Дешевше на ${a}`,
+    fairer: 'Чесніша угода',
+    perMonth: 'на місяць, у середньому',
+    openFull: 'Відкрити повний звіт',
+    backToCompare: '← Назад до порівняння',
+    currencyMismatch: 'Різні валюти, тож суми не можна порівняти напряму.',
+    sameCost: 'Однакова вартість',
   },
   es: {
     scanAnother: '← Revisar otro',
@@ -205,6 +249,17 @@ export const strings: Record<Lang, Strings> = {
     save: 'Guardar como PDF',
     footer: 'No es asesoría legal. Este informe no se guarda en ningún sitio: cierra la pestaña y desaparece.',
     notesHeading: 'Todas las cláusulas marcadas',
+    topThree: 'Si no lees nada más',
+    readAloud: 'Leer en voz alta',
+    stopReading: 'Dejar de leer',
+    compareTitle: 'Lado a lado',
+    cheaperBy: (a) => `Más barato por ${a}`,
+    fairer: 'Trato más justo',
+    perMonth: 'al mes, de media',
+    openFull: 'Abrir el informe completo',
+    backToCompare: '← Volver a la comparación',
+    currencyMismatch: 'Monedas distintas, así que los totales no se pueden comparar directamente.',
+    sameCost: 'Mismo coste total',
   },
   de: {
     scanAnother: '← Anderen prüfen',
@@ -243,5 +298,16 @@ export const strings: Record<Lang, Strings> = {
     save: 'Als PDF speichern',
     footer: 'Keine Rechtsberatung. Dieser Bericht wird nirgends gespeichert — Tab schließen, und er ist weg.',
     notesHeading: 'Alle markierten Klauseln',
+    topThree: 'Wenn du sonst nichts liest',
+    readAloud: 'Vorlesen',
+    stopReading: 'Vorlesen stoppen',
+    compareTitle: 'Nebeneinander',
+    cheaperBy: (a) => `Günstiger um ${a}`,
+    fairer: 'Fairerer Vertrag',
+    perMonth: 'pro Monat im Schnitt',
+    openFull: 'Ganzen Bericht öffnen',
+    backToCompare: '← Zurück zum Vergleich',
+    currencyMismatch: 'Unterschiedliche Währungen, die Summen sind nicht direkt vergleichbar.',
+    sameCost: 'Gleiche Gesamtkosten',
   },
 };

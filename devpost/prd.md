@@ -98,6 +98,19 @@ Added during the build ("wersję web rozwiń"; features proposed by the agent, l
 ### Save as PDF
 - [ ] "Save as PDF" opens the print dialog; the printout shows the verdict, the highlighted contract (colours kept), every clause note, the questions, the reminder and the letter, without buttons.
 
+### Compare two offers
+Added during the build ("rozbuduj dalej"; agent proposal, learner delegated the choice).
+- [ ] From the Start screen, "Compare them side by side" opens two slots (Offer A, Offer B); each takes a photo/PDF or pasted text. A one-tap demo compares two fictional phone plans.
+- [ ] Both are analyzed at once; the result shows the two offers side by side: who they're with, advertised vs true cost, monthly average, score, verdict, top traps.
+- [ ] The cheaper offer is marked "Cheaper by $X" (by total when the terms match, by monthly average when they don't); the higher score is marked "Fairer deal". Different currencies are flagged and not compared.
+- [ ] Each side opens its full report, with a way back to the comparison.
+
+### If you read nothing else
+- [ ] Under the verdict, the three most serious clauses (traps first, then watch-outs) as cards with why they matter; tapping one jumps to it on the contract.
+
+### Read it out loud
+- [ ] "Read it out loud" speaks the verdict, the true cost and the top three in the report's language, using the device's built-in voices; it can be stopped. Hidden where the browser has no speech support.
+
 ### Phone app
 Added during the build at the learner's request ("zrób wersję również na telefon i zainstaluj na podpiętym tele").
 - [ ] Fine Print installs on an Android phone with its own icon and opens full screen on the Start screen.

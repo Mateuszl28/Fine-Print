@@ -69,6 +69,16 @@ Build mode: fast
   Learner check: Choose Polski, open the lease sample, read a note, add the reminder to your calendar, and try Save as PDF.
   Commit: `Report in five languages, calendar reminder, printable report`
 
+- [x] **7. Compare two offers, the three things that matter, and read it out loud**
+  Becomes usable: Two contracts side by side with "Cheaper by" and "Fairer deal"; a top-three summary under the verdict; the report read aloud.
+  Why now: The learner asked to keep expanding; comparison turns the report into a buying decision (Impact), and read-aloud makes the tagline literal.
+  PRD ref: `prd.md > Compare two offers`, `prd.md > If you read nothing else`, `prd.md > Read it out loud`
+  Spec ref: `spec.md > Compare`, `spec.md > Top three and read aloud`
+  Build: second phone sample, compare logic with tests, CompareSetup and CompareView, page states, TopThree, ReadAloud, strings in five languages.
+  Verify (mechanical): `npm test` (16 pass) and `npm run build` pass; the two-phone-plan demo returns Orbit cheaper by $130.76 and fairer; "Open the full report" shows the top three and "Back to the comparison"; speech voices exist for pl/en/de/es in Chrome.
+  Learner check: Tap "Compare them side by side" → "try it with two phone plans", open one report, tap "Read it out loud".
+  Commit: `Compare two offers, top three summary, read aloud`
+
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 3 the learner tried it and asked for a phone version and an expanded web version (slices 5–6)
@@ -102,3 +112,4 @@ Activity mode: Recap. Map checked in a browser; all paths and symbols verified a
 - Added slice 5 (phone app) — scope change requested by the learner at the first checkpoint; reverses the "Native mobile app" cut in a thin form (Capacitor shell around the deployed site + PWA).
 - Android APK built with a portable JDK 21 (Eclipse Temurin, kept outside the repo) because Capacitor 8 needs Java 21 and the system has 17. Build: set `JAVA_HOME` to a JDK 21, then `cd android && gradlew assembleDebug`. Installed with `adb install -r` and launched on the learner's phone.
 - Added slice 6 (web expansion) — learner asked to "expand the web version"; the agent proposed language, calendar reminder and printable report, and cut offer comparison as too big.
+- Added slice 7 (compare, top three, read aloud) after the final review — learner asked to keep expanding; "Side-by-side comparison" moved from Later into the build.

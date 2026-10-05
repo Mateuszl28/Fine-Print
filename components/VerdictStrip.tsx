@@ -2,23 +2,12 @@
 
 import type { Report } from '@/lib/schema';
 import { strings, type Lang } from '@/lib/i18n';
+import { money } from '@/lib/format';
 import styles from './VerdictStrip.module.css';
 
-function money(n: number, currency: string, lang: Lang) {
-  try {
-    return new Intl.NumberFormat(lang === 'en' ? 'en-US' : lang, {
-      style: 'currency',
-      currency,
-      maximumFractionDigits: n % 1 === 0 ? 0 : 2,
-    }).format(n);
-  } catch {
-    return `${n.toFixed(2)} ${currency}`;
-  }
-}
+type Props = { report: Report; lang: Lang; onJump: (clauseId: string) => void; children?: React.ReactNode };
 
-type Props = { report: Report; lang: Lang; onJump: (clauseId: string) => void };
-
-export function VerdictStrip({ report, lang, onJump }: Props) {
+export function VerdictStrip({ report, lang, onJump, children }: Props) {
   const t = strings[lang];
   const { trueCost, currency, termMonths } = report;
   const term = termMonths ? t.overMonths(termMonths) : t.overTerm;
@@ -52,6 +41,7 @@ export function VerdictStrip({ report, lang, onJump }: Props) {
       </div>
 
       <p className={styles.verdict}>{report.verdict}</p>
+      {children}
 
       {report.costItems.length > 0 && (
         <details className={styles.breakdown}>

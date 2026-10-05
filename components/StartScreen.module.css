@@ -117,3 +117,27 @@
   color: var(--ink-faint);
   font-size: 0.85rem;
 }
+
+.compareLink {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  text-align: left;
+  background: transparent;
+  border: 1px dashed var(--ink-soft);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  cursor: pointer;
+  font-size: 0.98rem;
+}
+
+.compareLink strong {
+  text-decoration: underline;
+  text-decoration-color: rgb(var(--hl-yellow));
+  text-decoration-thickness: 3px;
+  text-underline-offset: 3px;
+}
+
+.compareLink:hover {
+  border-style: solid;
+}

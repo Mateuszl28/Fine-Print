@@ -9,11 +9,13 @@ import { VerdictStrip } from './VerdictStrip';
 import { AskList } from './AskList';
 import { Letter } from './Letter';
 import { Reminder } from './Reminder';
+import { TopThree } from './TopThree';
+import { ReadAloud } from './ReadAloud';
 import styles from './Report.module.css';
 
-type Props = { report: Report; lang: Lang; onStartOver: () => void };
+type Props = { report: Report; lang: Lang; onStartOver: () => void; onBackToCompare?: () => void };
 
-export function ReportView({ report, lang, onStartOver }: Props) {
+export function ReportView({ report, lang, onStartOver, onBackToCompare }: Props) {
   const t = strings[lang];
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const selected = report.clauses.find((c) => c.id === selectedId) ?? null;
@@ -34,8 +36,8 @@ export function ReportView({ report, lang, onStartOver }: Props) {
   return (
     <main className={styles.page} lang={lang}>
       <nav className={styles.bar}>
-        <button type="button" className={styles.back} onClick={onStartOver}>
-          {t.scanAnother}
+        <button type="button" className={styles.back} onClick={onBackToCompare ?? onStartOver}>
+          {onBackToCompare ? t.backToCompare : t.scanAnother}
         </button>
         <span className={styles.wordmark}>Fine Print</span>
       </nav>
@@ -60,7 +62,11 @@ export function ReportView({ report, lang, onStartOver }: Props) {
         </button>
       </header>
 
-      <VerdictStrip report={report} lang={lang} onJump={jumpTo} />
+      <VerdictStrip report={report} lang={lang} onJump={jumpTo}>
+        <ReadAloud report={report} lang={lang} />
+      </VerdictStrip>
+
+      <TopThree report={report} lang={lang} onJump={jumpTo} />
 
       <div className={styles.grid}>
         <div className={styles.docCol}>

@@ -1,0 +1,130 @@
+.box {
+  margin-top: 20px;
+  background: var(--paper-sheet);
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.lede {
+  margin: 6px 0 16px;
+  font-family: var(--font-serif);
+  color: var(--ink-soft);
+}
+
+.slots {
+  display: grid;
+  gap: 14px;
+}
+
+@media (min-width: 640px) {
+  .slots {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.slot {
+  border: 1px dashed var(--rule);
+  border-radius: var(--radius);
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.slotName {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 1.1rem;
+}
+
+.ready {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.upload {
+  background: transparent;
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 9px 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.upload:hover {
+  background: rgb(var(--hl-yellow) / 0.25);
+}
+
+.textarea {
+  width: 100%;
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 8px;
+  resize: vertical;
+}
+
+.link {
+  justify-self: start;
+  background: none;
+  border: 0;
+  padding: 0;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--rule);
+  cursor: pointer;
+}
+
+.link:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-top: 16px;
+}
+
+.primary {
+  background: var(--ink);
+  color: var(--paper);
+  border: 0;
+  border-radius: var(--radius);
+  padding: 12px 20px;
+  font-weight: 650;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgb(var(--hl-yellow) / 0.9);
+}
+
+.primary:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  box-shadow: none;
+}

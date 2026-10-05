@@ -1,0 +1,33 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  background: transparent;
+  border: 0;
+  padding: 4px 0;
+  font-weight: 650;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: rgb(var(--hl-yellow));
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
+}
+
+.icon {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.6rem;
+  text-decoration: none;
+}
+
+@media print {
+  .button {
+    display: none;
+  }
+}

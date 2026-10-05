@@ -1,10 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import type { ContractInput as Input } from '@/lib/api';
 import type { AnalyzeError } from '@/lib/schema';
 import { LANGUAGES, type Lang } from '@/lib/i18n';
 import { ContractInput } from './ContractInput';
 import { SampleCards } from './SampleCards';
+import { CompareSetup } from './CompareSetup';
 import styles from './StartScreen.module.css';
 
 const errorCopy: Record<AnalyzeError['error'], { title: string; body: string }> = {
@@ -34,9 +36,11 @@ type Props = {
   onRetry?: () => void;
   lang: Lang;
   onLangChange: (lang: Lang) => void;
+  onCompare: (a: Input, b: Input) => void;
 };
 
-export function StartScreen({ onSubmit, onError, initial, error, onRetry, lang, onLangChange }: Props) {
+export function StartScreen({ onSubmit, onError, initial, error, onRetry, lang, onLangChange, onCompare }: Props) {
+  const [comparing, setComparing] = useState(false);
   return (
     <main className={styles.page}>
       <header className={styles.masthead}>
@@ -86,6 +90,14 @@ export function StartScreen({ onSubmit, onError, initial, error, onRetry, lang, 
         </select>
         <span className={styles.langNote}>The contract can be in any language.</span>
       </div>
+
+      {comparing ? (
+        <CompareSetup onCompare={onCompare} onError={onError} onClose={() => setComparing(false)} />
+      ) : (
+        <button type="button" className={styles.compareLink} onClick={() => setComparing(true)}>
+          Choosing between two offers? <strong>Compare them side by side &rarr;</strong>
+        </button>
+      )}
 
       <SampleCards onPick={(s) => onSubmit({ kind: 'text', text: s.text, label: s.label })} />
 
