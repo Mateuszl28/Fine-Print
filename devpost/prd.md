@@ -111,6 +111,18 @@ Added during the build ("rozbuduj dalej"; agent proposal, learner delegated the 
 ### Read it out loud
 - [ ] "Read it out loud" speaks the verdict, the true cost and the top three in the report's language, using the device's built-in voices; it can be stopped. Hidden where the browser has no speech support.
 
+### Send it to someone
+Added during the build ("rozbuduj dalej"; agent proposal, learner delegated the choice).
+- [ ] "Send it to someone" on a report opens the phone's share sheet (or copies the link). The link opens the same report for the recipient, with a note that it was sent to them and lives only in the link.
+- [ ] Nothing is stored on a server: the report travels inside the link's #fragment.
+
+### Your recent reads
+- [ ] Reports you run are kept on this device only (up to 8) and listed on the Start screen with who, true cost, score and date; each can be reopened or forgotten, or all forgotten at once.
+- [ ] Reports opened from someone else's link are not added.
+
+### A contract in another language
+- [ ] A fifth sample, a German lease (Mietvertrag), shows a contract in one language explained in another; quotes and the letter stay in German.
+
 ### Phone app
 Added during the build at the learner's request ("zrób wersję również na telefon i zainstaluj na podpiętym tele").
 - [ ] Fine Print installs on an Android phone with its own icon and opens full screen on the Start screen.
@@ -124,7 +136,7 @@ Added during the build at the learner's request ("zrób wersję również na tel
 - **Too long:** more than the page limit → a clear message to upload fewer pages.
 - **Analysis failed (network/service):** "Something went wrong on our side. Try again." with a Retry button; the input is kept.
 - **No money terms:** report still shows highlights; the true-cost box explains why there's no total.
-- **Persistence:** nothing is stored. Closing or refreshing the page loses the report. The Start screen says "Nothing is stored."
+- **Persistence:** nothing is stored on a server. Reports you run are kept in this browser only ("Your recent reads"), and can be forgotten. A shared report exists only inside its link.
 - **Disclaimer:** "Not legal advice" is visible on the Start screen and at the bottom of every report.
 
 ## Product Decisions
@@ -138,8 +150,6 @@ Added during the build at the learner's request ("zrób wersję również na tel
 Start screen with photo/PDF/paste input and four sample contracts → analysis → Report with verdict strip (true cost, score, verdict), the contract text with tappable severity highlights and notes, "Before you sign, ask" questions, and a copyable letter. Responsive (phone single column, laptop two columns), with the reading, error, and no-money states above. English UI.
 
 ## Deferred From the POC
-- **Saved reports / history**: would need accounts or storage of private documents.
-- **Shareable report link**: needs storage; out for privacy and time.
 - **Highlights drawn on the original photo** (instead of the transcribed text): much harder to get right; transcribed text proves the kernel.
 
 ## Possible Later Enhancements

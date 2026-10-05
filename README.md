@@ -6,7 +6,7 @@ Read the contract before you sign it. Fine Print takes a photo, PDF or pasted te
 
 Built for [Build With AI: Basics](https://learn-ai-basics.devpost.com/) with the Devpost Learn skill pack. The planning documents live in [`devpost/`](devpost/): [scope](devpost/scope.md), [PRD](devpost/prd.md), [spec](devpost/spec.md), [build checklist](devpost/checklist.md), and an [app map](devpost/app-map.html).
 
-> Not legal advice. Nothing you upload is stored.
+> Not legal advice. Nothing you upload is stored on a server.
 
 ## Features
 
@@ -16,12 +16,15 @@ Built for [Build With AI: Basics](https://learn-ai-basics.devpost.com/) with the
 - **Compare two offers** side by side: which one is really cheaper (by total, or by monthly average when the terms differ) and which is fairer.
 - **"If you read nothing else":** the three most serious clauses, right under the verdict.
 - **Read it out loud** with the browser's built-in voices, in the report's language.
+- **Send it to someone:** the link carries the report itself (compressed into the `#fragment`), so nothing is stored on a server.
+- **Recent reads** kept on your device only, with "Forget".
+- **Any contract language:** try the German lease sample explained in English, Polish or Ukrainian.
 - **Photo, PDF or text.** Photos are resized in the browser before upload.
 - **Five languages** for the report: English, Polski, Українська, Español, Deutsch. Quotes stay in the contract's language.
 - **Calendar reminder** (.ics) for the last day to give notice.
 - **Save as PDF** with the highlights kept.
 - **Phone:** installable web app, plus an Android app (Capacitor shell around the live site).
-- Four fictional sample contracts to try without your own.
+- Fictional sample contracts to try without your own.
 
 ## Run it locally
 
@@ -36,7 +39,7 @@ npm run dev                  # http://localhost:3000
 Other commands:
 
 ```bash
-npm test         # unit tests (quote matching, cost totals, calendar file, comparison)
+npm test         # unit tests (quote matching, cost totals, calendar file, comparison, share links)
 npm run build    # production build
 ```
 
@@ -82,7 +85,9 @@ Report on screen ◄─────────────────┘  (com
 | `lib/i18n.ts` | Report labels in five languages |
 | `lib/ics.ts` | Notice deadline and calendar file (tested) |
 | `lib/compare.ts` | Which of two offers is cheaper / fairer (tested) |
-| `lib/samples.ts` | Four fictional sample contracts |
+| `lib/share.ts` | Report ⇄ link encoding (tested) |
+| `lib/history.ts` | Recent reads in localStorage |
+| `lib/samples.ts` | Fictional sample contracts (incl. a German lease and a second phone plan) |
 | `components/` | Start screen, report, highlighted contract, letter, reminder |
 
 Stack: Next.js 16, React 19, TypeScript, AI SDK 7, Zod, plain CSS modules, Capacitor 8.

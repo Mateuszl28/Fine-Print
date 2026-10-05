@@ -35,6 +35,22 @@
   gap: 16px;
 }
 
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.banner {
+  margin: 14px 0 0;
+  padding: 10px 14px;
+  border-left: 3px solid var(--ink);
+  background: rgb(var(--hl-yellow) / 0.3);
+  font-weight: 600;
+}
+
 .save {
   flex-shrink: 0;
   background: transparent;
@@ -171,6 +187,7 @@
 
   .back,
   .save,
+  .banner,
   .tapHint,
   .panel,
   .sheetWrap {

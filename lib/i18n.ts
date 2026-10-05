@@ -62,6 +62,11 @@ type Strings = {
   backToCompare: string;
   currencyMismatch: string;
   sameCost: string;
+  share: string;
+  linkCopied: string;
+  shareNote: string;
+  sharedBanner: string;
+  savedHere: string;
 };
 
 export const strings: Record<Lang, Strings> = {
@@ -113,6 +118,11 @@ export const strings: Record<Lang, Strings> = {
     backToCompare: '← Back to the comparison',
     currencyMismatch: 'Different currencies, so the totals aren’t directly comparable.',
     sameCost: 'Same total cost',
+    share: 'Send it to someone',
+    linkCopied: 'Link copied',
+    shareNote: 'The link carries the whole report, contract text included. It isn’t stored anywhere else.',
+    sharedBanner: 'Someone sent you this report. It lives only in the link.',
+    savedHere: 'Kept on this device under “Your recent reads”.',
   },
   pl: {
     scanAnother: '← Sprawdź kolejną',
@@ -162,6 +172,11 @@ export const strings: Record<Lang, Strings> = {
     backToCompare: '← Wróć do porównania',
     currencyMismatch: 'Różne waluty, więc sum nie da się wprost porównać.',
     sameCost: 'Ten sam koszt',
+    share: 'Wyślij komuś',
+    linkCopied: 'Link skopiowany',
+    shareNote: 'Link zawiera cały raport, razem z treścią umowy. Nie jest nigdzie indziej zapisywany.',
+    sharedBanner: 'Ktoś wysłał ci ten raport. Istnieje tylko w linku.',
+    savedHere: 'Zapisany na tym urządzeniu w „Your recent reads”.',
   },
   uk: {
     scanAnother: '← Перевірити інший',
@@ -211,6 +226,11 @@ export const strings: Record<Lang, Strings> = {
     backToCompare: '← Назад до порівняння',
     currencyMismatch: 'Різні валюти, тож суми не можна порівняти напряму.',
     sameCost: 'Однакова вартість',
+    share: 'Надіслати комусь',
+    linkCopied: 'Посилання скопійовано',
+    shareNote: 'Посилання містить увесь звіт разом із текстом договору. Більше ніде не зберігається.',
+    sharedBanner: 'Хтось надіслав вам цей звіт. Він існує лише в посиланні.',
+    savedHere: 'Збережено на цьому пристрої в «Your recent reads».',
   },
   es: {
     scanAnother: '← Revisar otro',
@@ -260,6 +280,11 @@ export const strings: Record<Lang, Strings> = {
     backToCompare: '← Volver a la comparación',
     currencyMismatch: 'Monedas distintas, así que los totales no se pueden comparar directamente.',
     sameCost: 'Mismo coste total',
+    share: 'Enviárselo a alguien',
+    linkCopied: 'Enlace copiado',
+    shareNote: 'El enlace lleva todo el informe, con el texto del contrato. No se guarda en ningún otro sitio.',
+    sharedBanner: 'Alguien te envió este informe. Solo existe en el enlace.',
+    savedHere: 'Guardado en este dispositivo en «Your recent reads».',
   },
   de: {
     scanAnother: '← Anderen prüfen',
@@ -309,5 +334,10 @@ export const strings: Record<Lang, Strings> = {
     backToCompare: '← Zurück zum Vergleich',
     currencyMismatch: 'Unterschiedliche Währungen, die Summen sind nicht direkt vergleichbar.',
     sameCost: 'Gleiche Gesamtkosten',
+    share: 'An jemanden schicken',
+    linkCopied: 'Link kopiert',
+    shareNote: 'Der Link enthält den ganzen Bericht samt Vertragstext. Er wird nirgends sonst gespeichert.',
+    sharedBanner: 'Jemand hat dir diesen Bericht geschickt. Er existiert nur im Link.',
+    savedHere: 'Auf diesem Gerät unter „Your recent reads“ gespeichert.',
   },
 };

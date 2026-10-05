@@ -107,6 +107,38 @@ Plan price: $35.00/month*   Device: $0 down, $27.50/month for 24 months
 
 Customer Signature: ____________________   Date: __________`;
 
+const mietvertrag = `WOHNRAUMMIETVERTRAG
+
+Vermieter: Spreeblick Wohnen GmbH, Kastanienallee 88, 10435 Berlin ("Vermieter")
+Mieter: ____________________ ("Mieter")
+Mietsache: 2-Zimmer-Wohnung, Weserstraße 141, 3. OG links, 12045 Berlin
+
+§ 1 Mietbeginn. Das Mietverhältnis beginnt am ____________ und läuft auf unbestimmte Zeit.
+
+§ 2 Miete. Die monatliche Nettokaltmiete beträgt 1.150,00 €. Zusätzlich zahlt der Mieter eine monatliche Vorauszahlung auf die Betriebs- und Heizkosten von 220,00 €. Die Miete ist bis zum dritten Werktag eines jeden Monats im Voraus zu zahlen.
+
+§ 3 Staffelmiete. Die Nettokaltmiete erhöht sich jeweils zum 1. Januar eines jeden Jahres um 60,00 €, erstmals zum 1. Januar nach Mietbeginn.
+
+§ 4 Kündigungsverzicht. Die Parteien verzichten für die Dauer von vier (4) Jahren ab Mietbeginn wechselseitig auf ihr Recht zur ordentlichen Kündigung. Eine Kündigung ist frühestens zum Ablauf dieses Zeitraums zulässig.
+
+§ 5 Kündigungsfrist. Nach Ablauf des Kündigungsverzichts kann der Mieter mit einer Frist von drei (3) Monaten schriftlich kündigen.
+
+§ 6 Mietsicherheit. Der Mieter leistet eine Kaution in Höhe von drei Nettokaltmieten (3.450,00 €). Der Mieter ist berechtigt, die Kaution in drei gleichen monatlichen Raten zu zahlen. Der Vermieter legt die Kaution getrennt von seinem Vermögen bei einem Kreditinstitut an.
+
+§ 7 Kleinreparaturen. Der Mieter trägt die Kosten für kleinere Instandhaltungen an Installationsgegenständen für Elektrizität, Wasser und Gas, Heiz- und Kocheinrichtungen, Fenster- und Türverschlüssen bis zu einem Betrag von 120,00 € je Einzelfall.
+
+§ 8 Schönheitsreparaturen. Der Mieter ist verpflichtet, die Schönheitsreparaturen in folgenden Abständen auszuführen: Küche, Bad und Dusche alle drei Jahre, Wohn- und Schlafräume alle fünf Jahre, andere Nebenräume alle sieben Jahre.
+
+§ 9 Rückgabe. Bei Auszug hat der Mieter die Wohnung unabhängig vom Zeitpunkt der letzten Schönheitsreparaturen in weißer Farbe frisch gestrichen zurückzugeben.
+
+§ 10 Tierhaltung. Die Haltung von Haustieren jeglicher Art ist nicht gestattet.
+
+§ 11 Hausordnung. Die beigefügte Hausordnung ist Bestandteil dieses Vertrages.
+
+Berlin, den ____________
+
+Vermieter: ____________________   Mieter: ____________________`;
+
 const phoneB = `ORBIT WIRELESS — PLAN AGREEMENT
 Plan: Orbit Everyday Unlimited   Device: Pixelon 9 Pro (256 GB)
 
@@ -175,4 +207,5 @@ export const samples: Sample[] = [
   { id: 'lease', label: 'Apartment lease', blurb: '12 months in Portland, OR.', text: lease },
   { id: 'phone', label: 'Phone plan', blurb: 'Unlimited, with a free phone.', text: phone },
   { id: 'loan', label: 'Pay-over-time loan', blurb: 'A laptop, in 18 easy payments.', text: loan },
+  { id: 'miet', label: 'Mietvertrag (German)', blurb: 'A Berlin flat. In German.', text: mietvertrag },
 ];

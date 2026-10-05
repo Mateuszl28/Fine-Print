@@ -1,0 +1,27 @@
+.wrap {
+  display: inline-block;
+}
+
+.button {
+  background: var(--ink);
+  color: var(--paper);
+  border: 0;
+  border-radius: var(--radius);
+  padding: 8px 13px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 rgb(var(--hl-yellow) / 0.9);
+  min-width: 9.5em;
+}
+
+.button:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 rgb(var(--hl-yellow) / 0.9);
+}
+
+@media print {
+  .wrap {
+    display: none;
+  }
+}

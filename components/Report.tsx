@@ -11,11 +11,19 @@ import { Letter } from './Letter';
 import { Reminder } from './Reminder';
 import { TopThree } from './TopThree';
 import { ReadAloud } from './ReadAloud';
+import { ShareButton } from './ShareButton';
 import styles from './Report.module.css';
 
-type Props = { report: Report; lang: Lang; onStartOver: () => void; onBackToCompare?: () => void };
+type Props = {
+  report: Report;
+  lang: Lang;
+  onStartOver: () => void;
+  onBackToCompare?: () => void;
+  shared?: boolean;
+  saved?: boolean;
+};
 
-export function ReportView({ report, lang, onStartOver, onBackToCompare }: Props) {
+export function ReportView({ report, lang, onStartOver, onBackToCompare, shared, saved }: Props) {
   const t = strings[lang];
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const selected = report.clauses.find((c) => c.id === selectedId) ?? null;
@@ -42,6 +50,8 @@ export function ReportView({ report, lang, onStartOver, onBackToCompare }: Props
         <span className={styles.wordmark}>Fine Print</span>
       </nav>
 
+      {shared && <p className={styles.banner}>{t.sharedBanner}</p>}
+
       <header className={styles.header}>
         <div>
           <p className="label">{report.title}</p>
@@ -57,9 +67,12 @@ export function ReportView({ report, lang, onStartOver, onBackToCompare }: Props
             </li>
           </ul>
         </div>
-        <button type="button" className={styles.save} onClick={() => window.print()}>
-          {t.save}
-        </button>
+        <div className={styles.actions}>
+          <ShareButton report={report} lang={lang} />
+          <button type="button" className={styles.save} onClick={() => window.print()}>
+            {t.save}
+          </button>
+        </div>
       </header>
 
       <VerdictStrip report={report} lang={lang} onJump={jumpTo}>
@@ -113,7 +126,10 @@ export function ReportView({ report, lang, onStartOver, onBackToCompare }: Props
         </div>
       )}
 
-      <footer className={styles.footer}>{t.footer}</footer>
+      <footer className={styles.footer}>
+        {t.footer}
+        {saved && <> {t.savedHere}</>}
+      </footer>
     </main>
   );
 }

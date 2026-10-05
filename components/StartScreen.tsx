@@ -7,6 +7,8 @@ import { LANGUAGES, type Lang } from '@/lib/i18n';
 import { ContractInput } from './ContractInput';
 import { SampleCards } from './SampleCards';
 import { CompareSetup } from './CompareSetup';
+import { RecentReads } from './RecentReads';
+import type { HistoryEntry } from '@/lib/history';
 import styles from './StartScreen.module.css';
 
 const errorCopy: Record<AnalyzeError['error'], { title: string; body: string }> = {
@@ -37,9 +39,14 @@ type Props = {
   lang: Lang;
   onLangChange: (lang: Lang) => void;
   onCompare: (a: Input, b: Input) => void;
+  history: HistoryEntry[];
+  onOpenHistory: (e: HistoryEntry) => void;
+  onForget: (id: string) => void;
+  onForgetAll: () => void;
 };
 
-export function StartScreen({ onSubmit, onError, initial, error, onRetry, lang, onLangChange, onCompare }: Props) {
+export function StartScreen(props: Props) {
+  const { onSubmit, onError, initial, error, onRetry, lang, onLangChange, onCompare } = props;
   const [comparing, setComparing] = useState(false);
   return (
     <main className={styles.page}>
@@ -99,10 +106,17 @@ export function StartScreen({ onSubmit, onError, initial, error, onRetry, lang, 
         </button>
       )}
 
+      <RecentReads
+        entries={props.history}
+        onOpen={props.onOpenHistory}
+        onForget={props.onForget}
+        onForgetAll={props.onForgetAll}
+      />
+
       <SampleCards onPick={(s) => onSubmit({ kind: 'text', text: s.text, label: s.label })} />
 
       <footer className={styles.footer}>
-        <p>Not legal advice. Nothing you upload is stored.</p>
+        <p>Not legal advice. Nothing you upload is stored on our side; recent reads stay on your device.</p>
         <p>Gym memberships, leases, phone plans and pay-over-time loans read best.</p>
       </footer>
     </main>

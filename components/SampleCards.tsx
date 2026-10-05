@@ -11,7 +11,7 @@ export function SampleCards({ onPick }: { onPick: (s: Sample) => void }) {
       </h2>
       <ul className={styles.grid}>
         {samples.map((s, i) => (
-          <li key={s.id} style={{ ['--tilt' as string]: `${[-0.8, 0.6, -0.4, 0.9][i % 4]}deg` }}>
+          <li key={s.id} style={{ ['--tilt' as string]: `${[-0.8, 0.6, -0.4, 0.9, -0.6][i % 5]}deg` }}>
             <button type="button" className={styles.card} onClick={() => onPick(s)}>
               <span className={styles.title}>{s.label}</span>
               <span className={styles.blurb}>{s.blurb}</span>

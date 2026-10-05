@@ -79,6 +79,16 @@ Build mode: fast
   Learner check: Tap "Compare them side by side" → "try it with two phone plans", open one report, tap "Read it out loud".
   Commit: `Compare two offers, top three summary, read aloud`
 
+- [x] **8. Send it to someone, recent reads, and a German contract**
+  Becomes usable: Share a report as a link that carries the report itself; reopen recent reports on this device; try a German lease explained in any of the five languages.
+  Why now: The learner asked to keep expanding; sharing fits the real moment (ask someone before you sign) without breaking "nothing is stored", and the German sample proves "the contract can be in any language".
+  PRD ref: `prd.md > Send it to someone`, `prd.md > Your recent reads`, `prd.md > A contract in another language`
+  Spec ref: `spec.md > Sharing and recent reads`
+  Build: share encode/decode with tests, ShareButton, shared-report banner, history storage and RecentReads, German sample, prompt rule for translated cost labels.
+  Verify (mechanical): `npm test` (19 pass) and `npm run build` pass; a shared link (≈5 KB) reopens the report in a clean browser with the banner and isn't saved to history; a run appears in recent reads; the German lease in Ukrainian and English returns German quotes (0 dropped), a German letter, and €70,080 over 48 months.
+  Learner check: Open the Mietvertrag sample in Polski or Українська; tap "Send it to someone" and open the link on another device.
+  Commit: `Share reports by link, recent reads on this device, German sample`
+
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 3 the learner tried it and asked for a phone version and an expanded web version (slices 5–6)
@@ -113,3 +123,4 @@ Activity mode: Recap. Map checked in a browser; all paths and symbols verified a
 - Android APK built with a portable JDK 21 (Eclipse Temurin, kept outside the repo) because Capacitor 8 needs Java 21 and the system has 17. Build: set `JAVA_HOME` to a JDK 21, then `cd android && gradlew assembleDebug`. Installed with `adb install -r` and launched on the learner's phone.
 - Added slice 6 (web expansion) — learner asked to "expand the web version"; the agent proposed language, calendar reminder and printable report, and cut offer comparison as too big.
 - Added slice 7 (compare, top three, read aloud) after the final review — learner asked to keep expanding; "Side-by-side comparison" moved from Later into the build.
+- Added slice 8 (sharing, recent reads, German sample) — learner asked to keep expanding. Sharing is done inside the URL fragment and history in localStorage, so "nothing stored on a server" still holds; the PRD's persistence line was updated.
