@@ -13,6 +13,9 @@ Built for [Build With AI: Basics](https://learn-ai-basics.devpost.com/) with the
 - **Highlights on the contract itself.** Every highlight is a verbatim quote that the server finds in the contract text; quotes the model can't back up are dropped.
 - **True cost.** The model lists the money items; the total is added up in code (`lib/checkReport.ts`), not by the model.
 - **Fairness score, questions to ask, and a ready-to-send letter** (cancellation or change request) with a copy button.
+- **Compare two offers** side by side: which one is really cheaper (by total, or by monthly average when the terms differ) and which is fairer.
+- **"If you read nothing else":** the three most serious clauses, right under the verdict.
+- **Read it out loud** with the browser's built-in voices, in the report's language.
 - **Photo, PDF or text.** Photos are resized in the browser before upload.
 - **Five languages** for the report: English, Polski, Українська, Español, Deutsch. Quotes stay in the contract's language.
 - **Calendar reminder** (.ics) for the last day to give notice.
@@ -33,7 +36,7 @@ npm run dev                  # http://localhost:3000
 Other commands:
 
 ```bash
-npm test         # unit tests (quote matching, cost totals, calendar file)
+npm test         # unit tests (quote matching, cost totals, calendar file, comparison)
 npm run build    # production build
 ```
 
@@ -78,6 +81,7 @@ Report on screen ◄─────────────────┘  (com
 | `lib/checkReport.ts` | Quote matching and cost totals (tested) |
 | `lib/i18n.ts` | Report labels in five languages |
 | `lib/ics.ts` | Notice deadline and calendar file (tested) |
+| `lib/compare.ts` | Which of two offers is cheaper / fairer (tested) |
 | `lib/samples.ts` | Four fictional sample contracts |
 | `components/` | Start screen, report, highlighted contract, letter, reminder |
 
