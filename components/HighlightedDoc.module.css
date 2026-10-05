@@ -1,0 +1,44 @@
+.sheet {
+  background: var(--paper-sheet);
+  border: 1px solid var(--rule);
+  box-shadow: var(--shadow-sheet);
+  border-radius: 2px;
+  padding: 28px 22px 36px;
+}
+
+@media (min-width: 640px) {
+  .sheet {
+    padding: 48px 56px 56px;
+  }
+}
+
+.text {
+  font-family: var(--font-serif);
+  font-size: 1.02rem;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+@media (min-width: 640px) {
+  .text {
+    font-size: 1.08rem;
+  }
+}
+
+.mark {
+  cursor: pointer;
+  transition: filter 0.12s ease;
+}
+
+.mark:hover {
+  filter: saturate(1.4) brightness(0.97);
+}
+
+.selected {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--ink);
+}

@@ -42,8 +42,8 @@ Report screen  ◄──────── final Report JSON
 ## Stack
 - **Next.js 16 (App Router) + React + TypeScript**: page and API route in one project, one-click deploy to Vercel. Docs: https://nextjs.org/docs
 - **AI SDK 7 (`ai`)**: `generateObject`-style structured output validated by a schema; supports image and PDF inputs. Docs: https://ai-sdk.dev/docs. *Verify the exact v7 API names against `node_modules/ai/docs/` at the start of the build.*
-- **Model: a vision-capable language model** through **Vercel AI Gateway**. It reads photos and PDFs directly (no separate OCR), handles long text well, and is good at quoting verbatim. Docs: https://vercel.com/docs/ai-gateway
-  - Tradeoff accepted: needs one API key and costs a few cents per analysis.
+- **Model: Gemini 2.5 Flash** (`google/gemini-2.5-flash`) through **Vercel AI Gateway**, set in `app/api/analyze/route.ts` and overridable with `FINEPRINT_MODEL`. It reads photos and PDFs directly (no separate OCR). Docs: https://vercel.com/docs/ai-gateway
+  - Learner decision during the build ("inne AI"): the Gateway free tier doesn't include the originally planned model, so we use a free-tier model instead of buying credits. Tested on all four samples, a PDF and a photo: 100% of quotes located, totals correct.
 - **Zod**: the Report schema (shape the model must return). Docs: https://zod.dev
 - **Styling: plain CSS (CSS Modules + global tokens)**, no UI kit. A hand-written stylesheet is what keeps it from looking like every other AI app (see **Look and Feel**).
 - **Fonts via `next/font/google`**: Fraunces (serif headlines), Source Serif 4 (contract text), Inter Tight (UI and numbers). Self-hosted at build time, no runtime font CDN.
@@ -188,7 +188,6 @@ fine-print/                     (repo root = this folder)
 │   ├── checkReport.ts          # quote matching + cost total (pure)
 │   ├── checkReport.test.ts     # unit tests (node:test or vitest)
 │   └── prepareFiles.ts         # client-side image resize / limits
-├── samples/                    # 4 fictional contracts (gym, lease, phone, loan)
 ├── public/                     # favicon, OG image
 ├── devpost/                    # planning docs (scope, prd, spec, checklist)
 ├── .env.example                # AI_GATEWAY_API_KEY=
@@ -198,8 +197,8 @@ fine-print/                     (repo root = this folder)
 ```
 
 ## External Services and Dependencies
-- **Vercel AI Gateway → language model**
-  - Called through the AI SDK with a Gateway model string; auth via `AI_GATEWAY_API_KEY` locally, OIDC/key on Vercel.
+- **Vercel AI Gateway → Google Gemini 2.5 Flash**
+  - Called through the AI SDK with the model string `google/gemini-2.5-flash` (`FINEPRINT_MODEL` overrides it); auth via `AI_GATEWAY_API_KEY` locally, OIDC/key on Vercel. The Gateway needs a card on file even for the free tier.
   - Input: system prompt + one user message with either text, or 1–4 image parts, or 1 PDF file part. Output: JSON matching the Report schema.
   - Cost: a few cents per analysis (a contract is a few thousand tokens in and out). Gateway gives free starter credit; set a budget limit in the dashboard to protect against abuse of the public URL.
   - Docs: https://vercel.com/docs/ai-gateway, https://ai-sdk.dev/docs

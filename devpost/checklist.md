@@ -9,7 +9,7 @@ Build mode: fast
 
 ## Slices
 
-- [ ] **1. Paste a contract (or tap a sample) and see its traps highlighted on the page**
+- [x] **1. Paste a contract (or tap a sample) and see its traps highlighted on the page**
   Becomes usable: A running app with the paper-and-ink Start screen, a paste box, and four sample cards. Analyzing shows the contract text with red/yellow/green highlights that come from a real model call, verified as verbatim quotes. Tapping a highlight shows its note.
   Why now: This is the kernel and the biggest risk at once (does the model quote verbatim, does the Gateway call work?). Everything else hangs off the Report data it produces. Bootstrapping is folded in here.
   PRD ref: `prd.md > The Core Journey` (steps 1, 2, 4), `prd.md > Highlighted contract (the kernel)`, `prd.md > Contract types`
@@ -19,7 +19,7 @@ Build mode: fast
   Learner check: Run `npm run dev`, open http://localhost:3000, tap the Gym sample, and see the contract with highlighter marks; tap a red one and read the note. Does it look human-made and like you pictured?
   Commit: `Analyze pasted contracts and highlight traps on the page`
 
-- [ ] **2. The full report: true cost, score, questions, and a letter you can copy**
+- [x] **2. The full report: true cost, score, questions, and a letter you can copy**
   Becomes usable: Above the document, the verdict strip shows advertised price vs true cost (with breakdown lines linked to their clauses), the 0–10 score, the verdict, and counts. Below it are "Before you sign, ask" and the letter with a working Copy button. The no-money case says so plainly.
   Why now: It completes the "oh, that's cool" beat ($29/month vs $1,140) on the data slice 1 already returns, and finishes the core journey for pasted text and samples.
   PRD ref: `prd.md > True cost`, `prd.md > Fairness score and verdict`, `prd.md > Before you sign, ask`, `prd.md > Your letter`, `prd.md > States and Boundaries` (no money terms)
@@ -29,7 +29,7 @@ Build mode: fast
   Learner check: Open the Gym sample: is the true cost believable and does the breakdown add up? Copy the letter and paste it into a notes app.
   Commit: `Add true cost, score, questions and copyable letter`
 
-- [ ] **3. Snap a photo or upload a PDF, with honest waiting and error states**
+- [x] **3. Snap a photo or upload a PDF, with honest waiting and error states**
   Becomes usable: On a phone, "Scan a contract" opens the camera; photos (resized in the browser) and PDFs are analyzed like pasted text. The reading state shows rotating lines with Cancel. Unreadable/non-contract, too-long, and failed requests show the PRD messages with the input kept and Retry.
   Why now: Photo input is the real-world story for the video, but it builds on a working report, so a failure here never blocks the kernel.
   PRD ref: `prd.md > Contract input`, `prd.md > States and Boundaries`
@@ -72,3 +72,9 @@ Activity mode:
 
 ## Revisions
 
+- Model switched to Gemini 2.5 Flash — the AI Gateway free tier blocks the originally planned model; the learner chose a different AI over buying credits. Quality checked on all samples, a PDF and a photo (100% quotes located, totals correct).
+- Samples live in `lib/samples.ts` instead of `samples/*.txt` — the page imports them directly, so no file reading on the server.
+- Slices 1–3 landed in one commit — the model was blocked by billing while slices 2–3 were built, so all three were verified together once it worked.
+- The prompt now excludes refundable deposits and already-financed fees from the true cost, and uses the purchase price as the headline for loans — the first real runs counted the lease deposit and the loan origination fee twice.
+- The letter's repeated "Subject:" line is stripped in code (`buildReport`) — the model kept repeating it despite the prompt.
+- Reading-state Cancel and the bottom sheet / two-column layout were built early alongside slices 1 and 3; slice 4 keeps the polish and verification.

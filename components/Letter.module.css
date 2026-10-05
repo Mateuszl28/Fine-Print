@@ -1,0 +1,67 @@
+.wrap {
+  margin-top: 36px;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.copy {
+  flex-shrink: 0;
+  background: var(--ink);
+  color: var(--paper);
+  border: 0;
+  border-radius: var(--radius);
+  padding: 9px 14px;
+  font-weight: 650;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgb(var(--hl-yellow) / 0.9);
+  min-width: 112px;
+}
+
+.copy:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 rgb(var(--hl-yellow) / 0.9);
+}
+
+.paper {
+  background: var(--paper-sheet);
+  border: 1px solid var(--rule);
+  box-shadow: var(--shadow-sheet);
+  padding: 20px 20px 24px;
+  /* ruled like letter paper */
+  background-image: repeating-linear-gradient(to bottom, transparent 0 27px, rgb(120 100 70 / 0.08) 27px 28px);
+  background-position: 0 14px;
+}
+
+.subject {
+  margin: 0 0 12px;
+  font-weight: 600;
+}
+
+.body {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  line-height: 28px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.tip {
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+  color: var(--ink-faint);
+}

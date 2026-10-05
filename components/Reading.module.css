@@ -1,0 +1,89 @@
+.page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px var(--gutter);
+  text-align: center;
+}
+
+.sheet {
+  position: relative;
+  width: min(280px, 80vw);
+  padding: 26px 24px;
+  background: var(--paper-sheet);
+  border: 1px solid var(--rule);
+  box-shadow: var(--shadow-sheet);
+  display: grid;
+  gap: 10px;
+  transform: rotate(-1.2deg);
+  overflow: hidden;
+}
+
+.line {
+  display: block;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--rule);
+}
+
+.marker {
+  position: absolute;
+  left: 18px;
+  height: 14px;
+  width: 0;
+  top: 58px;
+  border-radius: 6px 3px 7px 4px;
+  background: rgb(var(--hl-red) / 0.75);
+  mix-blend-mode: var(--hl-blend);
+  animation: sweep 2.6s ease-in-out infinite;
+}
+
+@keyframes sweep {
+  0% {
+    width: 0;
+    top: 26px;
+  }
+  45% {
+    width: 70%;
+    top: 26px;
+  }
+  50% {
+    width: 0;
+    top: 89px;
+  }
+  95% {
+    width: 85%;
+    top: 89px;
+  }
+  100% {
+    width: 0;
+    top: 26px;
+  }
+}
+
+.status {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 32px 0 6px;
+  min-height: 2.2em;
+}
+
+.sub {
+  margin: 0;
+  color: var(--ink-faint);
+  font-size: 0.9rem;
+  max-width: 26em;
+}
+
+.cancel {
+  margin-top: 24px;
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: var(--ink-soft);
+  cursor: pointer;
+}

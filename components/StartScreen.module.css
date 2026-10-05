@@ -1,0 +1,90 @@
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 20px var(--gutter) 48px;
+}
+
+.masthead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 10px;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: -0.02em;
+}
+
+.hero {
+  padding: 40px 0 28px;
+}
+
+.headline {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.4rem, 9vw, 4.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  margin: 0 0 18px;
+  font-variation-settings: 'opsz' 144, 'SOFT' 50;
+}
+
+.lede {
+  font-family: var(--font-serif);
+  font-size: 1.18rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 34em;
+}
+
+.lede em {
+  color: var(--ink);
+}
+
+.error {
+  border: 1.5px solid var(--stamp);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  background: var(--paper-sheet);
+}
+
+.error p {
+  margin: 0;
+}
+
+.errorTitle {
+  font-weight: 700;
+  color: var(--stamp);
+  margin-bottom: 4px !important;
+}
+
+.retry {
+  margin-top: 12px;
+  background: var(--ink);
+  color: var(--paper);
+  border: 0;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.footer {
+  margin-top: 48px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faint);
+  font-size: 0.85rem;
+}
+
+.footer p {
+  margin: 0 0 4px;
+}

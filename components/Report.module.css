@@ -1,0 +1,141 @@
+.page {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 14px var(--gutter) 48px;
+}
+
+.bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 10px;
+}
+
+.back {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 1.3rem;
+}
+
+.header {
+  padding: 22px 0 18px;
+}
+
+.legend {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  padding: 0;
+  margin: 10px 0 0;
+  font-weight: 600;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+}
+
+.tapHint {
+  margin: 0 0 8px;
+  color: var(--ink-faint);
+  font-size: 0.85rem;
+}
+
+/* Panel: hidden on phones (the note uses the bottom sheet there) */
+.panel {
+  display: none;
+}
+
+.panelEmpty {
+  color: var(--ink-faint);
+  font-family: var(--font-serif);
+  font-style: italic;
+  margin: 0;
+}
+
+.sheetWrap {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: flex-end;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgb(20 16 10 / 0.28);
+  cursor: pointer;
+}
+
+.sheet {
+  position: relative;
+  width: 100%;
+  max-height: 72dvh;
+  overflow-y: auto;
+  background: var(--paper-sheet);
+  border-top: 2px solid var(--ink);
+  border-radius: 10px 10px 0 0;
+  padding: 10px var(--gutter) calc(20px + env(safe-area-inset-bottom));
+  animation: up 0.18s ease-out;
+}
+
+.grabber {
+  display: block;
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--rule);
+  margin: 0 auto 10px;
+}
+
+@keyframes up {
+  from {
+    transform: translateY(24px);
+    opacity: 0.4;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: minmax(0, 1.45fr) minmax(320px, 1fr);
+    gap: 40px;
+    align-items: start;
+  }
+
+  .panel {
+    display: block;
+    position: sticky;
+    top: 20px;
+  }
+
+  .panelInner {
+    border-top: 2px solid var(--ink);
+    padding-top: 16px;
+  }
+
+  .sheetWrap {
+    display: none;
+  }
+}
+
+.footer {
+  margin-top: 40px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faint);
+  font-size: 0.85rem;
+}

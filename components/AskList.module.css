@@ -1,0 +1,40 @@
+.wrap {
+  margin-top: 32px;
+}
+
+.heading {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 8px;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: q;
+}
+
+.list li {
+  counter-increment: q;
+  position: relative;
+  padding: 10px 0 10px 34px;
+  border-bottom: 1px dotted var(--rule);
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  line-height: 1.45;
+}
+
+.list li::before {
+  content: counter(q);
+  position: absolute;
+  left: 0;
+  top: 9px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--stamp);
+}

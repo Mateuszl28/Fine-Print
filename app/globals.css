@@ -1,0 +1,136 @@
+:root {
+  --paper: #f4efe6;
+  --paper-sheet: #fbf8f2;
+  --ink: #1c1a17;
+  --ink-soft: #5b554c;
+  --ink-faint: #8a8276;
+  --rule: #d9d1c3;
+  --stamp: #b8321f;
+
+  /* Highlighter inks, as RGB channels so marks can vary their own opacity */
+  --hl-red: 255 138 122;
+  --hl-yellow: 255 214 64;
+  --hl-green: 150 222 140;
+  --hl-blend: multiply;
+
+  --shadow-sheet: 0 1px 0 rgb(0 0 0 / 0.04), 0 12px 30px -18px rgb(60 40 10 / 0.35);
+  --radius: 3px;
+  --gutter: 16px;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-serif: 'Source Serif 4', Georgia, serif;
+  --font-sans: 'Inter Tight', system-ui, sans-serif;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #1a1815;
+    --paper-sheet: #23201c;
+    --ink: #ede6da;
+    --ink-soft: #b3aa9c;
+    --ink-faint: #7f776b;
+    --rule: #3a352e;
+    --stamp: #ff8a70;
+    --hl-red: 196 74 60;
+    --hl-yellow: 168 132 20;
+    --hl-green: 62 128 64;
+    --hl-blend: normal;
+    --shadow-sheet: 0 12px 30px -18px rgb(0 0 0 / 0.8);
+    color-scheme: dark;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--paper);
+  /* faint paper grain */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.28 0 0 0 0 0.18 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: rgb(var(--hl-yellow) / 0.6);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* Small caps-ish section label used across the app */
+.label {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* The highlighter. Two layered strokes give the uneven, hand-drawn edge. */
+.hl {
+  --c: var(--hl-yellow);
+  color: inherit;
+  background-color: transparent;
+  background-image:
+    linear-gradient(100deg, rgb(var(--c) / 0) 0.6%, rgb(var(--c) / 0.85) 2%, rgb(var(--c) / 0.62) 6%, rgb(var(--c) / 0.55) 92%, rgb(var(--c) / 0.8) 97%, rgb(var(--c) / 0) 99.4%),
+    linear-gradient(182deg, rgb(var(--c) / 0) 0%, rgb(var(--c) / 0.28) 10%, rgb(var(--c) / 0) 22%);
+  mix-blend-mode: var(--hl-blend);
+  border-radius: 0.4em 0.25em 0.45em 0.3em;
+  padding: 0.06em 0.18em;
+  margin: 0 -0.12em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.hl-red {
+  --c: var(--hl-red);
+}
+
+.hl-yellow {
+  --c: var(--hl-yellow);
+}
+
+.hl-green {
+  --c: var(--hl-green);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
