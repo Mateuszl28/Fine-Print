@@ -24,6 +24,7 @@ export async function analyzeContract(
       signal,
     });
     if (res.status === 413) return { ok: false, error: 'too_long' };
+    if (res.status === 429) return { ok: false, error: 'rate_limited' };
     const json = await res.json().catch(() => null);
     if (!res.ok || !json) return { ok: false, error: json?.error ?? 'failed' };
     return { ok: true, report: json as Report };

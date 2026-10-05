@@ -24,6 +24,10 @@ const errorCopy: Record<AnalyzeError['error'], { title: string; body: string }> 
     title: "I can't open that file.",
     body: 'Photos (JPG, PNG) and PDFs work. Or paste the text.',
   },
+  rate_limited: {
+    title: 'That’s a lot of contracts for one hour.',
+    body: 'Fine Print runs on a small budget, so it takes a breather after 20 reads an hour. Try again a bit later.',
+  },
   failed: {
     title: 'Something went wrong on our side.',
     body: 'Nothing you did. Give it another go.',

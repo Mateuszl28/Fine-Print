@@ -4,6 +4,7 @@ import { useState } from 'react';
 import type { Report } from '@/lib/schema';
 import { strings, type Lang } from '@/lib/i18n';
 import { encodeShare } from '@/lib/share';
+import { nativeShare } from '@/lib/native';
 import styles from './ShareButton.module.css';
 
 export function ShareButton({ report, lang }: { report: Report; lang: Lang }) {
@@ -12,6 +13,15 @@ export function ShareButton({ report, lang }: { report: Report; lang: Lang }) {
 
   async function share() {
     const url = `${location.origin}/#${await encodeShare(report, lang)}`;
+    const native = nativeShare();
+    if (native) {
+      try {
+        await native.share({ title: `Fine Print · ${report.title}`, text: report.verdict, url, dialogTitle: t.share });
+      } catch {
+        // closed the share sheet
+      }
+      return;
+    }
     if (navigator.share) {
       try {
         await navigator.share({ title: `Fine Print · ${report.title}`, text: report.verdict, url });

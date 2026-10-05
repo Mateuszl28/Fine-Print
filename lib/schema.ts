@@ -79,4 +79,4 @@ export type Report = Omit<Analysis, 'transcript' | 'clauses'> & {
   droppedQuotes: number;
 };
 
-export type AnalyzeError = { error: 'not_a_contract' | 'too_long' | 'bad_input' | 'failed' };
+export type AnalyzeError = { error: 'not_a_contract' | 'too_long' | 'bad_input' | 'failed' | 'rate_limited' };

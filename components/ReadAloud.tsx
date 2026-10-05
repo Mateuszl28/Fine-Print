@@ -5,6 +5,7 @@ import type { Report } from '@/lib/schema';
 import { strings, type Lang } from '@/lib/i18n';
 import { money } from '@/lib/format';
 import { topClauses } from '@/lib/topClauses';
+import { nativeTts } from '@/lib/native';
 import styles from './ReadAloud.module.css';
 
 const voiceLang: Record<Lang, string> = { en: 'en-US', pl: 'pl-PL', uk: 'uk-UA', es: 'es-ES', de: 'de-DE' };
@@ -27,15 +28,34 @@ export function ReadAloud({ report, lang }: { report: Report; lang: Lang }) {
   const [speaking, setSpeaking] = useState(false);
 
   useEffect(() => {
-    setSupported(typeof window !== 'undefined' && 'speechSynthesis' in window);
+    setSupported(Boolean(nativeTts()) || 'speechSynthesis' in window);
     return () => {
+      nativeTts()?.stop().catch(() => {});
       if ('speechSynthesis' in window) window.speechSynthesis.cancel();
     };
   }, []);
 
   if (!supported) return null;
 
-  function toggle() {
+  async function toggle() {
+    // In the Android app the WebView has no speech, so use the phone's own text-to-speech.
+    const tts = nativeTts();
+    if (tts) {
+      if (speaking) {
+        await tts.stop().catch(() => {});
+        setSpeaking(false);
+        return;
+      }
+      setSpeaking(true);
+      try {
+        await tts.speak({ text: speechFor(report, lang), lang: voiceLang[lang], rate: 1 });
+      } catch {
+        // no voice for this language, or stopped
+      }
+      setSpeaking(false);
+      return;
+    }
+
     const synth = window.speechSynthesis;
     if (speaking) {
       synth.cancel();

@@ -128,6 +128,10 @@ Added during the build at the learner's request ("zrób wersję również na tel
 - [ ] Fine Print installs on an Android phone with its own icon and opens full screen on the Start screen.
 - [ ] "Scan a contract" in the app opens the phone camera; the report works the same as on the web.
 - [ ] The website can also be added to a phone's home screen (installable web app).
+- [ ] In the app, "Send it to someone" opens the phone's share sheet, and "Read it out loud" uses the phone's own voice.
+
+### Fair use
+- [ ] One address can run 20 analyses an hour; after that the Start screen says to come back later (protects the AI budget behind the public link).
 
 ## States and Boundaries
 - **First use:** the Start screen with samples, so a judge can see the result without owning a contract.

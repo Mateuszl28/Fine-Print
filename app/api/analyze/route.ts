@@ -3,6 +3,7 @@ import { analysisSchema, type AnalyzeError, type Report } from '@/lib/schema';
 import { buildReport } from '@/lib/checkReport';
 import { STRICT_REMINDER, systemPrompt } from '@/lib/prompt';
 import { isLang, type Lang } from '@/lib/i18n';
+import { clientKey, createLimiter } from '@/lib/rateLimit';
 
 export const maxDuration = 120;
 
@@ -12,6 +13,9 @@ const MODEL = process.env.FINEPRINT_MODEL ?? 'google/gemini-2.5-flash';
 const MAX_TEXT = 60_000; // characters, roughly 15 pages
 const MAX_FILES = 4;
 const MAX_BASE64 = 5_600_000; // ~4.2 MB of file data in total
+
+// 20 analyses an hour per address: plenty for a person (or a judge), not for a script.
+const limit = createLimiter(20, 60 * 60 * 1000);
 
 type Body = {
   lang?: string;
@@ -24,6 +28,14 @@ function fail(error: AnalyzeError['error'], status: number) {
 }
 
 export async function POST(req: Request) {
+  const allowed = limit(clientKey(req.headers));
+  if (!allowed.ok) {
+    return Response.json({ error: 'rate_limited' } satisfies AnalyzeError, {
+      status: 429,
+      headers: { 'retry-after': String(allowed.retryAfterSeconds) },
+    });
+  }
+
   let body: Body;
   try {
     body = await req.json();

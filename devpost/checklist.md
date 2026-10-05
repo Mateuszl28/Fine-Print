@@ -89,6 +89,16 @@ Build mode: fast
   Learner check: Open the Mietvertrag sample in Polski or Українська; tap "Send it to someone" and open the link on another device.
   Commit: `Share reports by link, recent reads on this device, German sample`
 
+- [x] **9. Native share and voice in the Android app, and a fair-use limit**
+  Becomes usable: In the app, sharing opens WhatsApp/Messenger/SMS and the report can be read aloud by the phone; the public API turns away an address after 20 reads an hour.
+  Why now: The learner asked to keep expanding and to update the phone; the app's WebView lacked both features, and the public link is backed by the learner's card.
+  PRD ref: `prd.md > Phone app`, `prd.md > Fair use`
+  Spec ref: `spec.md > Native share and speech in the app`, `spec.md > Rate limit`
+  Build: Capacitor Share and TextToSpeech plugins, `lib/native.ts`, native paths in ShareButton and ReadAloud, rate limiter with tests and a friendly message, version 1.9.0, new APK.
+  Verify (mechanical): `npm test` (21 pass) and `npm run build` pass; 21 local requests from one address give 20 normal responses then 429 with `retry-after: 3600`, another address unaffected; the new APK installs; in the app's WebView `Capacitor.isPluginAvailable('Share')` and `('TextToSpeech')` are true (checked over adb DevTools).
+  Learner check: In the app, open a sample, tap "Send it to someone" (share sheet appears) and "Read it out loud" (the phone speaks).
+  Commit: `Native share and speech in the app; rate limit the analyze API`
+
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 3 the learner tried it and asked for a phone version and an expanded web version (slices 5–6)
