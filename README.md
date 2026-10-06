@@ -17,7 +17,7 @@ Built for [Build With AI: Basics](https://learn-ai-basics.devpost.com/) with the
 - **Month by month:** a bar chart of each month's payments (step-ups, yearly fees, one-offs); it follows the exit slider. Shown only when the bars add up exactly to the true cost.
 - **Every amount from the contract:** an amount the AI worked out itself (not written in the contract) is caught and read again; a paid add-on the contract signs you up for is put back if the AI missed it.
 - **How it was checked:** each report ends with what the code verified and threw out for that contract (quotes not found, a refundable deposit left out of the total, exit rules that didn't match the contract's numbers).
-- **Fairness score, questions to ask, and a ready-to-send letter** with a copy button.
+- **Fairness score, a ready-to-send letter** with a copy button, and **questions to ask** as a checklist: tick what's answered, note what they said, add your own (kept on your device, printed in the PDF).
 - **Pick your letter:** cancel, ask to change the clauses you tick, or complain about what went wrong (write it in any language). Every letter comes out in the contract's language, and code checks it: no amounts that aren't in the contract or your note, no wrong language, nothing cut off.
 - **Compare two offers** side by side: which one is really cheaper (by total, or by monthly average when the terms differ), which is fairer, and which is cheaper if you leave after a given month.
 - **"If you read nothing else":** the three most serious clauses, right under the verdict.

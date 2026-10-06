@@ -37,6 +37,12 @@ type Strings = {
   whatToDo: string;
   close: string;
   ask: string;
+  askProgress: (done: number, total: number) => string;
+  askTheySaid: string;
+  askAddPlaceholder: string;
+  askAdd: string;
+  askRemove: string;
+  askLocal: string;
   letterCancel: string;
   letterChange: string;
   copy: string;
@@ -156,6 +162,12 @@ export const strings: Record<Lang, Strings> = {
     whatToDo: 'What to do',
     close: 'Close',
     ask: 'Before you sign, ask',
+    askProgress: (d, n) => `${d} of ${n} answered`,
+    askTheySaid: 'What they said',
+    askAddPlaceholder: 'Add your own question',
+    askAdd: 'Add',
+    askRemove: 'Remove',
+    askLocal: 'Tick a question when you get an answer. Your notes stay on this device and go into the PDF.',
     letterCancel: 'Your way out, already written',
     letterChange: 'Ask them to change it',
     copy: 'Copy letter',
@@ -279,6 +291,12 @@ export const strings: Record<Lang, Strings> = {
     whatToDo: 'Co zrobić',
     close: 'Zamknij',
     ask: 'Zanim podpiszesz, zapytaj',
+    askProgress: (d, n) => `Odpowiedzi: ${d} z ${n}`,
+    askTheySaid: 'Co odpowiedzieli',
+    askAddPlaceholder: 'Dodaj własne pytanie',
+    askAdd: 'Dodaj',
+    askRemove: 'Usuń',
+    askLocal: 'Zaznacz pytanie, gdy dostaniesz odpowiedź. Notatki zostają na tym urządzeniu i trafiają do PDF.',
     letterCancel: 'Twoje wyjście, już napisane',
     letterChange: 'Poproś o zmianę',
     copy: 'Kopiuj list',
@@ -402,6 +420,12 @@ export const strings: Record<Lang, Strings> = {
     whatToDo: 'Що робити',
     close: 'Закрити',
     ask: 'Перш ніж підписати, запитайте',
+    askProgress: (d, n) => `Відповідей: ${d} з ${n}`,
+    askTheySaid: 'Що відповіли',
+    askAddPlaceholder: 'Додайте власне запитання',
+    askAdd: 'Додати',
+    askRemove: 'Видалити',
+    askLocal: 'Позначте запитання, коли отримаєте відповідь. Нотатки лишаються на цьому пристрої й потрапляють у PDF.',
     letterCancel: 'Ваш вихід, уже написаний',
     letterChange: 'Попросіть змінити',
     copy: 'Копіювати лист',
@@ -525,6 +549,12 @@ export const strings: Record<Lang, Strings> = {
     whatToDo: 'Qué hacer',
     close: 'Cerrar',
     ask: 'Antes de firmar, pregunta',
+    askProgress: (d, n) => `${d} de ${n} respondidas`,
+    askTheySaid: 'Qué te dijeron',
+    askAddPlaceholder: 'Añade tu propia pregunta',
+    askAdd: 'Añadir',
+    askRemove: 'Quitar',
+    askLocal: 'Marca una pregunta cuando te respondan. Tus notas se quedan en este dispositivo y van al PDF.',
     letterCancel: 'Tu salida, ya escrita',
     letterChange: 'Pide que lo cambien',
     copy: 'Copiar carta',
@@ -648,6 +678,12 @@ export const strings: Record<Lang, Strings> = {
     whatToDo: 'Was tun',
     close: 'Schließen',
     ask: 'Vor dem Unterschreiben fragen',
+    askProgress: (d, n) => `${d} von ${n} beantwortet`,
+    askTheySaid: 'Was sie gesagt haben',
+    askAddPlaceholder: 'Eigene Frage hinzufügen',
+    askAdd: 'Hinzufügen',
+    askRemove: 'Entfernen',
+    askLocal: 'Hak eine Frage ab, wenn du eine Antwort hast. Deine Notizen bleiben auf diesem Gerät und kommen ins PDF.',
     letterCancel: 'Dein Ausstieg, schon geschrieben',
     letterChange: 'Um Änderung bitten',
     copy: 'Brief kopieren',

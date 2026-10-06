@@ -103,6 +103,12 @@ Added during the build ("rozbuduj dalej"; agent proposal after a wrong total was
 ### Before you sign, ask
 - [ ] 3–5 concrete questions to ask the seller/landlord, tied to the red and yellow clauses.
 
+### Ask, and note what they said
+Added during the build ("rozbuduj dalej"; agent proposal, learner delegated the choice). Extends "Before you sign, ask".
+- [ ] Each question has a tick box for when it's been answered, and once ticked a field for what the other side said; a counter shows "2 of 4 answered".
+- [ ] The reader can add their own questions (and remove them).
+- [ ] Ticks and notes stay on this device, per contract, and come back when the report is reopened from "Your recent reads"; the printed PDF shows the notes under their questions.
+
 ### Your letter
 - [ ] One letter generated from the contract: a cancellation letter if the contract has a cancellation clause, otherwise a request to change the worst clause *(agent proposal)*.
 - [ ] It names the actual clause, notice period, and address/method required, if the contract states them; unknown details are left as clear [placeholders].

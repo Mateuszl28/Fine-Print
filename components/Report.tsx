@@ -170,7 +170,7 @@ export function ReportView({ report, lang, onStartOver, onBackToCompare, shared,
             )}
           </section>
 
-          <AskList questions={report.questions} title={t.ask} />
+          <AskList questions={report.questions} text={report.text} lang={lang} />
           {report.earlyExit ? (
             <ExitCost report={report} lang={lang} onJump={jumpTo} />
           ) : (

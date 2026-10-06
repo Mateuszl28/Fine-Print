@@ -152,6 +152,10 @@ PRD ref: `prd.md > Before you sign, ask`, `prd.md > Your letter`.
 `components/Letter.tsx` shows a three-way toggle (cancellation / change_request / complaint). The report's own letter is shown for its kind; the others are written by `app/api/letter/route.ts` from what the report already holds (contract text, counterparty, notice rule, the ticked clauses' titles and quotes, and the optional note), so nothing new is stored. `lib/letter.ts` (unit-tested) validates the request, builds the prompt, and checks the result in code: `unbackedAmounts` (every money amount must appear in the contract or the note), `guessLanguage` (stopword counts; the model is told the contract's language and the letter must match it), and a cut-off check. Any problem → one retry with the reasons spelled out. Gemini 2.5 Flash, thinking budget 0, temperature 0: measured 1.4–4.4 s per letter. In-memory cache per instance (24 h) and a 30-an-hour limit per address.
 PRD ref: `prd.md > Your letter`.
 
+### Question notes
+`lib/answers.ts` (unit-tested): notes per contract under `fineprint.answers.<hash of text + questions>` in localStorage (ticks, notes up to 1,000 characters, up to 10 extra questions); empty notes remove the key; storage errors fall back to in-memory notes. `components/AskList.tsx` renders the checklist, the progress count, the note field (shown once ticked or noted), "add your own question", and a print-only copy of each note.
+PRD ref: `prd.md > Ask, and note what they said`.
+
 ### Error and empty messages
 Inline in `app/page.tsx` view state: not-a-contract, too long, failed (with Retry); the input is kept. The no-money case is shown inside the **Verdict strip**.
 PRD ref: `prd.md > States and Boundaries`.

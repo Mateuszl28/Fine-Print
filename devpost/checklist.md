@@ -230,6 +230,16 @@ Build mode: fast
   Learner check: Run `npm run build && npm start`, pick a language, tap any sample: the report should appear at once.
   Commit: `Open the samples instantly from checked, prebuilt reports`
 
+- [x] **23. Ask, and note what they said**
+  Becomes usable: "Before you sign, ask" becomes a checklist for the conversation at the counter: tick each question when it's answered, write down what they said, add your own questions; it's all there again when you reopen the report, and in the PDF.
+  Why now: The learner asked to keep expanding. The questions were the one part of the report you couldn't do anything with; no new model call.
+  PRD ref: `prd.md > Ask, and note what they said`
+  Spec ref: `spec.md > Question notes`
+  Build: `lib/answers.ts` with tests; interactive `AskList.tsx` with print styles; strings in five languages.
+  Verify (mechanical): `npm test` (74 pass) and `npm run build` pass; tests cover keys per contract, save/reload, empty notes removed, broken or blocked storage, and the progress count; browser, lease sample: ticked question 1, noted "No, but they'd cut it to $200", added "Can I keep a cat?" (counter 1 of 5); after a full reload and reopening the sample everything was back; test notes then removed from the browser; no console errors. A first coordinate click missed because the page scrolled between screenshot and click; repeated on the element itself.
+  Learner check: Open a sample, tick a question in "Before you sign, ask", type what they said, add a question of your own, then go back and open it again.
+  Commit: `Turn the questions into a checklist with notes`
+
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 3 the learner tried it and asked for a phone version and an expanded web version (slices 5–6)
@@ -254,6 +264,7 @@ Activity mode: Recap. Map checked in a browser; all paths and symbols verified a
 
 ## Revisions
 
+- Added slice 23 (question notes) — learner asked to keep expanding; agent proposal, no new model call.
 - Added slice 22 (prebuilt sample reports) — learner asked to keep expanding; agent proposal so judges never hit the AI rate limit on a sample.
 - Added slice 21 (amount checks) — learner asked to keep expanding; agent proposal after tracing the loan's occasional wrong total. A full re-read was tried first and rejected (it re-added the purchase price); the shipped version swaps only the worked-out item.
 - Added slice 20 (compare: leaving early) — learner asked to keep expanding; agent proposal, no new model call.

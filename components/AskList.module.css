@@ -38,3 +38,128 @@
   font-size: 1.2rem;
   color: var(--stamp);
 }
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.head .heading {
+  margin-bottom: 8px;
+}
+
+.progress {
+  font-size: 0.85rem;
+  font-weight: 650;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.question {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.question input {
+  margin-top: 5px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--ink);
+}
+
+.list li[data-done] .question span {
+  color: var(--ink-soft);
+}
+
+.note {
+  display: block;
+  width: 100%;
+  margin: 8px 0 2px;
+  padding: 7px 10px;
+  font: inherit;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--paper-sheet);
+  color: var(--ink);
+}
+
+.printNote {
+  display: none;
+}
+
+.remove {
+  margin-top: 4px;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.add {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.add input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 10px;
+  font: inherit;
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.add button {
+  background: var(--ink);
+  color: var(--paper);
+  border: 0;
+  border-radius: var(--radius);
+  padding: 8px 14px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.add button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.local {
+  margin: 8px 0 0;
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+}
+
+@media print {
+  .add,
+  .local,
+  .remove,
+  .note {
+    display: none;
+  }
+
+  .printNote {
+    display: block;
+    margin: 4px 0 0;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    border-left: 3px solid var(--ink);
+    padding-left: 8px;
+  }
+}
