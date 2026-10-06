@@ -86,6 +86,25 @@ export function locateQuotes(
   return { located: kept, dropped };
 }
 
+// A fee the contract says is financed (added to the loan, so repaid inside the installments)
+// must not be counted again. Models sometimes do; this catches it from the contract's own words.
+const FINANCED = /added to the amount financed|added to the (?:loan|principal|balance)|included in the amount financed|is financed|wird mitfinanziert|zum (?:Darlehens|Kredit)betrag hinzugerechnet|doliczon[aey]? do kwoty kredytu|se suma al importe financiado/i;
+
+function amountPattern(amount: number) {
+  const whole = Math.trunc(amount);
+  const cents = Math.round((amount - whole) * 100);
+  // "1,200" may be written 1,200 / 1.200 / 1 200; cents are optional ("$49" or "$49.00")
+  const w = whole.toLocaleString('en-US').replace(/,/g, '[,.\\s]?');
+  return new RegExp(`(?<![\\d.,])${w}(?:[.,]${String(cents).padStart(2, '0')})?(?![\\d])`);
+}
+
+export function dropFinancedFees(text: string, items: Analysis['costItems']): Analysis['costItems'] {
+  const sentences = text.split(/(?<=[.;])\s+|\n+/);
+  const financed = sentences.filter((s) => FINANCED.test(s));
+  if (financed.length === 0) return items;
+  return items.filter((i) => !(i.times === 1 && financed.some((s) => amountPattern(i.amount).test(s))));
+}
+
 export function totalCost(items: Analysis['costItems']): number | null {
   if (items.length === 0) return null;
   const cents = items.reduce((sum, i) => sum + Math.round(i.amount * 100) * Math.max(0, i.times), 0);
@@ -96,18 +115,19 @@ export function buildReport(analysis: Analysis, sourceText: string | null): Repo
   const text = (sourceText ?? analysis.transcript ?? '').replace(/\r\n/g, '\n');
   const { located, dropped } = locateQuotes(text, analysis.clauses);
   const ids = new Set(located.map((c) => c.id));
+  const costItems = dropFinancedFees(text, analysis.costItems);
   const { transcript: _transcript, clauses: _clauses, ...rest } = analysis;
   return {
     ...rest,
     text,
     clauses: located,
-    costItems: analysis.costItems.map((i) => ({
+    costItems: costItems.map((i) => ({
       ...i,
       clauseId: i.clauseId && ids.has(i.clauseId) ? i.clauseId : null,
     })),
     // The subject is shown above the letter; models like to repeat it in the body too.
     letter: { ...analysis.letter, body: analysis.letter.body.replace(/^[ \t]*(subject|re):.*\n+/gim, '').trim() },
-    trueCost: totalCost(analysis.costItems),
+    trueCost: totalCost(costItems),
     score: Math.min(10, Math.max(0, Math.round(analysis.score))),
     droppedQuotes: dropped,
   };

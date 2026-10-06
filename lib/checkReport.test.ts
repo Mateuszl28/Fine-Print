@@ -85,3 +85,24 @@ test('removes a repeated subject line from the letter body', async () => {
   assert.equal(r.letter.body, '[Your name]\n\nDear Gym,');
 });
 
+
+test('a fee financed into the installments is not counted twice', async () => {
+  const { dropFinancedFees } = await import('./checkReport.ts');
+  const contract = 'Payment schedule: 18 monthly payments of $86.50.\n2. ORIGINATION FEE. An origination fee of $49.00 is added to the Amount Financed and is non-refundable.\n4. AUTOPAY. A returned payment fee of $30.00 applies.';
+  const items = [
+    { label: 'Monthly payments', amount: 86.5, times: 18, clauseId: null },
+    { label: 'Opłata przygotowawcza', amount: 49, times: 1, clauseId: null },
+    { label: 'Purchase Protection Plan', amount: 4.99, times: 18, clauseId: null },
+  ];
+  assert.deepEqual(
+    dropFinancedFees(contract, items).map((i) => i.amount),
+    [86.5, 4.99],
+  );
+});
+
+test('fees that are not financed stay', async () => {
+  const { dropFinancedFees } = await import('./checkReport.ts');
+  const contract = 'ENROLLMENT FEE. A one-time enrollment fee of $49.00 is due at signing.';
+  const items = [{ label: 'Enrollment', amount: 49, times: 1, clauseId: null }];
+  assert.equal(dropFinancedFees(contract, items).length, 1);
+});

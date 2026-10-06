@@ -5,6 +5,7 @@ import { STRICT_REMINDER, systemPrompt } from '@/lib/prompt';
 import { isLang, type Lang } from '@/lib/i18n';
 import { clientKey, createLimiter } from '@/lib/rateLimit';
 import { cacheKey, createCache } from '@/lib/resultCache';
+import { getCache } from '@vercel/functions';
 
 export const maxDuration = 120;
 
@@ -19,7 +20,33 @@ const MAX_FILES = 4;
 const MAX_BASE64 = 5_600_000; // ~4.2 MB of file data in total
 
 // Same pasted contract + language within a day → same report, instantly, at no cost.
-const cache = createCache<Report>(200, 24 * 60 * 60 * 1000);
+// Two levels: this instance's memory, then Vercel's Runtime Cache, which every instance
+// in the region shares (locally it falls back to memory too).
+const DAY = 24 * 60 * 60;
+const CACHE_VERSION = 'v2';
+const local = createCache<Report>(200, DAY * 1000);
+const shared = getCache({ namespace: 'fineprint-report' });
+
+async function cachedReport(key: string): Promise<Report | undefined> {
+  const hit = local.get(key);
+  if (hit) return hit;
+  try {
+    const remote = (await shared.get(key)) as Report | null | undefined;
+    if (remote) local.set(key, remote);
+    return remote ?? undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+async function remember(key: string, report: Report) {
+  local.set(key, report);
+  try {
+    await shared.set(key, report, { ttl: DAY, name: 'report' });
+  } catch (err) {
+    console.error('[analyze] runtime cache set failed', err);
+  }
+}
 
 // 20 analyses an hour per address: plenty for a person (or a judge), not for a script.
 const limit = createLimiter(20, 60 * 60 * 1000);
@@ -47,8 +74,9 @@ export async function POST(req: Request) {
   const files = body.files ?? [];
 
   // Cached answers cost nothing, so they don't count against the hourly limit.
-  const key = text ? cacheKey(MODEL, String(THINKING_BUDGET), lang, text) : null;
-  const cached = key ? cache.get(key) : undefined;
+  // Bump CACHE_VERSION whenever the prompt or the checker changes what a report contains.
+  const key = text ? cacheKey(CACHE_VERSION, MODEL, String(THINKING_BUDGET), lang, text) : null;
+  const cached = key ? await cachedReport(key) : undefined;
   if (cached) return Response.json(cached, { headers: { 'x-fineprint-cache': 'hit' } });
 
   const allowed = limit(clientKey(req.headers));
@@ -89,7 +117,7 @@ export async function POST(req: Request) {
       if (retry && retry.clauses.length > report.clauses.length) report = retry;
     }
 
-    if (key) cache.set(key, report);
+    if (key) await remember(key, report);
     return Response.json(report satisfies Report);
   } catch (err) {
     console.error('[analyze] failed', err);

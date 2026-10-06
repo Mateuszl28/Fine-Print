@@ -138,6 +138,7 @@ Build mode: fast
   Verify (mechanical): benchmark on four samples (default 27–35 s → 512 budget 12–18 s, all totals right, 0 dropped quotes); loan run 4× → 4/4 correct; photo 16.7 s and PDF 16.5 s correct; same request twice → 14.8 s then 0.01 s with `x-fineprint-cache: hit`; `npm test` (27 pass) and `npm run build` pass.
   Learner check: Tap a sample, go back, tap it again.
   Commit: `Faster analysis: capped thinking, temperature 0, result cache`
+  Follow-up: the in-memory cache missed in production (requests landed on different instances), so Vercel Runtime Cache was added as a shared level; warming the samples showed the Polish loan double-counting a financed fee, so `dropFinancedFees` now removes it in code, and the cache key carries a version.
 
 ## Hands-on Checkpoints
 
@@ -177,3 +178,5 @@ Activity mode: Recap. Map checked in a browser; all paths and symbols verified a
 - Photo boxes moved to a separate request — boxes requested inside the main analysis landed about a paragraph below the quoted text; a dedicated detection prompt placed them far better, though still not exactly, so the photo view is optional and labelled approximate.
 - Photo marks now come from on-device OCR + alignment; the model-box request was removed — measured: model boxes ~paragraph off or ~half exact, OCR alignment 10/10 line-accurate on the test photo.
 - Thinking budget capped at 512 and temperature 0 — measured 2× faster; budget 0 was faster still but miscounted a loan fee, so it was rejected.
+- Shared cache via Vercel Runtime Cache — the per-instance cache missed when requests hit different instances.
+- `dropFinancedFees` in the checker — prompt rules alone left the loan's financed fee double-counted in some languages; totals are now guarded in code.

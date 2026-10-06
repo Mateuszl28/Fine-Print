@@ -103,6 +103,7 @@ PRD ref: `prd.md > Highlighted contract (the kernel)`, `prd.md > Your letter`.
 `lib/checkReport.ts`. Pure functions, unit-tested:
 - `locateQuotes(text, clauses)`: normalizes whitespace/quotes/dashes, finds each quote's character range in the contract text, drops quotes not found, drops overlaps (keeping the higher severity).
 - `totalCost(costItems)`: sums `amount × times`, rounds to cents, returns the total and line items; returns `null` total when there are no items.
+- `dropFinancedFees(text, costItems)` (tested): removes a one-off item whose amount appears in a contract sentence saying it is financed/added to the amount financed (EN/DE/PL/ES phrasings), because the installments already contain it. Added after the Polish loan run counted the $49 origination fee twice.
 - `score`: uses the model's score, clamped to 0–10.
 PRD ref: `prd.md > Highlighted contract (the kernel)`, `prd.md > True cost`.
 
@@ -168,7 +169,7 @@ PRD ref: `prd.md > Phone app`.
 PRD ref: `prd.md > Phone app`.
 
 ### Speed: thinking budget and result cache
-`app/api/analyze/route.ts`: Gemini's thinking budget is capped at 512 tokens (`FINEPRINT_THINKING` overrides) and temperature is 0. Measured on the four samples: provider default 27–35 s; budget 0 12–14 s but double-counted a loan fee; 512 12–18 s with every total right (loan 4/4 correct after tightening the `costItems` description). `lib/resultCache.ts` (tested): an in-memory LRU (200 entries, 24 h) keyed by sha256(model, budget, language, text) for pasted text only; hits return instantly with `x-fineprint-cache: hit` and skip the rate limit. Photos and PDFs are never cached.
+`app/api/analyze/route.ts`: Gemini's thinking budget is capped at 512 tokens (`FINEPRINT_THINKING` overrides) and temperature is 0. Measured on the four samples: provider default 27–35 s; budget 0 12–14 s but double-counted a loan fee; 512 12–18 s with every total right (loan 4/4 correct after tightening the `costItems` description). Cache, two levels: `lib/resultCache.ts` (tested) is an in-memory LRU (200 entries, 24 h) per instance, backed by Vercel Runtime Cache (`getCache` from `@vercel/functions`, namespace `fineprint-report`, TTL 24 h) shared by every instance in the region. Key: sha256(`CACHE_VERSION`, model, budget, language, text), pasted text only; bump `CACHE_VERSION` when the prompt or checker changes what a report contains. Hits return with `x-fineprint-cache: hit` and skip the rate limit. Photos and PDFs are never cached. Measured in production: first call 13.4 s, repeats 0.2–0.4 s including from a different instance.
 PRD ref: `prd.md > States and Boundaries` (reading).
 
 ### Rate limit
