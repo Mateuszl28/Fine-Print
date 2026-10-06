@@ -160,6 +160,10 @@ PRD ref: `prd.md > Explain it in my language`.
 `lib/ics.ts` (pure: `addMonths`, `noticeDeadline`, `buildIcs`; unit-tested), `components/Reminder.tsx`. The model returns `counterparty` and `notice { daysBeforeEnd, how }`; the browser computes the deadline from the start date the user picks and downloads the .ics. Nothing leaves the browser.
 PRD ref: `prd.md > Calendar reminder`.
 
+### Contract dates
+`lib/dates.ts` (unit-tested): `contractDates(report, start)` walks the schedule: a `price` event wherever the sum of monthly items (`everyMonths === 1`) changes from one month to the next, a `payment` event for each non-monthly payment after month 1, plus `notice` (`noticeDeadline`) and `end` (`addMonths`). `lib/ics.ts`: `buildCalendar(events)` writes one VEVENT per date with its own VALARMs; `buildIcs` is now a one-event wrapper. `components/Reminder.tsx` shows the list as a small timeline (notice in the stamp colour, and as a highlight) and downloads all dates at once.
+PRD ref: `prd.md > Your dates`.
+
 ### Print
 `@media print` rules in `app/globals.css` and `components/Report.module.css`; a print-only list of every clause note in `components/Report.tsx`. "Save as PDF" calls `window.print()`.
 PRD ref: `prd.md > Save as PDF`.

@@ -190,6 +190,16 @@ Build mode: fast
   Learner check: Open the Mietvertrag sample and scroll to the end of the report.
   Commit: `Show how each report was checked`
 
+- [x] **19. Your dates**
+  Becomes usable: The reminder box becomes a timeline from the start date: when the price changes, when yearly fees land, the last day to give notice, when the term ends, and one button puts them all in your calendar.
+  Why now: The learner asked to keep expanding. Slice 16's payment schedule already holds the dates; this turns them into reminders people actually act on, with no new model call.
+  PRD ref: `prd.md > Your dates`
+  Spec ref: `spec.md > Contract dates`
+  Build: `lib/dates.ts` and `buildCalendar` with tests; `Reminder.tsx` timeline and all-dates download; strings in five languages.
+  Verify (mechanical): `npm test` (60 pass) and `npm run build` pass; tests cover the phone promo ending in month 13, a gym yearly fee after signing (the one at signing left out), stepped rent, an older report without a schedule, and a two-event calendar with three alarms; browser: the Mietvertrag from recent reads lists three yearly rent steps (€1,370 → €1,430 → €1,490 → €1,550 with running costs), the notice deadline 8 July 2030 and the term end; no console errors. The download itself wasn't clicked in the browser (file download); the calendar file is covered by the unit test.
+  Learner check: Open the Mietvertrag or the phone plan sample, scroll to "Don't miss the way out", change the start date and tap "Add these dates to your calendar".
+  Commit: `List every date that matters and put them in the calendar`
+
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 3 the learner tried it and asked for a phone version and an expanded web version (slices 5–6)
@@ -214,6 +224,7 @@ Activity mode: Recap. Map checked in a browser; all paths and symbols verified a
 
 ## Revisions
 
+- Added slice 19 (contract dates) — learner asked to keep expanding; agent proposal, no new model call.
 - Added slice 18 (checks panel) — learner asked to keep expanding; agent proposal. Found on the way: cut-off streamed answers weren't retried (fixed).
 - Added slice 17 (month-by-month chart) — learner asked to keep expanding; agent proposal, no new model call.
 - Added slice 16 (exit cost) — learner asked to keep expanding; agent proposal. Found and fixed on the way: Gemini repetition loops (now streamed and aborted) and refundable deposits counted as cost (now removed in code).

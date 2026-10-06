@@ -32,36 +32,34 @@ function fold(line: string) {
   return out.join('\r\n');
 }
 
-export function buildIcs(opts: { deadline: Date; title: string; description: string; now?: Date }): string {
-  const { deadline, title, description } = opts;
-  const next = new Date(deadline.getTime() + 86_400_000);
-  const stamp = (opts.now ?? new Date()).toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
-  const lines = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//Fine Print//Notice reminder//EN',
-    'CALSCALE:GREGORIAN',
-    'BEGIN:VEVENT',
-    `UID:fineprint-${ymd(deadline)}-${Math.abs(hash(title))}@fineprint`,
-    `DTSTAMP:${stamp}`,
-    `DTSTART;VALUE=DATE:${ymd(deadline)}`,
-    `DTEND;VALUE=DATE:${ymd(next)}`,
-    `SUMMARY:${escape(title)}`,
-    `DESCRIPTION:${escape(description)}`,
-    'BEGIN:VALARM',
-    'ACTION:DISPLAY',
-    `DESCRIPTION:${escape(title)}`,
-    'TRIGGER:-P7D',
-    'END:VALARM',
-    'BEGIN:VALARM',
-    'ACTION:DISPLAY',
-    `DESCRIPTION:${escape(title)}`,
-    'TRIGGER:-P1D',
-    'END:VALARM',
-    'END:VEVENT',
-    'END:VCALENDAR',
-  ];
+export type CalendarEvent = { date: Date; title: string; description: string; /** e.g. ['-P7D', '-P1D'] */ alarms: string[] };
+
+/** One all-day event per date, each with its own reminders. */
+export function buildCalendar(events: CalendarEvent[], now: Date = new Date()): string {
+  const stamp = now.toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
+  const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Fine Print//Contract dates//EN', 'CALSCALE:GREGORIAN'];
+  for (const e of events) {
+    const next = new Date(e.date.getTime() + 86_400_000);
+    lines.push(
+      'BEGIN:VEVENT',
+      `UID:fineprint-${ymd(e.date)}-${Math.abs(hash(e.title))}@fineprint`,
+      `DTSTAMP:${stamp}`,
+      `DTSTART;VALUE=DATE:${ymd(e.date)}`,
+      `DTEND;VALUE=DATE:${ymd(next)}`,
+      `SUMMARY:${escape(e.title)}`,
+      `DESCRIPTION:${escape(e.description)}`,
+    );
+    for (const trigger of e.alarms) {
+      lines.push('BEGIN:VALARM', 'ACTION:DISPLAY', `DESCRIPTION:${escape(e.title)}`, `TRIGGER:${trigger}`, 'END:VALARM');
+    }
+    lines.push('END:VEVENT');
+  }
+  lines.push('END:VCALENDAR');
   return lines.map(fold).join('\r\n') + '\r\n';
+}
+
+export function buildIcs(opts: { deadline: Date; title: string; description: string; now?: Date }): string {
+  return buildCalendar([{ date: opts.deadline, title: opts.title, description: opts.description, alarms: ['-P7D', '-P1D'] }], opts.now);
 }
 
 function hash(s: string) {

@@ -61,6 +61,11 @@ type Strings = {
   remindStart: string;
   remindButton: string;
   remindDeadline: string;
+  datesTitle: string;
+  datePrice: (from: string, to: string) => string;
+  datePayment: (label: string, amount: string) => string;
+  dateEnd: string;
+  remindAll: string;
   save: string;
   footer: string;
   notesHeading: string;
@@ -169,6 +174,11 @@ export const strings: Record<Lang, Strings> = {
     remindStart: 'When does (or did) it start?',
     remindButton: 'Add reminder to calendar',
     remindDeadline: 'Last day to send notice',
+    datesTitle: 'Your dates',
+    datePrice: (a, b) => `Monthly charge goes from ${a} to ${b}`,
+    datePayment: (l, a) => `${l}: ${a}`,
+    dateEnd: 'Minimum term ends',
+    remindAll: 'Add these dates to your calendar',
     save: 'Save as PDF',
     footer: 'Not legal advice. This report isn’t saved anywhere — close the tab and it’s gone.',
     notesHeading: 'Every marked clause',
@@ -280,6 +290,11 @@ export const strings: Record<Lang, Strings> = {
     remindStart: 'Kiedy umowa się zaczyna (lub zaczęła)?',
     remindButton: 'Dodaj przypomnienie do kalendarza',
     remindDeadline: 'Ostatni dzień na wypowiedzenie',
+    datesTitle: 'Twoje daty',
+    datePrice: (a, b) => `Miesięczna kwota zmienia się z ${a} na ${b}`,
+    datePayment: (l, a) => `${l}: ${a}`,
+    dateEnd: 'Koniec minimalnego okresu',
+    remindAll: 'Dodaj te daty do kalendarza',
     save: 'Zapisz jako PDF',
     footer: 'To nie jest porada prawna. Raport nie jest nigdzie zapisywany — zamknij kartę i znika.',
     notesHeading: 'Wszystkie zaznaczone zapisy',
@@ -391,6 +406,11 @@ export const strings: Record<Lang, Strings> = {
     remindStart: 'Коли договір починається (почався)?',
     remindButton: 'Додати нагадування в календар',
     remindDeadline: 'Останній день для повідомлення',
+    datesTitle: 'Ваші дати',
+    datePrice: (a, b) => `Щомісячна сума змінюється з ${a} на ${b}`,
+    datePayment: (l, a) => `${l}: ${a}`,
+    dateEnd: 'Кінець мінімального терміну',
+    remindAll: 'Додати ці дати до календаря',
     save: 'Зберегти як PDF',
     footer: 'Це не юридична консультація. Звіт ніде не зберігається — закрийте вкладку, і його немає.',
     notesHeading: 'Усі виділені пункти',
@@ -502,6 +522,11 @@ export const strings: Record<Lang, Strings> = {
     remindStart: '¿Cuándo empieza (o empezó)?',
     remindButton: 'Añadir recordatorio al calendario',
     remindDeadline: 'Último día para avisar',
+    datesTitle: 'Tus fechas',
+    datePrice: (a, b) => `El cargo mensual pasa de ${a} a ${b}`,
+    datePayment: (l, a) => `${l}: ${a}`,
+    dateEnd: 'Termina el plazo mínimo',
+    remindAll: 'Añadir estas fechas al calendario',
     save: 'Guardar como PDF',
     footer: 'No es asesoría legal. Este informe no se guarda en ningún sitio: cierra la pestaña y desaparece.',
     notesHeading: 'Todas las cláusulas marcadas',
@@ -613,6 +638,11 @@ export const strings: Record<Lang, Strings> = {
     remindStart: 'Wann beginnt (begann) der Vertrag?',
     remindButton: 'Erinnerung in den Kalender',
     remindDeadline: 'Letzter Tag für die Kündigung',
+    datesTitle: 'Deine Termine',
+    datePrice: (a, b) => `Monatlicher Betrag ändert sich von ${a} auf ${b}`,
+    datePayment: (l, a) => `${l}: ${a}`,
+    dateEnd: 'Mindestlaufzeit endet',
+    remindAll: 'Diese Termine in den Kalender',
     save: 'Als PDF speichern',
     footer: 'Keine Rechtsberatung. Dieser Bericht wird nirgends gespeichert — Tab schließen, und er ist weg.',
     notesHeading: 'Alle markierten Klauseln',

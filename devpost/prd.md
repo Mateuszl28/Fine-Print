@@ -124,6 +124,12 @@ Added during the build ("wersję web rozwiń"; features proposed by the agent, l
 - [ ] When the contract has a notice rule and a term, the report shows "Don't miss the way out": the notice rule, a start-date field (default today), and the computed last day to send notice.
 - [ ] "Add reminder to calendar" downloads an .ics all-day event on that day with alerts 7 days and 1 day before.
 
+### Your dates
+Added during the build ("rozbuduj dalej"; agent proposal, learner delegated the choice). Extends the calendar reminder.
+- [ ] From the start date, the reminder box lists every date that matters: when the monthly charge changes (a promotion ending, rent stepping up), yearly or other non-monthly fees after signing, the last day to send notice (highlighted), and the end of the minimum term.
+- [ ] "Add these dates to your calendar" downloads one calendar file with all of them; the notice deadline gets a week's and a day's warning, price changes and fees three days'.
+- [ ] Contracts without a notice rule still get the box when there's more than the end date to show ("Your dates"). Worked out in code from the payment schedule; older saved reports show the deadline and the end only.
+
 ### Save as PDF
 - [ ] "Save as PDF" opens the print dialog; the printout shows the verdict, the highlighted contract (colours kept), every clause note, the questions, the reminder and the letter, without buttons.
 

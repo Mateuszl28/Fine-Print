@@ -27,7 +27,7 @@ Built for [Build With AI: Basics](https://learn-ai-basics.devpost.com/) with the
 - **On your photo:** for photo input, the marks can also be shown over your own photo, placed line by line with on-device OCR (Tesseract.js) — the photo isn't sent anywhere for this.
 - **Photo, PDF or text.** Photos are resized in the browser before upload.
 - **Five languages** for the report: English, Polski, Українська, Español, Deutsch. Quotes stay in the contract's language.
-- **Calendar reminder** (.ics) for the last day to give notice.
+- **Your dates:** from the start date, every price change, yearly fee, the last day to give notice and the end of the term, all in one calendar file (.ics).
 - **Save as PDF** with the highlights kept.
 - **Phone:** installable web app, plus an Android app (Capacitor shell around the live site).
 - Fictional sample contracts to try without your own.
