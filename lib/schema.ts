@@ -40,7 +40,9 @@ export const analysisSchema = z.object({
         clauseId: z.string().nullable().describe('id of the clause this comes from, if flagged'),
       }),
     )
-    .describe('Every money item the signer will pay over the minimum term. Empty if none.'),
+    .describe(
+      'Every money item the signer will pay over the minimum term. Empty if none. Never list a fee the contract says is already included in, or added to, an amount being repaid in installments: the installments already contain it.',
+    ),
   costAssumption: z
     .string()
     .describe('One sentence, e.g. "Assuming you stay the minimum 24 months and never freeze."'),

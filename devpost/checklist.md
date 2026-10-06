@@ -129,6 +129,16 @@ Build mode: fast
   Learner check: Photograph a contract, open "On your photo", and check the marks sit on the right lines.
   Commit: `Place photo marks with on-device OCR instead of model guesses`
 
+- [x] **13. Twice as fast, and instant the second time**
+  Becomes usable: A report takes about 10–20 seconds instead of 30; a sample (or any pasted contract) opened again in the same language appears instantly.
+  Why now: The learner asked to keep expanding; the wait was the weakest part of the demo and of a judge's first click.
+  PRD ref: `prd.md > States and Boundaries`
+  Spec ref: `spec.md > Speed: thinking budget and result cache`
+  Build: thinking budget 512 + temperature 0, stricter `costItems` rule, `lib/resultCache.ts` with tests, cache before the rate limit, updated wait copy in five languages.
+  Verify (mechanical): benchmark on four samples (default 27–35 s → 512 budget 12–18 s, all totals right, 0 dropped quotes); loan run 4× → 4/4 correct; photo 16.7 s and PDF 16.5 s correct; same request twice → 14.8 s then 0.01 s with `x-fineprint-cache: hit`; `npm test` (27 pass) and `npm run build` pass.
+  Learner check: Tap a sample, go back, tap it again.
+  Commit: `Faster analysis: capped thinking, temperature 0, result cache`
+
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 3 the learner tried it and asked for a phone version and an expanded web version (slices 5–6)
@@ -166,3 +176,4 @@ Activity mode: Recap. Map checked in a browser; all paths and symbols verified a
 - Added slice 8 (sharing, recent reads, German sample) — learner asked to keep expanding. Sharing is done inside the URL fragment and history in localStorage, so "nothing stored on a server" still holds; the PRD's persistence line was updated.
 - Photo boxes moved to a separate request — boxes requested inside the main analysis landed about a paragraph below the quoted text; a dedicated detection prompt placed them far better, though still not exactly, so the photo view is optional and labelled approximate.
 - Photo marks now come from on-device OCR + alignment; the model-box request was removed — measured: model boxes ~paragraph off or ~half exact, OCR alignment 10/10 line-accurate on the test photo.
+- Thinking budget capped at 512 and temperature 0 — measured 2× faster; budget 0 was faster still but miscounted a loan fee, so it was rejected.

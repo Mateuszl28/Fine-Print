@@ -143,7 +143,7 @@ Added during the build at the learner's request ("zrób wersję również na tel
 
 ## States and Boundaries
 - **First use:** the Start screen with samples, so a judge can see the result without owning a contract.
-- **Reading:** progress messages for the 5–30 seconds of analysis; the user can cancel and go back.
+- **Reading:** progress messages for the ~10–20 seconds of analysis; the user can cancel and go back. The same pasted contract in the same language comes back instantly the second time (samples included).
 - **Not a contract / unreadable photo:** "I couldn't read a contract here. Try a sharper photo in good light, or paste the text." Returns to the input with the file still selected.
 - **Too long:** more than the page limit → a clear message to upload fewer pages.
 - **Analysis failed (network/service):** "Something went wrong on our side. Try again." with a Retry button; the input is kept.

@@ -167,8 +167,12 @@ PRD ref: `prd.md > Phone app`.
 `lib/native.ts` reads `window.Capacitor`, which the Android shell injects into the loaded site, and exposes the `Share` (`@capacitor/share`) and `TextToSpeech` (`@capacitor-community/text-to-speech`) plugins. `ShareButton` and `ReadAloud` prefer them inside the app and fall back to the Web Share / Web Speech APIs in a browser. Adding a plugin needs `npx cap sync android` and a new APK.
 PRD ref: `prd.md > Phone app`.
 
+### Speed: thinking budget and result cache
+`app/api/analyze/route.ts`: Gemini's thinking budget is capped at 512 tokens (`FINEPRINT_THINKING` overrides) and temperature is 0. Measured on the four samples: provider default 27–35 s; budget 0 12–14 s but double-counted a loan fee; 512 12–18 s with every total right (loan 4/4 correct after tightening the `costItems` description). `lib/resultCache.ts` (tested): an in-memory LRU (200 entries, 24 h) keyed by sha256(model, budget, language, text) for pasted text only; hits return instantly with `x-fineprint-cache: hit` and skip the rate limit. Photos and PDFs are never cached.
+PRD ref: `prd.md > States and Boundaries` (reading).
+
 ### Rate limit
-`lib/rateLimit.ts` (unit-tested): an in-memory sliding window, 20 requests per hour per client IP (`x-real-ip` / `x-forwarded-for`, which Vercel sets), checked first in `/api/analyze`; over the limit returns 429 `rate_limited` with `retry-after`. Per function instance, so a speed bump rather than a hard cap; the AI Gateway budget limit is the hard cap.
+`lib/rateLimit.ts` (unit-tested): an in-memory sliding window, 20 requests per hour per client IP (`x-real-ip` / `x-forwarded-for`, which Vercel sets), checked in `/api/analyze` after the cache lookup; over the limit returns 429 `rate_limited` with `retry-after`. Per function instance, so a speed bump rather than a hard cap; the AI Gateway budget limit is the hard cap.
 PRD ref: `prd.md > Fair use`.
 
 ### Installable web app

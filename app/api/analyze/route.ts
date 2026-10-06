@@ -4,15 +4,22 @@ import { buildReport } from '@/lib/checkReport';
 import { STRICT_REMINDER, systemPrompt } from '@/lib/prompt';
 import { isLang, type Lang } from '@/lib/i18n';
 import { clientKey, createLimiter } from '@/lib/rateLimit';
+import { cacheKey, createCache } from '@/lib/resultCache';
 
 export const maxDuration = 120;
 
 // Gemini 2.5 Flash is available on the AI Gateway free tier and handles photos and PDFs.
 // Set FINEPRINT_MODEL to swap in another Gateway model (e.g. google/gemini-2.5-pro).
 const MODEL = process.env.FINEPRINT_MODEL ?? 'google/gemini-2.5-flash';
+// Tokens Gemini may spend "thinking" before answering. Measured on the four samples:
+// default ≈ 27–35 s; 0 ≈ 12–14 s but miscounted a loan fee; 512 ≈ 12–13 s with every total right.
+const THINKING_BUDGET: number | null = process.env.FINEPRINT_THINKING ? Number(process.env.FINEPRINT_THINKING) : 512;
 const MAX_TEXT = 60_000; // characters, roughly 15 pages
 const MAX_FILES = 4;
 const MAX_BASE64 = 5_600_000; // ~4.2 MB of file data in total
+
+// Same pasted contract + language within a day → same report, instantly, at no cost.
+const cache = createCache<Report>(200, 24 * 60 * 60 * 1000);
 
 // 20 analyses an hour per address: plenty for a person (or a judge), not for a script.
 const limit = createLimiter(20, 60 * 60 * 1000);
@@ -28,14 +35,6 @@ function fail(error: AnalyzeError['error'], status: number) {
 }
 
 export async function POST(req: Request) {
-  const allowed = limit(clientKey(req.headers));
-  if (!allowed.ok) {
-    return Response.json({ error: 'rate_limited' } satisfies AnalyzeError, {
-      status: 429,
-      headers: { 'retry-after': String(allowed.retryAfterSeconds) },
-    });
-  }
-
   let body: Body;
   try {
     body = await req.json();
@@ -46,6 +45,19 @@ export async function POST(req: Request) {
   const lang: Lang = isLang(body.lang) ? body.lang : 'en';
   const text = body.text?.trim();
   const files = body.files ?? [];
+
+  // Cached answers cost nothing, so they don't count against the hourly limit.
+  const key = text ? cacheKey(MODEL, String(THINKING_BUDGET), lang, text) : null;
+  const cached = key ? cache.get(key) : undefined;
+  if (cached) return Response.json(cached, { headers: { 'x-fineprint-cache': 'hit' } });
+
+  const allowed = limit(clientKey(req.headers));
+  if (!allowed.ok) {
+    return Response.json({ error: 'rate_limited' } satisfies AnalyzeError, {
+      status: 429,
+      headers: { 'retry-after': String(allowed.retryAfterSeconds) },
+    });
+  }
 
   if (!text && files.length === 0) return fail('bad_input', 400);
   if (text && text.length > MAX_TEXT) return fail('too_long', 413);
@@ -77,6 +89,7 @@ export async function POST(req: Request) {
       if (retry && retry.clauses.length > report.clauses.length) report = retry;
     }
 
+    if (key) cache.set(key, report);
     return Response.json(report satisfies Report);
   } catch (err) {
     console.error('[analyze] failed', err);
@@ -95,7 +108,10 @@ async function analyze(
     messages,
     output: Output.object({ schema: analysisSchema }),
     maxOutputTokens: 16_000,
-    temperature: 0.2,
+    temperature: 0,
+    ...(THINKING_BUDGET !== null && {
+      providerOptions: { google: { thinkingConfig: { thinkingBudget: THINKING_BUDGET } } },
+    }),
   });
   const text = sourceText ?? output.transcript ?? '';
   if (!output.isContract || text.trim().length < 80) return null;
