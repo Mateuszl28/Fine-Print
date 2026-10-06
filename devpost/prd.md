@@ -90,6 +90,12 @@ Added during the build ("rozbuduj dalej"; agent proposal, learner delegated the 
 - [ ] At the end of every report, a short list says what the code checked for this contract and what it threw out: marked passages found word for word, AI quotes that weren't in the contract, explained words found in the text, the total added up in code, amounts left out of the total and why (a refundable deposit, a fee already inside the installments), and whether the exit rules checked out.
 - [ ] Ticks for what passed, a cross or minus for what was dropped, always with words, never colour alone. Older saved reports simply don't show it.
 
+### Every amount from the contract
+Added during the build ("rozbuduj dalej"; agent proposal after a wrong total was traced to its cause).
+- [ ] Every amount in the true cost must be written in the contract (or be a written amount stepped up by another written amount, like rent rising €60 a year). If the AI worked one out itself, the costs are read again, only that item, from the contract's own numbers; the report says so under "How Fine Print checked this". If it still can't be backed, the report warns about it there.
+- [ ] A paid add-on the contract signs you up for unless you cancel ("You are enrolled in the Protection Plan for $4.99 per month") is put back into the total if the AI left it out, and the report says so.
+- [ ] When the AI service is briefly overloaded, the Start screen says "Busy for a moment… try again in a minute" instead of a generic error.
+
 ### Fairness score and verdict
 - [ ] A score from 0 to 10 with a one-line verdict (e.g., "4/10 — Fine if you never want to leave.").
 - [ ] Shows counts: N traps, N watch-outs, N fair.

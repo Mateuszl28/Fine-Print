@@ -5,8 +5,8 @@ import { strings, type Lang } from '@/lib/i18n';
 import { money } from '@/lib/format';
 import styles from './Checks.module.css';
 
-type Mark = 'ok' | 'out' | 'minus';
-const SYMBOL: Record<Mark, string> = { ok: '✓', out: '✕', minus: '−' };
+type Mark = 'ok' | 'out' | 'minus' | 'plus';
+const SYMBOL: Record<Mark, string> = { ok: '✓', out: '✕', minus: '−', plus: '+' };
 
 /** What the code verified and threw out for this report: the model writes, code checks. */
 export function Checks({ report, lang }: { report: Report; lang: Lang }) {
@@ -24,6 +24,13 @@ export function Checks({ report, lang }: { report: Report; lang: Lang }) {
   for (const r of c.removed) {
     const what = `${r.label} (${r.times > 1 ? `${r.times} × ` : ''}${fmt(r.amount)})`;
     rows.push(['minus', r.reason === 'deposit' ? t.checkRemovedDeposit(what) : t.checkRemovedFinanced(what)]);
+  }
+  const what = (x: { label: string; amount: number; times: number }) =>
+    `${x.label} (${x.times > 1 ? `${x.times} × ` : ''}${fmt(x.amount)})`;
+  for (const x of c.reread ?? []) rows.push(['out', t.checkReread(what(x))]);
+  for (const x of c.unbacked ?? []) rows.push(['out', t.checkUnbacked(what(x))]);
+  for (const a of c.added ?? []) {
+    rows.push(['plus', t.checkAdded(`${a.label} (${a.times > 1 ? `${a.times} × ` : ''}${fmt(a.amount)})`)]);
   }
   if (c.exit === 'checked') rows.push(['ok', t.checkExitOk]);
   if (c.exit === 'rejected') rows.push(['out', t.checkExitRejected]);

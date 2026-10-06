@@ -177,6 +177,51 @@ export function dropRefundableDeposits(text: string, items: Analysis['costItems'
   return items.filter((i) => !deposits.includes(total(i)) && !(i.times === 1 && split.has(i.amount)));
 }
 
+/** Every number written in the text, in cents. */
+function textAmounts(text: string): Set<number> {
+  const out = new Set<number>();
+  for (const m of text.matchAll(/\d[\d.,]*\d|\d/g)) out.add(Math.round(parseAmount(m[0]) * 100));
+  return out;
+}
+
+/**
+ * An amount is backed by the contract when it is written there, or when it is a written amount
+ * stepped up a few times by another written amount ("rent rises by €60 a year": 1,150 → 1,210).
+ */
+function isBacked(amount: number, written: Set<number>): boolean {
+  const c = Math.round(amount * 100);
+  if (written.has(c)) return true;
+  for (const base of written) {
+    for (const step of written) {
+      if (step <= 0 || base >= c) continue;
+      const n = (c - base) / step;
+      if (Number.isInteger(n) && n >= 1 && n <= 10) return true;
+    }
+  }
+  return false;
+}
+
+/** Cost items whose amount the contract doesn't back: worked out by the model, not read. */
+export function unbackedCostItems(text: string, items: Analysis['costItems']): Analysis['costItems'] {
+  const written = textAmounts(text);
+  return items.filter((i) => !isBacked(i.amount, written));
+}
+
+/**
+ * Swaps the worked-out items for their replacements and leaves every other item alone, so a
+ * second reading can fix one number without re-deciding the whole list.
+ */
+export function replaceUnbacked(
+  items: Analysis['costItems'],
+  unbacked: Analysis['costItems'],
+  replacements: Analysis['costItems'],
+): Analysis['costItems'] {
+  const kept = items.filter((i) => !unbacked.includes(i));
+  const same = (a: Analysis['costItems'][number], b: Analysis['costItems'][number]) =>
+    Math.round(a.amount * 100) === Math.round(b.amount * 100) && a.times === b.times;
+  return [...kept, ...replacements.filter((r) => !kept.some((k) => same(k, r)))];
+}
+
 export function totalCost(items: Analysis['costItems']): number | null {
   if (items.length === 0) return null;
   const cents = items.reduce((sum, i) => sum + Math.round(i.amount * 100) * Math.max(0, i.times), 0);
@@ -185,7 +230,13 @@ export function totalCost(items: Analysis['costItems']): number | null {
 
 const pick = (i: Analysis['costItems'][number]) => ({ label: i.label, amount: i.amount, times: i.times });
 
-export function buildReport(analysis: Analysis, sourceText: string | null): Report {
+export function buildReport(
+  analysis: Analysis,
+  sourceText: string | null,
+  added: Analysis['costItems'] = [],
+  /** Amounts from a first attempt that weren't in the contract, replaced by a second reading. */
+  reread: Analysis['costItems'] = [],
+): Report {
   const text = (sourceText ?? analysis.transcript ?? '').replace(/\r\n/g, '\n');
   const { located, dropped, notFound } = locateQuotes(text, analysis.clauses);
   const ids = new Set(located.map((c) => c.id));
@@ -220,6 +271,9 @@ export function buildReport(analysis: Analysis, sourceText: string | null): Repo
       terms: { shown: terms.length, left: Math.max(0, (glossary ?? []).length - terms.length) },
       payments: costItems.length,
       removed,
+      added: added.map(pick),
+      reread: reread.map(pick),
+      unbacked: unbackedCostItems(text, costItems).map(pick),
       exit: !earlyExit || analysis.contractType === 'installment_loan' ? 'none' : exitPlan ? 'checked' : 'rejected',
     },
     earlyExit: exitPlan,

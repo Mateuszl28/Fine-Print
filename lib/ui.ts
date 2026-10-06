@@ -27,7 +27,7 @@ type UI = {
   footerBest: string;
   honestHeading: string;
   honest: [title: string, body: string][];
-  errors: Record<'not_a_contract' | 'too_long' | 'bad_input' | 'failed' | 'rate_limited', [string, string]>;
+  errors: Record<'not_a_contract' | 'too_long' | 'bad_input' | 'failed' | 'rate_limited' | 'busy', [string, string]>;
   tryAgain: string;
   reading: string[];
   readingPhoto: string;
@@ -91,6 +91,7 @@ export const ui: Record<Lang, UI> = {
       bad_input: ['I can’t open that file.', 'Photos (JPG, PNG) and PDFs work. Or paste the text.'],
       failed: ['Something went wrong on our side.', 'Nothing you did. Give it another go.'],
       rate_limited: ['That’s a lot of contracts for one hour.', 'Fine Print runs on a small budget, so it takes a breather after 20 reads an hour. Try again a bit later.'],
+      busy: ['Busy for a moment.', 'A lot of contracts are being read right now and the AI behind Fine Print asked for a pause. Try again in a minute.'],
     },
     tryAgain: 'Try again',
     reading: [
@@ -166,6 +167,7 @@ export const ui: Record<Lang, UI> = {
       bad_input: ['Nie mogę otworzyć tego pliku.', 'Działają zdjęcia (JPG, PNG) i PDF-y. Albo wklej tekst.'],
       failed: ['Coś poszło nie tak po naszej stronie.', 'To nie twoja wina. Spróbuj jeszcze raz.'],
       rate_limited: ['Sporo umów jak na godzinę.', 'Fine Print działa na małym budżecie, więc po 20 analizach na godzinę robi przerwę. Spróbuj za chwilę.'],
+      busy: ['Chwila przerwy.', 'Właśnie czyta się sporo umów i AI, z którego korzysta Fine Print, poprosiło o pauzę. Spróbuj za minutę.'],
     },
     tryAgain: 'Spróbuj ponownie',
     reading: [
@@ -241,6 +243,7 @@ export const ui: Record<Lang, UI> = {
       bad_input: ['Не можу відкрити цей файл.', 'Підходять фото (JPG, PNG) і PDF. Або вставте текст.'],
       failed: ['Щось пішло не так на нашому боці.', 'Ви нічого не зробили неправильно. Спробуйте ще раз.'],
       rate_limited: ['Забагато договорів за годину.', 'Fine Print працює з невеликим бюджетом, тож після 20 аналізів на годину робить перерву. Спробуйте трохи пізніше.'],
+      busy: ['Хвилинку.', 'Зараз читають багато договорів, і ШІ, на якому працює Fine Print, попросив паузу. Спробуйте за хвилину.'],
     },
     tryAgain: 'Спробувати ще раз',
     reading: [
@@ -316,6 +319,7 @@ export const ui: Record<Lang, UI> = {
       bad_input: ['No puedo abrir ese archivo.', 'Funcionan fotos (JPG, PNG) y PDF. O pega el texto.'],
       failed: ['Algo ha fallado por nuestra parte.', 'No es culpa tuya. Vuelve a intentarlo.'],
       rate_limited: ['Muchos contratos para una hora.', 'Fine Print funciona con poco presupuesto y descansa tras 20 lecturas por hora. Inténtalo un poco más tarde.'],
+      busy: ['Un momento.', 'Ahora mismo se están leyendo muchos contratos y la IA de Fine Print pidió una pausa. Inténtalo en un minuto.'],
     },
     tryAgain: 'Reintentar',
     reading: [
@@ -391,6 +395,7 @@ export const ui: Record<Lang, UI> = {
       bad_input: ['Diese Datei kann ich nicht öffnen.', 'Fotos (JPG, PNG) und PDFs funktionieren. Oder füge den Text ein.'],
       failed: ['Bei uns ist etwas schiefgegangen.', 'Nicht deine Schuld. Versuch es noch mal.'],
       rate_limited: ['Ganz schön viele Verträge für eine Stunde.', 'Fine Print läuft mit kleinem Budget und macht nach 20 Analysen pro Stunde Pause. Versuch es etwas später.'],
+      busy: ['Kurz Geduld.', 'Gerade werden viele Verträge gelesen, und die KI hinter Fine Print braucht eine Pause. Versuch es in einer Minute noch einmal.'],
     },
     tryAgain: 'Noch mal versuchen',
     reading: [

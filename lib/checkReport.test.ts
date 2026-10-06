@@ -196,3 +196,43 @@ test('the report records what the code checked and threw out', async () => {
   assert.equal(r.checks?.exit, 'rejected');
   assert.equal(r.trueCost, 12000);
 });
+
+test('items put back by the add-on follow-up are recorded', async () => {
+  const { buildReport } = await import('./checkReport.ts');
+  const plan = { label: 'Protection plan', amount: 4.99, times: 18, fromMonth: 1, everyMonths: 1, clauseId: null };
+  const r = buildReport(
+    {
+      isContract: true, transcript: null, contractType: 'installment_loan', title: 't', termMonths: 18,
+      advertised: { label: '$1,200', amount: 1200 }, currency: 'USD',
+      costItems: [{ label: 'Payments', amount: 86.5, times: 18, fromMonth: 1, everyMonths: 1, clauseId: null }, plan],
+      costAssumption: '', score: 5, verdict: 'v', questions: [], counterparty: 'L', notice: null,
+      clauses: [], glossary: [], earlyExit: null, letter: { kind: 'change_request', subject: 's', body: 'b' },
+    },
+    'You pay 18 payments of $86.50. You are enrolled in the Plan for $4.99 per month.',
+    [plan],
+  );
+  assert.equal(r.trueCost, 1646.82);
+  assert.deepEqual(r.checks?.added, [{ label: 'Protection plan', amount: 4.99, times: 18 }]);
+});
+
+test('amounts must come from the contract: written there, or a written amount stepped up', async () => {
+  const { unbackedCostItems } = await import('./checkReport.ts');
+  const { samples } = await import('./samples.ts');
+  const text = (id: string) => samples.find((s) => s.id === id)!.text;
+  const item = (label: string, amount: number, times = 1) => ({ label, amount, times, fromMonth: 1, everyMonths: 1, clauseId: null });
+  // The loan's payment is $86.50 plus the $4.99 plan; $81.51 is a subtraction the model made up.
+  assert.deepEqual(unbackedCostItems(text('loan'), [item('Payments', 81.51, 18), item('Plan', 4.99, 18)]).map((i) => i.amount), [81.51]);
+  assert.deepEqual(unbackedCostItems(text('loan'), [item('Payments', 86.5, 18), item('Plan', 4.99, 18)]), []);
+  // The Berlin rent steps up by €60 a year: 1,210 and 1,330 are backed.
+  assert.deepEqual(unbackedCostItems(text('miet'), [item('Y1', 1150), item('Y2', 1210), item('Y4', 1330), item('NK', 220)]), []);
+  assert.deepEqual(unbackedCostItems(text('gym'), [item('Dues', 29.99, 24), item('Fee', 49), item('Annual', 59, 2)]), []);
+});
+
+test('a second reading swaps only the worked-out item', async () => {
+  const { replaceUnbacked } = await import('./checkReport.ts');
+  const item = (label: string, amount: number, times: number) => ({ label, amount, times, fromMonth: 1, everyMonths: 1, clauseId: null });
+  const bad = item('Payments', 81.51, 18);
+  const plan = item('Plan', 4.99, 18);
+  const merged = replaceUnbacked([bad, plan], [bad], [item('Payments', 86.5, 18), item('Plan again', 4.99, 18)]);
+  assert.deepEqual(merged.map((i) => [i.label, i.amount]), [['Plan', 4.99], ['Payments', 86.5]]);
+});

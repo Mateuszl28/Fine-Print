@@ -127,6 +127,9 @@ type Strings = {
   checkRemovedDeposit: (what: string) => string;
   checkRemovedFinanced: (what: string) => string;
   checkExitOk: string;
+  checkAdded: (what: string) => string;
+  checkReread: (what: string) => string;
+  checkUnbacked: (what: string) => string;
   checkExitRejected: string;
 };
 
@@ -249,6 +252,9 @@ export const strings: Record<Lang, Strings> = {
     checkRemovedDeposit: (w) => `Left out of the total: ${w}. A deposit you get back isn’t a cost.`,
     checkRemovedFinanced: (w) => `Left out of the total: ${w}. It’s already inside the installments.`,
     checkExitOk: 'Exit rules: every number checked against the contract.',
+    checkAdded: (w) => `Added to the total: ${w}. The contract signs you up for it unless you cancel, and the AI had left it out.`,
+    checkReread: (w) => `The AI first worked out ${w} itself. That number isn’t in the contract, so the costs were read again using only the contract’s own numbers.`,
+    checkUnbacked: (w) => `${w}: this amount isn’t written in the contract. Treat that part of the total with care.`,
     checkExitRejected: 'The AI’s exit rules didn’t match the contract’s numbers, so there’s no exit calculator for this one.',
   },
   pl: {
@@ -369,6 +375,9 @@ export const strings: Record<Lang, Strings> = {
     checkRemovedDeposit: (w) => `Pominięte w sumie: ${w}. Zwrotna kaucja to nie koszt.`,
     checkRemovedFinanced: (w) => `Pominięte w sumie: ${w}. Ta kwota jest już w ratach.`,
     checkExitOk: 'Reguły wyjścia: każda liczba sprawdzona z umową.',
+    checkAdded: (w) => `Dodane do sumy: ${w}. Umowa zapisuje Cię na to domyślnie, a AI to pominęło.`,
+    checkReread: (w) => `AI najpierw samo wyliczyło ${w}. Tej liczby nie ma w umowie, więc koszty odczytano ponownie, tylko z liczb zapisanych w umowie.`,
+    checkUnbacked: (w) => `${w}: tej kwoty nie ma w umowie. Tę część sumy traktuj ostrożnie.`,
     checkExitRejected: 'Reguły wyjścia od AI nie zgadzały się z liczbami w umowie, więc kalkulator wyjścia jest ukryty.',
   },
   uk: {
@@ -489,6 +498,9 @@ export const strings: Record<Lang, Strings> = {
     checkRemovedDeposit: (w) => `Не враховано в сумі: ${w}. Застава, яку повертають, не є витратою.`,
     checkRemovedFinanced: (w) => `Не враховано в сумі: ${w}. Ця сума вже в платежах.`,
     checkExitOk: 'Правила виходу: кожне число звірено з договором.',
+    checkAdded: (w) => `Додано до суми: ${w}. Договір підключає це за замовчуванням, а ШІ це пропустив.`,
+    checkReread: (w) => `ШІ спершу саме вирахувало ${w}. Цього числа немає в договорі, тому витрати прочитано знову лише з чисел договору.`,
+    checkUnbacked: (w) => `${w}: цієї суми немає в договорі. До цієї частини підсумку ставтеся обережно.`,
     checkExitRejected: 'Правила виходу від ШІ не збіглися з числами договору, тому калькулятора виходу немає.',
   },
   es: {
@@ -609,6 +621,9 @@ export const strings: Record<Lang, Strings> = {
     checkRemovedDeposit: (w) => `Fuera del total: ${w}. Un depósito que te devuelven no es un coste.`,
     checkRemovedFinanced: (w) => `Fuera del total: ${w}. Ya está dentro de las cuotas.`,
     checkExitOk: 'Reglas de salida: cada número comprobado con el contrato.',
+    checkAdded: (w) => `Añadido al total: ${w}. El contrato te inscribe salvo que lo canceles, y la IA lo había dejado fuera.`,
+    checkReread: (w) => `La IA calculó primero ${w} por su cuenta. Ese número no está en el contrato, así que los costes se leyeron de nuevo solo con los números del contrato.`,
+    checkUnbacked: (w) => `${w}: este importe no figura en el contrato. Toma esa parte del total con cautela.`,
     checkExitRejected: 'Las reglas de salida de la IA no coincidían con los números del contrato, así que no hay calculadora de salida.',
   },
   de: {
@@ -729,6 +744,9 @@ export const strings: Record<Lang, Strings> = {
     checkRemovedDeposit: (w) => `Nicht in der Summe: ${w}. Eine Kaution, die du zurückbekommst, ist kein Kostenpunkt.`,
     checkRemovedFinanced: (w) => `Nicht in der Summe: ${w}. Der Betrag steckt schon in den Raten.`,
     checkExitOk: 'Ausstiegsregeln: jede Zahl mit dem Vertrag abgeglichen.',
+    checkAdded: (w) => `Zur Summe hinzugefügt: ${w}. Der Vertrag bucht es automatisch dazu, und die KI hatte es ausgelassen.`,
+    checkReread: (w) => `Die KI hat ${w} zuerst selbst ausgerechnet. Diese Zahl steht nicht im Vertrag, deshalb wurden die Kosten noch einmal nur aus den Zahlen des Vertrags gelesen.`,
+    checkUnbacked: (w) => `${w}: Dieser Betrag steht nicht im Vertrag. Diesen Teil der Summe mit Vorsicht lesen.`,
     checkExitRejected: 'Die Ausstiegsregeln der KI passten nicht zu den Zahlen im Vertrag, deshalb gibt es hier keinen Ausstiegsrechner.',
   },
 };

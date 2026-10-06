@@ -129,6 +129,12 @@ export type ReportChecks = {
   terms: { shown: number; left: number };
   payments: number;
   removed: { label: string; amount: number; times: number; reason: 'deposit' | 'financed' }[];
+  /** Auto-enrolled add-ons the model left out, put back after a focused follow-up. */
+  added?: { label: string; amount: number; times: number }[];
+  /** Amounts the model worked out itself; the costs were read again from the contract. */
+  reread?: { label: string; amount: number; times: number }[];
+  /** Amounts still not found in the contract after everything else. */
+  unbacked?: { label: string; amount: number; times: number }[];
   exit: 'checked' | 'rejected' | 'none';
 };
 
@@ -147,4 +153,4 @@ export type Report = Omit<Analysis, 'transcript' | 'clauses' | 'glossary' | 'ear
   checks?: ReportChecks;
 };
 
-export type AnalyzeError = { error: 'not_a_contract' | 'too_long' | 'bad_input' | 'failed' | 'rate_limited' };
+export type AnalyzeError = { error: 'not_a_contract' | 'too_long' | 'bad_input' | 'failed' | 'rate_limited' | 'busy' };

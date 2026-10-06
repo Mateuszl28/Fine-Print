@@ -210,6 +210,16 @@ Build mode: fast
   Learner check: On the Start screen tap "Compare them side by side", then "Or try it with two phone plans", and drag the slider under the two offers.
   Commit: `Compare what two offers cost if you leave early`
 
+- [x] **21. Every amount from the contract**
+  Becomes usable: The loan's true cost no longer drops the $4.99/month protection plan now and then. Any amount the AI worked out itself is caught and read again from the contract, a missed auto-enrolled add-on is put back, and the report says what happened. An overloaded AI service shows "Busy for a moment" instead of an error.
+  Why now: The learner asked to keep expanding; the one total still wrong now and then was on a flagship sample. Tracing it showed the cause: the AI subtracted the plan from the $86.50 payment and listed $81.51, a number that isn't in the contract.
+  PRD ref: `prd.md > Every amount from the contract`
+  Spec ref: `spec.md > Amount checks and follow-ups`
+  Build: `unbackedCostItems` + `replaceUnbacked` and `lib/addons.ts` with tests; `costsPrompt` and `addOnPrompt`; follow-ups in `/api/analyze`; `checks.reread/added/unbacked` and their rows in `Checks.tsx`; `busy` error in five languages; cache v12.
+  Verify (mechanical): `npm test` (70 pass) and `npm run build` pass. Unit tests run the checks against the real sample texts (81.51 flagged; the Berlin rent steps 1,210/1,330 backed; the add-on found only in the loan). Real model, called directly with the bad first answer: the minimal re-read returned 86.50 × 18 three times out of three (total $1,646.82); the add-on question returned 4.99 × 18, accepted. End to end: 6 sequential loan runs in 5 languages all $1,646.82; gym, Mietvertrag, phone, lease all right with no needless follow-ups. Found on the way: parallel test sweeps were hitting the Gateway's 5-requests-a-minute limit, which is also what the "cut off" answers in slice 18 most likely were.
+  Learner check: Open the loan sample in a few languages; the total should always be $1,646.82, and "How Fine Print checked this" lists what was checked.
+  Commit: `Check every amount against the contract`
+
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 3 the learner tried it and asked for a phone version and an expanded web version (slices 5–6)
@@ -234,6 +244,7 @@ Activity mode: Recap. Map checked in a browser; all paths and symbols verified a
 
 ## Revisions
 
+- Added slice 21 (amount checks) — learner asked to keep expanding; agent proposal after tracing the loan's occasional wrong total. A full re-read was tried first and rejected (it re-added the purchase price); the shipped version swaps only the worked-out item.
 - Added slice 20 (compare: leaving early) — learner asked to keep expanding; agent proposal, no new model call.
 - Added slice 19 (contract dates) — learner asked to keep expanding; agent proposal, no new model call.
 - Added slice 18 (checks panel) — learner asked to keep expanding; agent proposal. Found on the way: cut-off streamed answers weren't retried (fixed).
