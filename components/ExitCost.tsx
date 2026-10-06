@@ -4,7 +4,8 @@ import { useId, useState } from 'react';
 import type { Report } from '@/lib/schema';
 import { strings, type Lang } from '@/lib/i18n';
 import { money } from '@/lib/format';
-import { exitAt } from '@/lib/exit';
+import { exitAt, monthlySchedule } from '@/lib/exit';
+import { PaymentChart } from './PaymentChart';
 import styles from './ExitCost.module.css';
 
 type Props = { report: Report; lang: Lang; onJump: (clauseId: string) => void };
@@ -22,6 +23,7 @@ export function ExitCost({ report, lang, onJump }: Props) {
   const r = exitAt(month, report.costItems, plan, term);
   // A lock-in for the whole term: one sentence says it all, a slider would only repeat it.
   const lockedThroughout = !r.allowed && r.lockedUntil >= term - 1;
+  const months = monthlySchedule(report.costItems, term, report.trueCost);
   const titleOf = (clauseId: string | null) => report.clauses.find((c) => c.id === clauseId)?.title;
 
   return (
@@ -42,6 +44,15 @@ export function ExitCost({ report, lang, onJump }: Props) {
           onChange={(e) => setMonth(Number(e.target.value))}
         />
       </label>
+      )}
+
+      {months && (
+        <PaymentChart
+          months={months}
+          currency={report.currency}
+          lang={lang}
+          leave={r.allowed ? { lastMonth: r.lastMonth, fee: r.fee } : null}
+        />
       )}
 
       {!r.allowed ? (

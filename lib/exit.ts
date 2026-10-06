@@ -104,3 +104,36 @@ export function checkExitPlan(
   const notice = raw.noticeMonths && raw.noticeMonths > 0 && appearsInText(raw.noticeMonths) ? Math.round(raw.noticeMonths) : 0;
   return { noticeMonths: notice, rules };
 }
+
+export type MonthPayments = { month: number; total: number; parts: { label: string; amount: number }[] };
+
+/**
+ * What is paid in each month of the term, item by item. Null when the schedule can't be trusted:
+ * a report from before schedules existed, or bars that wouldn't add up to the true cost.
+ */
+export function monthlySchedule(items: CostItem[], termMonths: number | null, trueCost: number | null): MonthPayments[] | null {
+  if (!termMonths || trueCost === null || items.length === 0) return null;
+  if (items.some((i) => typeof i.fromMonth !== 'number' || typeof i.everyMonths !== 'number')) return null;
+  const last = Math.max(termMonths, ...items.flatMap(paymentMonths));
+  const months: MonthPayments[] = Array.from({ length: last }, (_, k) => ({ month: k + 1, total: 0, parts: [] }));
+  let sum = 0;
+  for (const item of items) {
+    for (const m of paymentMonths(item)) {
+      months[m - 1].parts.push({ label: item.label, amount: item.amount });
+      months[m - 1].total = (cents(months[m - 1].total) + cents(item.amount)) / 100;
+      sum += cents(item.amount);
+    }
+  }
+  return sum === cents(trueCost) ? months : null;
+}
+
+/** Consecutive months with the same total, for the table view: "Months 1–12: $67.99". */
+export function scheduleRuns(months: MonthPayments[]): { from: number; to: number; total: number }[] {
+  const runs: { from: number; to: number; total: number }[] = [];
+  for (const m of months) {
+    const prev = runs[runs.length - 1];
+    if (prev && prev.total === m.total && prev.to === m.month - 1) prev.to = m.month;
+    else runs.push({ from: m.month, to: m.month, total: m.total });
+  }
+  return runs;
+}

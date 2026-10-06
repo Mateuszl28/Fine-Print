@@ -79,6 +79,12 @@ Added during the build ("rozbuduj dalej"; agent proposal, learner delegated the 
 - [ ] A lock-in says so plainly ("You can't leave before the end of month 48"); a month the contract says nothing about is labelled that way.
 - [ ] Shown only when the exit rules check out against the contract's own numbers; never for loans (paying early is not "leaving", and interest needs an amortization table). The numbers are added up in code, like the true cost.
 
+### Month by month
+Added during the build ("rozbuduj dalej"; agent proposal, learner delegated the choice).
+- [ ] A bar per month shows what you pay in it: promotional prices that step up, yearly fees, one-offs at signing, rent that rises each year. Hover or tap a bar for what it's made of.
+- [ ] Inside "What leaving early costs" the chart follows the slider: months after you leave fade, and the exit cost sits on the last month you pay.
+- [ ] Shown only when the bars add up exactly to the true cost; on its own (e.g. a loan) only when the amounts actually change. A table view lists the same months for screen readers.
+
 ### Fairness score and verdict
 - [ ] A score from 0 to 10 with a one-line verdict (e.g., "4/10 — Fine if you never want to leave.").
 - [ ] Shows counts: N traps, N watch-outs, N fair.

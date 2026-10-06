@@ -120,6 +120,10 @@ Schema: each `costItems` entry gets `fromMonth` and `everyMonths`; `earlyExit` (
 Also in this slice: `dropRefundableDeposits` (deposit amount read from the contract's own "deposit of / Kaution in Höhe von / kaucja w wysokości" phrase; drops a cost item, or same-amount one-off installments, adding up to it); the analysis is streamed so a repetition loop (`lib/loop.ts`) is aborted and retried at temperature 0.4 instead of running for a minute. `CACHE_VERSION` v7.
 PRD ref: `prd.md > What leaving early costs`.
 
+### Payment chart
+`lib/exit.ts`: `monthlySchedule(items, term, trueCost)` (unit-tested) places every payment in its month from `fromMonth`/`everyMonths` and returns null unless the months sum to `trueCost` to the cent or a schedule field is missing (older reports); `scheduleRuns` merges equal consecutive months for the table. `components/PaymentChart.tsx`: plain SVG sized by a ResizeObserver; columns ≤ 24 px with a 4 px rounded top and 2 px gaps, hairline grid with rounded ticks, ink bars, months after leaving in the rule colour, the exit cost as a stacked red segment with a 2 px gap, a two/three-item legend only when the slider is in play, a per-column hover/tap tooltip with the breakdown (whole-band hit targets), and a `<details>` table. Used by `ExitCost.tsx`, and by `MonthByMonth.tsx` when there is no exit plan and the totals vary. App colour tokens only, so dark mode follows. Not printed.
+PRD ref: `prd.md > Month by month`.
+
 ### Verdict strip
 `components/VerdictStrip.tsx`: advertised price vs true cost (big numbers), cost breakdown (each line links/scrolls to its clause), the score "4/10" with a one-line verdict, the counts of traps/watch-outs/fair, and the detected type and term.
 PRD ref: `prd.md > True cost`, `prd.md > Fairness score and verdict`.

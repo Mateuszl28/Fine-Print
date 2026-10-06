@@ -10,6 +10,7 @@ import { AskList } from './AskList';
 import { Letter } from './Letter';
 import { Reminder } from './Reminder';
 import { ExitCost } from './ExitCost';
+import { MonthByMonth } from './MonthByMonth';
 import { TopThree } from './TopThree';
 import { ReadAloud } from './ReadAloud';
 import { ShareButton } from './ShareButton';
@@ -169,7 +170,11 @@ export function ReportView({ report, lang, onStartOver, onBackToCompare, shared,
           </section>
 
           <AskList questions={report.questions} title={t.ask} />
-          <ExitCost report={report} lang={lang} onJump={jumpTo} />
+          {report.earlyExit ? (
+            <ExitCost report={report} lang={lang} onJump={jumpTo} />
+          ) : (
+            <MonthByMonth report={report} lang={lang} />
+          )}
           <Reminder report={report} lang={lang} />
           <Letter report={report} lang={lang} />
         </div>

@@ -170,6 +170,16 @@ Build mode: fast
   Learner check: Open the Gym sample, scroll to "What leaving early costs", and drag the slider; then open the Mietvertrag.
   Commit: `Show what leaving early costs`
 
+- [x] **17. Month by month**
+  Becomes usable: A bar chart of what you pay each month: the gym's enrollment and yearly fee spikes, the phone's step-up after the promo, the Berlin flat's rent rising every year. In the exit card it follows the slider: later months fade, the cost of getting out sits on top of the last paid month.
+  Why now: The learner asked to keep expanding. Slice 16 gave every cost item a schedule, so this needs no new model call, and it makes the true cost and the exit calculation visible at a glance (design and presentation).
+  PRD ref: `prd.md > Month by month`
+  Spec ref: `spec.md > Payment chart`
+  Build: `monthlySchedule` + `scheduleRuns` with tests; `PaymentChart.tsx` (SVG, tooltip, legend, table) following the dataviz mark specs; wired into `ExitCost.tsx` and a new `MonthByMonth.tsx`; strings in five languages.
+  Verify (mechanical): `npm test` (54 pass) and `npm run build` pass; browser: gym report from history shows the $49 + $29.99 spike in month 1, the $59 fee in month 13, the exit cost stacked on month 7 (month 6 + notice) and months 8–24 faded; tooltip on month 13 lists dues + fee; Mietvertrag shows four yearly rent steps and the lock-in message; the loan's 18 equal bars are hidden by the "amounts must change" rule after it was seen to say nothing; no console errors.
+  Learner check: Open the Gym sample, scroll to "What leaving early costs", move the slider and hover a bar.
+  Commit: `Chart what you pay, month by month`
+
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 3 the learner tried it and asked for a phone version and an expanded web version (slices 5–6)
@@ -194,6 +204,7 @@ Activity mode: Recap. Map checked in a browser; all paths and symbols verified a
 
 ## Revisions
 
+- Added slice 17 (month-by-month chart) — learner asked to keep expanding; agent proposal, no new model call.
 - Added slice 16 (exit cost) — learner asked to keep expanding; agent proposal. Found and fixed on the way: Gemini repetition loops (now streamed and aborted) and refundable deposits counted as cost (now removed in code).
 - Added slice 15 (hard words explained) — learner asked to keep expanding; agent proposal.
 - Added slice 14 (letter picker) — learner asked to keep expanding. A question-and-answer box was the first idea but was dropped because the scope cuts chat; the letter picker came from the PRD's own Possible Later Enhancements.

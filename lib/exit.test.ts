@@ -88,3 +88,28 @@ test('no plan without a term, or when the schedule runs past it', () => {
   assert.equal(checkExitPlan(raw, [item(10, 30)], 12, () => true), null);
   assert.equal(checkExitPlan(null, [item(10, 12)], 12, () => true), null);
 });
+
+test('month by month: step-ups and yearly fees land in the right months and add up', async () => {
+  const { monthlySchedule, scheduleRuns } = await import('./exit.ts');
+  const items = [item(35, 12), item(50, 12, 13), item(49, 1, 1, 0), item(59, 2, 6, 12)];
+  const total = 35 * 12 + 50 * 12 + 49 + 59 * 2;
+  const months = monthlySchedule(items, 24, total)!;
+  assert.equal(months.length, 24);
+  assert.equal(months[0].total, 84);
+  assert.equal(months[5].total, 94);
+  assert.equal(months[12].total, 50);
+  assert.equal(months[17].total, 109);
+  assert.deepEqual(scheduleRuns(months).slice(0, 3), [
+    { from: 1, to: 1, total: 84 },
+    { from: 2, to: 5, total: 35 },
+    { from: 6, to: 6, total: 94 },
+  ]);
+});
+
+test('no chart when the bars would not add up to the true cost, or the schedule is missing', async () => {
+  const { monthlySchedule } = await import('./exit.ts');
+  assert.equal(monthlySchedule([item(10, 12)], 12, 999), null);
+  const old = { label: 'x', amount: 10, times: 12, clauseId: null } as unknown as CostItem;
+  assert.equal(monthlySchedule([old], 12, 120), null);
+  assert.equal(monthlySchedule([item(10, 12)], null, 120), null);
+});

@@ -100,6 +100,13 @@ type Strings = {
   exitFree: string;
   exitKinds: Record<'fixed_fee' | 'months_of_payment' | 'share_of_remaining_percent' | 'remaining_of_item', string>;
   exitNote: string;
+  monthByMonth: string;
+  monthN: (m: number) => string;
+  monthsRange: (a: number, b: number) => string;
+  chartTable: string;
+  chartRegular: string;
+  chartExit: string;
+  chartAfter: string;
 };
 
 export const strings: Record<Lang, Strings> = {
@@ -194,6 +201,13 @@ export const strings: Record<Lang, Strings> = {
       remaining_of_item: 'What’s left, due at once',
     },
     exitNote: 'Added up from the contract’s own rules and payment dates. Dates that depend on your start date are estimates.',
+    monthByMonth: 'Month by month',
+    monthN: (m) => `Month ${m}`,
+    monthsRange: (a, b) => `Months ${a}–${b}`,
+    chartTable: 'As a table',
+    chartRegular: 'What you pay',
+    chartExit: 'To get out',
+    chartAfter: 'After you leave',
   },
   pl: {
     scanAnother: '← Sprawdź kolejną',
@@ -286,6 +300,13 @@ export const strings: Record<Lang, Strings> = {
       remaining_of_item: 'Reszta do zapłaty od razu',
     },
     exitNote: 'Policzone z reguł i terminów płatności zapisanych w umowie. Daty zależne od dnia rozpoczęcia są szacunkowe.',
+    monthByMonth: 'Miesiąc po miesiącu',
+    monthN: (m) => `Miesiąc ${m}`,
+    monthsRange: (a, b) => `Miesiące ${a}–${b}`,
+    chartTable: 'Jako tabela',
+    chartRegular: 'Co płacisz',
+    chartExit: 'Za wyjście',
+    chartAfter: 'Po odejściu',
   },
   uk: {
     scanAnother: '← Перевірити інший',
@@ -378,6 +399,13 @@ export const strings: Record<Lang, Strings> = {
       remaining_of_item: 'Залишок — одразу',
     },
     exitNote: 'Пораховано за правилами й датами платежів із договору. Дати, що залежать від дня початку, приблизні.',
+    monthByMonth: 'Місяць за місяцем',
+    monthN: (m) => `Місяць ${m}`,
+    monthsRange: (a, b) => `Місяці ${a}–${b}`,
+    chartTable: 'Таблицею',
+    chartRegular: 'Що ви платите',
+    chartExit: 'За вихід',
+    chartAfter: 'Після виходу',
   },
   es: {
     scanAnother: '← Revisar otro',
@@ -470,6 +498,13 @@ export const strings: Record<Lang, Strings> = {
       remaining_of_item: 'Lo que queda, de golpe',
     },
     exitNote: 'Sumado con las reglas y fechas de pago del propio contrato. Las fechas que dependen de tu fecha de inicio son estimadas.',
+    monthByMonth: 'Mes a mes',
+    monthN: (m) => `Mes ${m}`,
+    monthsRange: (a, b) => `Meses ${a}–${b}`,
+    chartTable: 'Como tabla',
+    chartRegular: 'Lo que pagas',
+    chartExit: 'Para salir',
+    chartAfter: 'Después de irte',
   },
   de: {
     scanAnother: '← Anderen prüfen',
@@ -562,5 +597,12 @@ export const strings: Record<Lang, Strings> = {
       remaining_of_item: 'Der Rest, sofort fällig',
     },
     exitNote: 'Aus den Regeln und Zahlungsterminen des Vertrags zusammengerechnet. Termine, die vom Startdatum abhängen, sind geschätzt.',
+    monthByMonth: 'Monat für Monat',
+    monthN: (m) => `Monat ${m}`,
+    monthsRange: (a, b) => `Monate ${a}–${b}`,
+    chartTable: 'Als Tabelle',
+    chartRegular: 'Was du zahlst',
+    chartExit: 'Für den Ausstieg',
+    chartAfter: 'Nach dem Ausstieg',
   },
 };
