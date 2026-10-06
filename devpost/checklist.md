@@ -160,6 +160,16 @@ Build mode: fast
   Learner check: Open the Gym sample and tap "non-refundable" or "Initial Term" in the contract.
   Commit: `Explain hard words on the contract itself`
 
+- [x] **16. What leaving early costs**
+  Becomes usable: A slider under the questions shows, for any month, what you'll have paid, what getting out costs, and the total, next to the full-term price. The Mietvertrag says plainly that you can't leave for four years.
+  Why now: The learner asked to keep expanding. "Can I get out, and what does it cost?" is the question the true cost leaves open, and it keeps the kernel's split: the model reads the rules, code adds up the money.
+  PRD ref: `prd.md > What leaving early costs`
+  Spec ref: `spec.md > Exit cost`
+  Build: payment schedule fields and `earlyExitSchema`; prompt rules 13–14; `lib/exit.ts` with tests; focused exit-rules follow-up; `ExitCost.tsx` + strings in five languages; deposit guard; streamed analysis with loop abort; cache v7.
+  Verify (mechanical): `npm test` (52 pass) and `npm run build` pass. Model runs across all six samples and five languages (~30 analyses): gym 50% of remaining dues (after month 6: $317.93 paid + $254.92 = $572.85), lease two months' rent ($2,900), phone $200 in year one plus device balance, phone-b device balance, Mietvertrag locked through month 48, loan none, each hand-checked. Rules with numbers not in the contract were rejected as designed (0.5 instead of 50%, a computed $2,900); after renaming kinds, describing them in the schema and adding the focused follow-up, gym had rules in all 3 languages tried. Totals: 12/12 right in one sweep; the Mietvertrag deposit (listed as 3 × 1150 € installments) is now removed in code; the Polish lease twice missed the $225 fixed deduction (model noise, also seen before this slice). A real repetition loop (German phone plan, ~80 s) was reproduced; it's now aborted on detection and retried. Browser: slider updates (month 20: $796.79 + $44.99), no console errors.
+  Learner check: Open the Gym sample, scroll to "What leaving early costs", and drag the slider; then open the Mietvertrag.
+  Commit: `Show what leaving early costs`
+
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 3 the learner tried it and asked for a phone version and an expanded web version (slices 5–6)
@@ -184,6 +194,7 @@ Activity mode: Recap. Map checked in a browser; all paths and symbols verified a
 
 ## Revisions
 
+- Added slice 16 (exit cost) — learner asked to keep expanding; agent proposal. Found and fixed on the way: Gemini repetition loops (now streamed and aborted) and refundable deposits counted as cost (now removed in code).
 - Added slice 15 (hard words explained) — learner asked to keep expanding; agent proposal.
 - Added slice 14 (letter picker) — learner asked to keep expanding. A question-and-answer box was the first idea but was dropped because the scope cuts chat; the letter picker came from the PRD's own Possible Later Enhancements.
 

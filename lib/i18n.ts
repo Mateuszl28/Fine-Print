@@ -88,6 +88,18 @@ type Strings = {
   photoFailed: string;
   termsHint: string;
   termsHeading: string;
+  exitTitle: string;
+  exitSlider: (m: number) => string;
+  exitPaid: string;
+  exitNotice: (n: number) => string;
+  exitFee: string;
+  exitTotal: string;
+  exitVsFull: (months: number) => string;
+  exitNotAllowed: (m: number) => string;
+  exitUnstated: string;
+  exitFree: string;
+  exitKinds: Record<'fixed_fee' | 'months_of_payment' | 'share_of_remaining_percent' | 'remaining_of_item', string>;
+  exitNote: string;
 };
 
 export const strings: Record<Lang, Strings> = {
@@ -165,6 +177,23 @@ export const strings: Record<Lang, Strings> = {
     photoFailed: 'Couldn’t read the photo well enough to place the marks. The text view has them all.',
     termsHint: 'Words with a dotted line are explained. Tap one.',
     termsHeading: 'Words explained',
+    exitTitle: 'What leaving early costs',
+    exitSlider: (m) => `If you leave after month ${m}`,
+    exitPaid: 'Paid by then',
+    exitNotice: (n) => `includes ${n} ${n === 1 ? 'month' : 'months'} of notice`,
+    exitFee: 'To get out',
+    exitTotal: 'In total',
+    exitVsFull: (m) => `Staying all ${m} months`,
+    exitNotAllowed: (m) => `The contract doesn’t let you leave before the end of month ${m}. Until then, you keep paying.`,
+    exitUnstated: 'The contract doesn’t put a price on leaving at this point.',
+    exitFree: 'No fee for leaving at this point.',
+    exitKinds: {
+      fixed_fee: 'Exit fee',
+      months_of_payment: 'Extra payments',
+      share_of_remaining_percent: 'Share of what’s left',
+      remaining_of_item: 'What’s left, due at once',
+    },
+    exitNote: 'Added up from the contract’s own rules and payment dates. Dates that depend on your start date are estimates.',
   },
   pl: {
     scanAnother: '← Sprawdź kolejną',
@@ -240,6 +269,23 @@ export const strings: Record<Lang, Strings> = {
     photoFailed: 'Nie udało się odczytać zdjęcia na tyle dobrze. Wszystkie zaznaczenia są w widoku tekstu.',
     termsHint: 'Słowa podkreślone kropkami mają objaśnienie. Dotknij jednego.',
     termsHeading: 'Trudne słowa',
+    exitTitle: 'Ile kosztuje wcześniejsze wyjście',
+    exitSlider: (m) => `Jeśli zrezygnujesz po ${m}. miesiącu`,
+    exitPaid: 'Zapłacone do tego czasu',
+    exitNotice: (n) => `w tym ${n} ${n === 1 ? 'miesiąc' : n < 5 ? 'miesiące' : 'miesięcy'} wypowiedzenia`,
+    exitFee: 'Za wyjście',
+    exitTotal: 'Razem',
+    exitVsFull: (m) => `Gdy zostaniesz wszystkie ${m} miesięcy`,
+    exitNotAllowed: (m) => `Umowa nie pozwala odejść przed końcem ${m}. miesiąca. Do tego czasu płacisz dalej.`,
+    exitUnstated: 'Umowa nie mówi, ile kosztuje wyjście w tym momencie.',
+    exitFree: 'W tym momencie wyjście nic dodatkowo nie kosztuje.',
+    exitKinds: {
+      fixed_fee: 'Opłata za zerwanie',
+      months_of_payment: 'Dodatkowe płatności',
+      share_of_remaining_percent: 'Część tego, co zostało',
+      remaining_of_item: 'Reszta do zapłaty od razu',
+    },
+    exitNote: 'Policzone z reguł i terminów płatności zapisanych w umowie. Daty zależne od dnia rozpoczęcia są szacunkowe.',
   },
   uk: {
     scanAnother: '← Перевірити інший',
@@ -315,6 +361,23 @@ export const strings: Record<Lang, Strings> = {
     photoFailed: 'Не вдалося достатньо добре прочитати фото. Усі позначки є в текстовому вигляді.',
     termsHint: 'Слова з крапковим підкресленням мають пояснення. Торкніться одного.',
     termsHeading: 'Складні слова',
+    exitTitle: 'Скільки коштує достроковий вихід',
+    exitSlider: (m) => `Якщо ви підете після ${m}-го місяця`,
+    exitPaid: 'Сплачено до того часу',
+    exitNotice: (n) => `зокрема ${n} міс. попередження`,
+    exitFee: 'За вихід',
+    exitTotal: 'Разом',
+    exitVsFull: (m) => `Якщо залишитеся всі ${m} міс.`,
+    exitNotAllowed: (m) => `Договір не дозволяє піти раніше кінця ${m}-го місяця. До того часу ви платите далі.`,
+    exitUnstated: 'Договір не каже, скільки коштує вихід у цей момент.',
+    exitFree: 'У цей момент вихід нічого додатково не коштує.',
+    exitKinds: {
+      fixed_fee: 'Плата за розірвання',
+      months_of_payment: 'Додаткові платежі',
+      share_of_remaining_percent: 'Частка залишку',
+      remaining_of_item: 'Залишок — одразу',
+    },
+    exitNote: 'Пораховано за правилами й датами платежів із договору. Дати, що залежать від дня початку, приблизні.',
   },
   es: {
     scanAnother: '← Revisar otro',
@@ -390,6 +453,23 @@ export const strings: Record<Lang, Strings> = {
     photoFailed: 'No se pudo leer la foto lo bastante bien. La vista de texto las tiene todas.',
     termsHint: 'Las palabras con subrayado punteado tienen explicación. Toca una.',
     termsHeading: 'Palabras explicadas',
+    exitTitle: 'Lo que cuesta salir antes',
+    exitSlider: (m) => `Si te vas después del mes ${m}`,
+    exitPaid: 'Pagado hasta entonces',
+    exitNotice: (n) => `incluye ${n} ${n === 1 ? 'mes' : 'meses'} de preaviso`,
+    exitFee: 'Para salir',
+    exitTotal: 'En total',
+    exitVsFull: (m) => `Si te quedas los ${m} meses`,
+    exitNotAllowed: (m) => `El contrato no te deja irte antes del final del mes ${m}. Hasta entonces, sigues pagando.`,
+    exitUnstated: 'El contrato no fija un precio por salir en este momento.',
+    exitFree: 'Salir en este momento no cuesta nada extra.',
+    exitKinds: {
+      fixed_fee: 'Penalización',
+      months_of_payment: 'Pagos extra',
+      share_of_remaining_percent: 'Parte de lo que queda',
+      remaining_of_item: 'Lo que queda, de golpe',
+    },
+    exitNote: 'Sumado con las reglas y fechas de pago del propio contrato. Las fechas que dependen de tu fecha de inicio son estimadas.',
   },
   de: {
     scanAnother: '← Anderen prüfen',
@@ -465,5 +545,22 @@ export const strings: Record<Lang, Strings> = {
     photoFailed: 'Das Foto ließ sich nicht gut genug lesen. Die Textansicht hat alle Markierungen.',
     termsHint: 'Gepunktet unterstrichene Wörter sind erklärt. Tipp eins an.',
     termsHeading: 'Begriffe erklärt',
+    exitTitle: 'Was ein früher Ausstieg kostet',
+    exitSlider: (m) => `Wenn du nach Monat ${m} aussteigst`,
+    exitPaid: 'Bis dahin bezahlt',
+    exitNotice: (n) => `inkl. ${n} ${n === 1 ? 'Monat' : 'Monate'} Kündigungsfrist`,
+    exitFee: 'Für den Ausstieg',
+    exitTotal: 'Insgesamt',
+    exitVsFull: (m) => `Wenn du alle ${m} Monate bleibst`,
+    exitNotAllowed: (m) => `Der Vertrag lässt einen Ausstieg erst zum Ende von Monat ${m} zu. Bis dahin zahlst du weiter.`,
+    exitUnstated: 'Der Vertrag nennt für diesen Zeitpunkt keinen Preis für den Ausstieg.',
+    exitFree: 'Zu diesem Zeitpunkt kostet der Ausstieg nichts extra.',
+    exitKinds: {
+      fixed_fee: 'Ausstiegsgebühr',
+      months_of_payment: 'Zusätzliche Zahlungen',
+      share_of_remaining_percent: 'Anteil am Rest',
+      remaining_of_item: 'Der Rest, sofort fällig',
+    },
+    exitNote: 'Aus den Regeln und Zahlungsterminen des Vertrags zusammengerechnet. Termine, die vom Startdatum abhängen, sind geschätzt.',
   },
 };

@@ -59,9 +59,9 @@ test('keeps the more serious of two overlapping highlights', () => {
 test('totals cost items in cents', () => {
   assert.equal(
     totalCost([
-      { label: 'dues', amount: 29.99, times: 24, clauseId: null },
-      { label: 'enrollment', amount: 49, times: 1, clauseId: null },
-      { label: 'annual fee', amount: 59, times: 2, clauseId: null },
+      { label: 'dues', amount: 29.99, times: 24, fromMonth: 1, everyMonths: 1, clauseId: null },
+      { label: 'enrollment', amount: 49, times: 1, fromMonth: 1, everyMonths: 1, clauseId: null },
+      { label: 'annual fee', amount: 59, times: 2, fromMonth: 1, everyMonths: 1, clauseId: null },
     ]),
     886.76,
   );
@@ -77,7 +77,7 @@ test('removes a repeated subject line from the letter body', async () => {
     {
       isContract: true, transcript: null, contractType: 'gym', title: 't', termMonths: 24,
       advertised: { label: '$1', amount: 1 }, currency: 'USD', costItems: [], costAssumption: '',
-      score: 3, verdict: 'v', clauses: [], questions: [], glossary: [],
+      score: 3, verdict: 'v', clauses: [], questions: [], glossary: [], earlyExit: null,
       counterparty: "Gym", notice: null, letter: { kind: "cancellation", subject: "Cancel", body: '[Your name]\n\nSubject: Cancel\n\nDear Gym,' },
     },
     'some contract text',
@@ -90,9 +90,9 @@ test('a fee financed into the installments is not counted twice', async () => {
   const { dropFinancedFees } = await import('./checkReport.ts');
   const contract = 'Payment schedule: 18 monthly payments of $86.50.\n2. ORIGINATION FEE. An origination fee of $49.00 is added to the Amount Financed and is non-refundable.\n4. AUTOPAY. A returned payment fee of $30.00 applies.';
   const items = [
-    { label: 'Monthly payments', amount: 86.5, times: 18, clauseId: null },
-    { label: 'Opłata przygotowawcza', amount: 49, times: 1, clauseId: null },
-    { label: 'Purchase Protection Plan', amount: 4.99, times: 18, clauseId: null },
+    { label: 'Monthly payments', amount: 86.5, times: 18, fromMonth: 1, everyMonths: 1, clauseId: null },
+    { label: 'Opłata przygotowawcza', amount: 49, times: 1, fromMonth: 1, everyMonths: 1, clauseId: null },
+    { label: 'Purchase Protection Plan', amount: 4.99, times: 18, fromMonth: 1, everyMonths: 1, clauseId: null },
   ];
   assert.deepEqual(
     dropFinancedFees(contract, items).map((i) => i.amount),
@@ -103,7 +103,7 @@ test('a fee financed into the installments is not counted twice', async () => {
 test('fees that are not financed stay', async () => {
   const { dropFinancedFees } = await import('./checkReport.ts');
   const contract = 'ENROLLMENT FEE. A one-time enrollment fee of $49.00 is due at signing.';
-  const items = [{ label: 'Enrollment', amount: 49, times: 1, clauseId: null }];
+  const items = [{ label: 'Enrollment', amount: 49, times: 1, fromMonth: 1, everyMonths: 1, clauseId: null }];
   assert.equal(dropFinancedFees(contract, items).length, 1);
 });
 
@@ -133,4 +133,37 @@ test('a word never straddles the edge of a highlight', async () => {
   // "binding arbitration" crosses the end of the highlight (index 27); "arbitration" alone doesn't fit either.
   const terms = locateTerms(contract, [{ term: 'binding arbitration', plain: 'x' }, { term: 'disputes', plain: 'y' }], [clause]);
   assert.deepEqual(terms.map((t) => t.term), ['disputes']);
+});
+
+test('reads the deposit amount where the contract sets it', async () => {
+  const { depositAmounts } = await import('./checkReport.ts');
+  assert.deepEqual(depositAmounts('Tenant shall pay a security deposit of $1,450.00 before move-in.'), [1450]);
+  assert.deepEqual(depositAmounts('Der Mieter leistet eine Kaution in Höhe von drei Nettokaltmieten (3.450,00 €).'), [3450]);
+  assert.deepEqual(depositAmounts('Najemca wpłaci kaucję w wysokości 3 000 zł.'), [3000]);
+  assert.deepEqual(depositAmounts('A fee of $225.00 will be deducted from the security deposit.'), []);
+});
+
+test('a deposit listed as a cost is dropped, even split into installments; deductions stay', async () => {
+  const { dropRefundableDeposits } = await import('./checkReport.ts');
+  const de = 'Kaution in Höhe von drei Nettokaltmieten (3.450,00 €), zahlbar in drei Raten.';
+  const items = [
+    { label: 'Miete', amount: 1150, times: 12, fromMonth: 1, everyMonths: 1, clauseId: null },
+    { label: 'Kaution', amount: 1150, times: 3, fromMonth: 1, everyMonths: 1, clauseId: null },
+  ];
+  assert.deepEqual(dropRefundableDeposits(de, items).map((i) => i.label), ['Miete']);
+  const rate = (n: number) => ({ label: `Kaution, ${n}. Rate`, amount: 1150, times: 1, fromMonth: n, everyMonths: 0, clauseId: null });
+  assert.deepEqual(dropRefundableDeposits(de, [items[0], rate(1), rate(2), rate(3)]).map((i) => i.label), ['Miete']);
+  const en = 'security deposit of $1,450.00. A carpet cleaning fee of $225.00 will be deducted from the security deposit.';
+  const lease = [
+    { label: 'Rent', amount: 1450, times: 12, fromMonth: 1, everyMonths: 1, clauseId: null },
+    { label: 'Carpet', amount: 225, times: 1, fromMonth: 12, everyMonths: 0, clauseId: null },
+  ];
+  assert.equal(dropRefundableDeposits(en, lease).length, 2);
+});
+
+test('a looping model is caught, real contract text is not', async () => {
+  const { LOOP } = await import('./loop.ts');
+  assert.ok(LOOP.test('"title": "Mobilfunkvertrag & Ger' + '\n'.repeat(150)));
+  assert.ok(!LOOP.test('Member: ' + '_'.repeat(40) + '  Start Date: ' + '_'.repeat(40)));
+  assert.ok(!LOOP.test('-'.repeat(80)));
 });

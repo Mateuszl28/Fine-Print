@@ -1,11 +1,13 @@
-import { generateText, Output, type ModelMessage } from 'ai';
-import { analysisSchema, type AnalyzeError, type Report } from '@/lib/schema';
+import { generateText, Output, streamText, type ModelMessage } from 'ai';
+import { z } from 'zod';
+import { analysisSchema, earlyExitSchema, type Analysis, type AnalyzeError, type Report } from '@/lib/schema';
 import { buildReport } from '@/lib/checkReport';
-import { STRICT_REMINDER, systemPrompt } from '@/lib/prompt';
+import { EXIT_PROMPT, STRICT_REMINDER, systemPrompt } from '@/lib/prompt';
 import { isLang, type Lang } from '@/lib/i18n';
 import { clientKey, createLimiter } from '@/lib/rateLimit';
 import { cacheKey, createCache } from '@/lib/resultCache';
 import { getCache } from '@vercel/functions';
+import { LOOP } from '@/lib/loop';
 
 export const maxDuration = 120;
 
@@ -23,7 +25,7 @@ const MAX_BASE64 = 5_600_000; // ~4.2 MB of file data in total
 // Two levels: this instance's memory, then Vercel's Runtime Cache, which every instance
 // in the region shares (locally it falls back to memory too).
 const DAY = 24 * 60 * 60;
-const CACHE_VERSION = 'v3';
+const CACHE_VERSION = 'v7';
 const local = createCache<Report>(200, DAY * 1000);
 const shared = getCache({ namespace: 'fineprint-report' });
 
@@ -130,19 +132,84 @@ async function analyze(
   sourceText: string | null,
   lang: Lang,
 ): Promise<Report | null> {
+  let output;
+  try {
+    output = await generate(messages, lang, 0);
+  } catch (err) {
+    // At temperature 0 Gemini now and then gets stuck repeating one character (seen: a German
+    // title followed by thousands of newlines). A little randomness frees it.
+    if (!(err instanceof Looping)) throw err;
+    console.warn('[analyze] model started looping, retrying warmer');
+    output = await generate(messages, lang, 0.4);
+  }
+  const text = sourceText ?? output.transcript ?? '';
+  if (!output.isContract || text.trim().length < 80) return null;
+  const report = buildReport(output, sourceText);
+
+  // The model said there are exit terms, but they didn't check out (a number it worked out
+  // itself, a missing amount). One short, focused question usually gets them right.
+  const worthAsking =
+    !report.earlyExit &&
+    output.earlyExit !== null &&
+    output.contractType !== 'installment_loan' &&
+    (output.termMonths ?? 0) >= 2 &&
+    output.costItems.length > 0;
+  if (worthAsking) {
+    const earlyExit = await askExitRules(text, output.costItems).catch((err) => {
+      console.error('[analyze] exit rules retry failed', err);
+      return null;
+    });
+    if (earlyExit) {
+      const second = buildReport({ ...output, earlyExit }, sourceText);
+      if (second.earlyExit) return second;
+    }
+  }
+  return report;
+}
+
+async function askExitRules(text: string, items: Analysis['costItems']) {
+  const list = items
+    .map((i, n) => `${n}: ${i.label} — ${i.amount} × ${i.times}, from month ${i.fromMonth}, every ${i.everyMonths} months`)
+    .join('\n');
   const { output } = await generateText({
+    model: MODEL,
+    system: EXIT_PROMPT.replace('{{ITEMS}}', list),
+    prompt: `Here is the contract text:\n\n${text}`,
+    output: Output.object({ schema: z.object({ earlyExit: earlyExitSchema }) }),
+    maxOutputTokens: 2_000,
+    temperature: 0,
+    providerOptions: { google: { thinkingConfig: { thinkingBudget: 512 } } },
+  });
+  return output.earlyExit;
+}
+
+
+class Looping extends Error {}
+
+
+/** Streams the analysis so a stuck model is caught in a second instead of after a minute of junk. */
+async function generate(messages: ModelMessage[], lang: Lang, temperature: number) {
+  const stop = new AbortController();
+  const result = streamText({
     model: MODEL,
     system: systemPrompt(lang),
     messages,
     output: Output.object({ schema: analysisSchema }),
     maxOutputTokens: 16_000,
-    temperature: 0,
+    temperature,
+    abortSignal: stop.signal,
+    onError: () => {}, // surfaced below through result.output
     ...(THINKING_BUDGET !== null && {
       providerOptions: { google: { thinkingConfig: { thinkingBudget: THINKING_BUDGET } } },
     }),
   });
-  const text = sourceText ?? output.transcript ?? '';
-  if (!output.isContract || text.trim().length < 80) return null;
-  return buildReport(output, sourceText);
+  let tail = '';
+  for await (const delta of result.textStream) {
+    tail = (tail + delta).slice(-800);
+    if (LOOP.test(tail)) {
+      stop.abort();
+      throw new Looping();
+    }
+  }
+  return await result.output;
 }
-

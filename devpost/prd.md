@@ -73,6 +73,12 @@ Added during the build ("rozbuduj dalej"; agent proposal, learner delegated the 
   - [ ] When the contract has no money terms or not enough data, it says so plainly ("No price in this document — can't total it up") instead of guessing.
   - [ ] Assumptions are stated (e.g., "assuming you stay the minimum 24 months").
 
+### What leaving early costs
+Added during the build ("rozbuduj dalej"; agent proposal, learner delegated the choice).
+- [ ] Under the questions, a slider "If you leave after month N" shows what you'll have paid by then (including any notice period), what getting out costs (exit fee, a share of what's left, months of rent, or the device balance falling due), the total, and the full-term cost to compare.
+- [ ] A lock-in says so plainly ("You can't leave before the end of month 48"); a month the contract says nothing about is labelled that way.
+- [ ] Shown only when the exit rules check out against the contract's own numbers; never for loans (paying early is not "leaving", and interest needs an amortization table). The numbers are added up in code, like the true cost.
+
 ### Fairness score and verdict
 - [ ] A score from 0 to 10 with a one-line verdict (e.g., "4/10 — Fine if you never want to leave.").
 - [ ] Shows counts: N traps, N watch-outs, N fair.

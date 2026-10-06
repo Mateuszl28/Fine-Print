@@ -1,4 +1,35 @@
 import { z } from 'zod';
+import type { ExitPlan } from './exit.ts';
+
+export const earlyExitSchema = z
+  .object({
+    noticeMonths: z
+      .number()
+      .nullable()
+      .describe('Months of notice before leaving takes effect (payments continue meanwhile), rounded up; null if none'),
+    rules: z.array(
+      z.object({
+        fromMonth: z.number().describe('First month (1-based) this rule applies to someone who leaves at the end of that month'),
+        toMonth: z.number().nullable().describe('Last month it applies; null = until the end of the minimum term'),
+        kind: z
+          .enum(['not_allowed', 'free', 'fixed_fee', 'months_of_payment', 'share_of_remaining_percent', 'remaining_of_item'])
+          .describe(
+            'not_allowed: you cannot leave in these months. free: leaving costs nothing extra. fixed_fee: a set amount. months_of_payment: a whole number of regular payments (e.g. two months of rent). share_of_remaining_percent: a percentage of what is still left to pay (e.g. 50% of the remaining dues). remaining_of_item: everything left on one item becomes due at once.',
+          ),
+        value: z
+          .number()
+          .nullable()
+          .describe('fixed_fee: the amount; months_of_payment: how many payments (e.g. 2 for "two months’ rent"); share_of_remaining_percent: the percentage as a whole number (50 for 50%); otherwise null'),
+        itemIndex: z
+          .number()
+          .nullable()
+          .describe('0-based index in costItems of the payment this rule is measured by (months_of_payment, share_of_remaining_percent, remaining_of_item); otherwise null'),
+        clauseId: z.string().nullable(),
+      }),
+    ),
+  })
+  .nullable()
+  .describe('What leaving before the end of the minimum term costs. null if there is no minimum term or the contract is a loan.');
 
 // What the model must return. Anything we can compute ourselves (where a quote sits
 // in the text, the true cost total) is deliberately left out and added by checkReport.
@@ -37,6 +68,10 @@ export const analysisSchema = z.object({
         label: z.string().describe('e.g. "Monthly dues, months 1–24"'),
         amount: z.number().describe('Amount of one payment'),
         times: z.number().describe('How many times it is paid over the minimum term'),
+        fromMonth: z
+          .number()
+          .describe('Month of the term (1 = the first month) in which the first payment falls; 1 for anything paid at signing. Best estimate if it depends on the start date.'),
+        everyMonths: z.number().describe('Months between payments: 1 monthly, 12 yearly, 0 for a one-off'),
         clauseId: z.string().nullable().describe('id of the clause this comes from, if flagged'),
       }),
     )
@@ -46,6 +81,7 @@ export const analysisSchema = z.object({
   costAssumption: z
     .string()
     .describe('One sentence, e.g. "Assuming you stay the minimum 24 months and never freeze."'),
+  earlyExit: earlyExitSchema,
   score: z.number().describe('Fairness to the signer, 0 (predatory) to 10 (genuinely fair)'),
   verdict: z.string().describe('One dry sentence verdict'),
   clauses: z.array(
@@ -90,7 +126,9 @@ export type LocatedClause = Analysis['clauses'][number] & {
 
 export type LocatedTerm = Analysis['glossary'][number] & { start: number; end: number };
 
-export type Report = Omit<Analysis, 'transcript' | 'clauses' | 'glossary'> & {
+export type Report = Omit<Analysis, 'transcript' | 'clauses' | 'glossary' | 'earlyExit'> & {
+  /** Missing on older reports, and when the contract's exit rules couldn't be checked. */
+  earlyExit?: ExitPlan | null;
   text: string;
   clauses: LocatedClause[];
   /** Missing on reports saved or shared before the glossary existed. */
