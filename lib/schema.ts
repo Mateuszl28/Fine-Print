@@ -124,6 +124,14 @@ export type LocatedClause = Analysis['clauses'][number] & {
   boxes: PhotoBox[];
 };
 
+export type ReportChecks = {
+  quotes: { shown: number; notFound: number; overlapping: number };
+  terms: { shown: number; left: number };
+  payments: number;
+  removed: { label: string; amount: number; times: number; reason: 'deposit' | 'financed' }[];
+  exit: 'checked' | 'rejected' | 'none';
+};
+
 export type LocatedTerm = Analysis['glossary'][number] & { start: number; end: number };
 
 export type Report = Omit<Analysis, 'transcript' | 'clauses' | 'glossary' | 'earlyExit'> & {
@@ -135,6 +143,8 @@ export type Report = Omit<Analysis, 'transcript' | 'clauses' | 'glossary' | 'ear
   terms?: LocatedTerm[];
   trueCost: number | null;
   droppedQuotes: number;
+  /** What the code checked and threw out. Missing on reports from before it was recorded. */
+  checks?: ReportChecks;
 };
 
 export type AnalyzeError = { error: 'not_a_contract' | 'too_long' | 'bad_input' | 'failed' | 'rate_limited' };

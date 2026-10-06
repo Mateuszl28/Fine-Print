@@ -11,6 +11,7 @@ import { Letter } from './Letter';
 import { Reminder } from './Reminder';
 import { ExitCost } from './ExitCost';
 import { MonthByMonth } from './MonthByMonth';
+import { Checks } from './Checks';
 import { TopThree } from './TopThree';
 import { ReadAloud } from './ReadAloud';
 import { ShareButton } from './ShareButton';
@@ -177,6 +178,7 @@ export function ReportView({ report, lang, onStartOver, onBackToCompare, shared,
           )}
           <Reminder report={report} lang={lang} />
           <Letter report={report} lang={lang} />
+          <Checks report={report} lang={lang} />
         </div>
 
         <aside className={styles.panel}>

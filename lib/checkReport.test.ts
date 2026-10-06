@@ -167,3 +167,32 @@ test('a looping model is caught, real contract text is not', async () => {
   assert.ok(!LOOP.test('Member: ' + '_'.repeat(40) + '  Start Date: ' + '_'.repeat(40)));
   assert.ok(!LOOP.test('-'.repeat(80)));
 });
+
+test('the report records what the code checked and threw out', async () => {
+  const { buildReport } = await import('./checkReport.ts');
+  const contract = `1. RENT. Tenant pays $1,000.00 per month for 12 months.
+2. DEPOSIT. Tenant shall pay a security deposit of $1,000.00 before move-in.
+3. FEE. An application fee of $50.00 is added to the amount financed.
+4. ARBITRATION. Disputes go to binding arbitration.`;
+  const item = (label: string, amount: number, times: number) => ({ label, amount, times, fromMonth: 1, everyMonths: times > 1 ? 1 : 0, clauseId: null });
+  const c = (id: string, quote: string) => ({ id, severity: 'red' as const, quote, title: id, meaning: '', whyItMatters: '', whatToDo: '' });
+  const r = buildReport(
+    {
+      isContract: true, transcript: null, contractType: 'lease', title: 't', termMonths: 12,
+      advertised: { label: '$1,000', amount: 1000 }, currency: 'USD',
+      costItems: [item('Rent', 1000, 12), item('Deposit', 1000, 1), item('Application fee', 50, 1)],
+      costAssumption: '', score: 5, verdict: 'v', questions: [], counterparty: 'L', notice: null,
+      clauses: [c('rent', 'Tenant pays $1,000.00 per month for 12 months.'), c('made-up', 'Tenant waives all rights forever.')],
+      glossary: [{ term: 'binding arbitration', plain: 'x' }, { term: 'force majeure', plain: 'y' }],
+      earlyExit: { noticeMonths: null, rules: [{ fromMonth: 1, toMonth: null, kind: 'fixed_fee', value: 999, itemIndex: null, clauseId: null }] },
+      letter: { kind: 'change_request', subject: 's', body: 'b' },
+    },
+    contract,
+  );
+  assert.deepEqual(r.checks?.quotes, { shown: 1, notFound: 1, overlapping: 0 });
+  assert.deepEqual(r.checks?.terms, { shown: 1, left: 1 });
+  assert.deepEqual(r.checks?.removed.map((x) => x.reason), ['financed', 'deposit']);
+  assert.equal(r.checks?.payments, 1);
+  assert.equal(r.checks?.exit, 'rejected');
+  assert.equal(r.trueCost, 12000);
+});

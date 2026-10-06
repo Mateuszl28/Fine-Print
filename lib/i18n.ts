@@ -107,6 +107,18 @@ type Strings = {
   chartRegular: string;
   chartExit: string;
   chartAfter: string;
+  checksTitle: string;
+  checksLede: string;
+  checkQuotes: (n: number) => string;
+  checkQuotesMissing: (n: number) => string;
+  checkOverlap: (n: number) => string;
+  checkTerms: (n: number) => string;
+  checkTermsLeft: (n: number) => string;
+  checkTotal: (n: number) => string;
+  checkRemovedDeposit: (what: string) => string;
+  checkRemovedFinanced: (what: string) => string;
+  checkExitOk: string;
+  checkExitRejected: string;
 };
 
 export const strings: Record<Lang, Strings> = {
@@ -208,6 +220,18 @@ export const strings: Record<Lang, Strings> = {
     chartRegular: 'What you pay',
     chartExit: 'To get out',
     chartAfter: 'After you leave',
+    checksTitle: 'How Fine Print checked this',
+    checksLede: 'The AI reads the contract; code checks what it says before you see it.',
+    checkQuotes: (n) => `${n} marked ${n === 1 ? 'passage' : 'passages'}, each found word for word in your contract.`,
+    checkQuotesMissing: (n) => `${n} ${n === 1 ? 'passage' : 'passages'} the AI quoted ${n === 1 ? 'isn’t' : 'aren’t'} in your contract, so ${n === 1 ? 'it isn’t' : 'they aren’t'} marked.`,
+    checkOverlap: (n) => `${n} ${n === 1 ? 'passage' : 'passages'} overlapped a more serious one and ${n === 1 ? 'was' : 'were'} left out.`,
+    checkTerms: (n) => `${n} explained ${n === 1 ? 'word' : 'words'}, each found in the text.`,
+    checkTermsLeft: (n) => `${n} explained ${n === 1 ? 'word wasn’t' : 'words weren’t'} in the text and ${n === 1 ? 'was' : 'were'} dropped.`,
+    checkTotal: (n) => `The total is added up in code from ${n} ${n === 1 ? 'payment line' : 'payment lines'}, not by the AI.`,
+    checkRemovedDeposit: (w) => `Left out of the total: ${w}. A deposit you get back isn’t a cost.`,
+    checkRemovedFinanced: (w) => `Left out of the total: ${w}. It’s already inside the installments.`,
+    checkExitOk: 'Exit rules: every number checked against the contract.',
+    checkExitRejected: 'The AI’s exit rules didn’t match the contract’s numbers, so there’s no exit calculator for this one.',
   },
   pl: {
     scanAnother: '← Sprawdź kolejną',
@@ -307,6 +331,18 @@ export const strings: Record<Lang, Strings> = {
     chartRegular: 'Co płacisz',
     chartExit: 'Za wyjście',
     chartAfter: 'Po odejściu',
+    checksTitle: 'Jak Fine Print to sprawdził',
+    checksLede: 'AI czyta umowę, a kod sprawdza to, co AI napisało, zanim to zobaczysz.',
+    checkQuotes: (n) => `Zaznaczone fragmenty: ${n}. Każdy znaleziony w umowie słowo w słowo.`,
+    checkQuotesMissing: (n) => `Fragmenty cytowane przez AI, których nie ma w umowie: ${n}. Nie są zaznaczone.`,
+    checkOverlap: (n) => `Fragmenty nachodzące na poważniejszy, pominięte: ${n}.`,
+    checkTerms: (n) => `Objaśnione słowa: ${n}. Każde znalezione w tekście.`,
+    checkTermsLeft: (n) => `Objaśniane słowa, których nie było w tekście, pominięte: ${n}.`,
+    checkTotal: (n) => `Sumę liczy kod, nie AI. Pozycje płatności: ${n}.`,
+    checkRemovedDeposit: (w) => `Pominięte w sumie: ${w}. Zwrotna kaucja to nie koszt.`,
+    checkRemovedFinanced: (w) => `Pominięte w sumie: ${w}. Ta kwota jest już w ratach.`,
+    checkExitOk: 'Reguły wyjścia: każda liczba sprawdzona z umową.',
+    checkExitRejected: 'Reguły wyjścia od AI nie zgadzały się z liczbami w umowie, więc kalkulator wyjścia jest ukryty.',
   },
   uk: {
     scanAnother: '← Перевірити інший',
@@ -406,6 +442,18 @@ export const strings: Record<Lang, Strings> = {
     chartRegular: 'Що ви платите',
     chartExit: 'За вихід',
     chartAfter: 'Після виходу',
+    checksTitle: 'Як Fine Print це перевірив',
+    checksLede: 'ШІ читає договір, а код перевіряє написане, перш ніж ви це побачите.',
+    checkQuotes: (n) => `Позначені фрагменти: ${n}. Кожен знайдено в договорі слово в слово.`,
+    checkQuotesMissing: (n) => `Фрагменти, процитовані ШІ, яких немає в договорі: ${n}. Їх не позначено.`,
+    checkOverlap: (n) => `Фрагменти, що перекривали серйозніший, пропущено: ${n}.`,
+    checkTerms: (n) => `Пояснені слова: ${n}. Кожне знайдено в тексті.`,
+    checkTermsLeft: (n) => `Пояснені слова, яких не було в тексті, пропущено: ${n}.`,
+    checkTotal: (n) => `Суму рахує код, а не ШІ. Позиції платежів: ${n}.`,
+    checkRemovedDeposit: (w) => `Не враховано в сумі: ${w}. Застава, яку повертають, не є витратою.`,
+    checkRemovedFinanced: (w) => `Не враховано в сумі: ${w}. Ця сума вже в платежах.`,
+    checkExitOk: 'Правила виходу: кожне число звірено з договором.',
+    checkExitRejected: 'Правила виходу від ШІ не збіглися з числами договору, тому калькулятора виходу немає.',
   },
   es: {
     scanAnother: '← Revisar otro',
@@ -505,6 +553,18 @@ export const strings: Record<Lang, Strings> = {
     chartRegular: 'Lo que pagas',
     chartExit: 'Para salir',
     chartAfter: 'Después de irte',
+    checksTitle: 'Cómo lo comprobó Fine Print',
+    checksLede: 'La IA lee el contrato; el código comprueba lo que dice antes de que lo veas.',
+    checkQuotes: (n) => `${n} ${n === 1 ? 'fragmento marcado' : 'fragmentos marcados'}, cada uno encontrado palabra por palabra en tu contrato.`,
+    checkQuotesMissing: (n) => `${n} ${n === 1 ? 'fragmento citado' : 'fragmentos citados'} por la IA no ${n === 1 ? 'está' : 'están'} en tu contrato, así que no se marcan.`,
+    checkOverlap: (n) => `${n} ${n === 1 ? 'fragmento se solapaba' : 'fragmentos se solapaban'} con otro más grave y se omitieron.`,
+    checkTerms: (n) => `${n} ${n === 1 ? 'palabra explicada' : 'palabras explicadas'}, cada una encontrada en el texto.`,
+    checkTermsLeft: (n) => `${n} ${n === 1 ? 'palabra explicada no estaba' : 'palabras explicadas no estaban'} en el texto y se quitaron.`,
+    checkTotal: (n) => `El total lo suma el código a partir de ${n} ${n === 1 ? 'línea de pago' : 'líneas de pago'}, no la IA.`,
+    checkRemovedDeposit: (w) => `Fuera del total: ${w}. Un depósito que te devuelven no es un coste.`,
+    checkRemovedFinanced: (w) => `Fuera del total: ${w}. Ya está dentro de las cuotas.`,
+    checkExitOk: 'Reglas de salida: cada número comprobado con el contrato.',
+    checkExitRejected: 'Las reglas de salida de la IA no coincidían con los números del contrato, así que no hay calculadora de salida.',
   },
   de: {
     scanAnother: '← Anderen prüfen',
@@ -604,5 +664,17 @@ export const strings: Record<Lang, Strings> = {
     chartRegular: 'Was du zahlst',
     chartExit: 'Für den Ausstieg',
     chartAfter: 'Nach dem Ausstieg',
+    checksTitle: 'Wie Fine Print das geprüft hat',
+    checksLede: 'Die KI liest den Vertrag; Code prüft, was sie sagt, bevor du es siehst.',
+    checkQuotes: (n) => `${n} markierte ${n === 1 ? 'Stelle' : 'Stellen'}, jede wörtlich in deinem Vertrag gefunden.`,
+    checkQuotesMissing: (n) => `${n} von der KI zitierte ${n === 1 ? 'Stelle steht' : 'Stellen stehen'} nicht im Vertrag und ${n === 1 ? 'ist' : 'sind'} deshalb nicht markiert.`,
+    checkOverlap: (n) => `${n} ${n === 1 ? 'Stelle überschnitt' : 'Stellen überschnitten'} sich mit einer ernsteren und ${n === 1 ? 'wurde' : 'wurden'} weggelassen.`,
+    checkTerms: (n) => `${n} ${n === 1 ? 'erklärter Begriff' : 'erklärte Begriffe'}, jeder im Text gefunden.`,
+    checkTermsLeft: (n) => `${n} ${n === 1 ? 'erklärter Begriff stand' : 'erklärte Begriffe standen'} nicht im Text und ${n === 1 ? 'wurde' : 'wurden'} gestrichen.`,
+    checkTotal: (n) => `Die Summe rechnet Code aus ${n} Zahlungsposten zusammen, nicht die KI.`,
+    checkRemovedDeposit: (w) => `Nicht in der Summe: ${w}. Eine Kaution, die du zurückbekommst, ist kein Kostenpunkt.`,
+    checkRemovedFinanced: (w) => `Nicht in der Summe: ${w}. Der Betrag steckt schon in den Raten.`,
+    checkExitOk: 'Ausstiegsregeln: jede Zahl mit dem Vertrag abgeglichen.',
+    checkExitRejected: 'Die Ausstiegsregeln der KI passten nicht zu den Zahlen im Vertrag, deshalb gibt es hier keinen Ausstiegsrechner.',
   },
 };

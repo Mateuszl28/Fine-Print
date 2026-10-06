@@ -85,6 +85,11 @@ Added during the build ("rozbuduj dalej"; agent proposal, learner delegated the 
 - [ ] Inside "What leaving early costs" the chart follows the slider: months after you leave fade, and the exit cost sits on the last month you pay.
 - [ ] Shown only when the bars add up exactly to the true cost; on its own (e.g. a loan) only when the amounts actually change. A table view lists the same months for screen readers.
 
+### How Fine Print checked this
+Added during the build ("rozbuduj dalej"; agent proposal, learner delegated the choice).
+- [ ] At the end of every report, a short list says what the code checked for this contract and what it threw out: marked passages found word for word, AI quotes that weren't in the contract, explained words found in the text, the total added up in code, amounts left out of the total and why (a refundable deposit, a fee already inside the installments), and whether the exit rules checked out.
+- [ ] Ticks for what passed, a cross or minus for what was dropped, always with words, never colour alone. Older saved reports simply don't show it.
+
 ### Fairness score and verdict
 - [ ] A score from 0 to 10 with a one-line verdict (e.g., "4/10 — Fine if you never want to leave.").
 - [ ] Shows counts: N traps, N watch-outs, N fair.

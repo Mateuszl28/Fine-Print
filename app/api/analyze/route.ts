@@ -1,4 +1,4 @@
-import { generateText, Output, streamText, type ModelMessage } from 'ai';
+import { generateText, NoObjectGeneratedError, Output, streamText, type ModelMessage } from 'ai';
 import { z } from 'zod';
 import { analysisSchema, earlyExitSchema, type Analysis, type AnalyzeError, type Report } from '@/lib/schema';
 import { buildReport } from '@/lib/checkReport';
@@ -25,7 +25,7 @@ const MAX_BASE64 = 5_600_000; // ~4.2 MB of file data in total
 // Two levels: this instance's memory, then Vercel's Runtime Cache, which every instance
 // in the region shares (locally it falls back to memory too).
 const DAY = 24 * 60 * 60;
-const CACHE_VERSION = 'v7';
+const CACHE_VERSION = 'v9';
 const local = createCache<Report>(200, DAY * 1000);
 const shared = getCache({ namespace: 'fineprint-report' });
 
@@ -137,9 +137,10 @@ async function analyze(
     output = await generate(messages, lang, 0);
   } catch (err) {
     // At temperature 0 Gemini now and then gets stuck repeating one character (seen: a German
-    // title followed by thousands of newlines). A little randomness frees it.
-    if (!(err instanceof Looping)) throw err;
-    console.warn('[analyze] model started looping, retrying warmer');
+    // title followed by thousands of newlines), and a stream can break off mid-answer. Either way
+    // the answer is unusable; one more try, a little warmer, almost always comes back whole.
+    if (!(err instanceof Looping) && !NoObjectGeneratedError.isInstance(err)) throw err;
+    console.warn('[analyze] unusable answer, retrying warmer:', err instanceof Looping ? 'looping' : 'cut off');
     output = await generate(messages, lang, 0.4);
   }
   const text = sourceText ?? output.transcript ?? '';
@@ -198,7 +199,8 @@ async function generate(messages: ModelMessage[], lang: Lang, temperature: numbe
     maxOutputTokens: 16_000,
     temperature,
     abortSignal: stop.signal,
-    onError: () => {}, // surfaced below through result.output
+    // The stream keeps going on errors; result.output then fails to parse and analyze() retries.
+    onError: ({ error }) => console.error('[analyze] stream error', error),
     ...(THINKING_BUDGET !== null && {
       providerOptions: { google: { thinkingConfig: { thinkingBudget: THINKING_BUDGET } } },
     }),

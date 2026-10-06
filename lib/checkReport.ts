@@ -66,7 +66,7 @@ function findRange(
 export function locateQuotes(
   text: string,
   clauses: Analysis['clauses'],
-): { located: LocatedClause[]; dropped: number } {
+): { located: LocatedClause[]; dropped: number; notFound: number } {
   const folded = fold(text);
   const found: LocatedClause[] = [];
   let dropped = 0;
@@ -75,6 +75,7 @@ export function locateQuotes(
     if (range) found.push({ ...clause, ...range, boxes: [] });
     else dropped++;
   }
+  const notFound = dropped;
 
   // Overlapping highlights can't both be drawn; keep the more serious one.
   const bySeverity = [...found].sort((a, b) => rank[b.severity] - rank[a.severity]);
@@ -85,7 +86,7 @@ export function locateQuotes(
     else kept.push(c);
   }
   kept.sort((a, b) => a.start - b.start);
-  return { located: kept, dropped };
+  return { located: kept, dropped, notFound };
 }
 
 const isWordChar = (ch: string | undefined) => ch !== undefined && /[\p{L}\p{N}]/u.test(ch);
@@ -182,11 +183,18 @@ export function totalCost(items: Analysis['costItems']): number | null {
   return cents / 100;
 }
 
+const pick = (i: Analysis['costItems'][number]) => ({ label: i.label, amount: i.amount, times: i.times });
+
 export function buildReport(analysis: Analysis, sourceText: string | null): Report {
   const text = (sourceText ?? analysis.transcript ?? '').replace(/\r\n/g, '\n');
-  const { located, dropped } = locateQuotes(text, analysis.clauses);
+  const { located, dropped, notFound } = locateQuotes(text, analysis.clauses);
   const ids = new Set(located.map((c) => c.id));
-  const costItems = dropRefundableDeposits(text, dropFinancedFees(text, analysis.costItems));
+  const afterFinanced = dropFinancedFees(text, analysis.costItems);
+  const costItems = dropRefundableDeposits(text, afterFinanced);
+  const removed = [
+    ...analysis.costItems.filter((i) => !afterFinanced.includes(i)).map((i) => ({ ...pick(i), reason: 'financed' as const })),
+    ...afterFinanced.filter((i) => !costItems.includes(i)).map((i) => ({ ...pick(i), reason: 'deposit' as const })),
+  ];
   const { transcript: _transcript, clauses: _clauses, glossary, earlyExit, ...rest } = analysis;
   // Exit rules point at cost items by index; dropping a financed fee shifts the indexes.
   const exitRules = (earlyExit?.rules ?? []).flatMap((r) => {
@@ -201,11 +209,19 @@ export function buildReport(analysis: Analysis, sourceText: string | null): Repo
   if (earlyExit && !exitPlan && analysis.contractType !== 'installment_loan') {
     console.warn('[report] exit rules dropped', JSON.stringify({ earlyExit, costItems, termMonths: analysis.termMonths }));
   }
+  const terms = locateTerms(text, glossary ?? [], located);
   return {
     ...rest,
     text,
     clauses: located,
-    terms: locateTerms(text, glossary ?? [], located),
+    terms,
+    checks: {
+      quotes: { shown: located.length, notFound, overlapping: dropped - notFound },
+      terms: { shown: terms.length, left: Math.max(0, (glossary ?? []).length - terms.length) },
+      payments: costItems.length,
+      removed,
+      exit: !earlyExit || analysis.contractType === 'installment_loan' ? 'none' : exitPlan ? 'checked' : 'rejected',
+    },
     earlyExit: exitPlan,
     costItems: costItems.map((i) => ({
       ...i,

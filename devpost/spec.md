@@ -124,6 +124,10 @@ PRD ref: `prd.md > What leaving early costs`.
 `lib/exit.ts`: `monthlySchedule(items, term, trueCost)` (unit-tested) places every payment in its month from `fromMonth`/`everyMonths` and returns null unless the months sum to `trueCost` to the cent or a schedule field is missing (older reports); `scheduleRuns` merges equal consecutive months for the table. `components/PaymentChart.tsx`: plain SVG sized by a ResizeObserver; columns ≤ 24 px with a 4 px rounded top and 2 px gaps, hairline grid with rounded ticks, ink bars, months after leaving in the rule colour, the exit cost as a stacked red segment with a 2 px gap, a two/three-item legend only when the slider is in play, a per-column hover/tap tooltip with the breakdown (whole-band hit targets), and a `<details>` table. Used by `ExitCost.tsx`, and by `MonthByMonth.tsx` when there is no exit plan and the totals vary. App colour tokens only, so dark mode follows. Not printed.
 PRD ref: `prd.md > Month by month`.
 
+### Checks panel
+`buildReport` records `checks` on the Report (optional for old reports): quotes shown / not found / overlapping (`locateQuotes` now returns `notFound` separately), explained words shown / left out, the number of payment lines, items removed from the total with the reason (`financed` from `dropFinancedFees`, `deposit` from `dropRefundableDeposits`), and the exit plan status (`checked` / `rejected` / `none`). Unit-tested. `components/Checks.tsx` renders it after the letter; marks are ✓ / ✕ / − beside text, never colour alone. Also in this slice: an answer that comes back cut off (stream broken mid-JSON) is retried once like a loop, stream errors are logged, and the report letter's placeholders follow the letter's language. `CACHE_VERSION` v9.
+PRD ref: `prd.md > How Fine Print checked this`.
+
 ### Verdict strip
 `components/VerdictStrip.tsx`: advertised price vs true cost (big numbers), cost breakdown (each line links/scrolls to its clause), the score "4/10" with a one-line verdict, the counts of traps/watch-outs/fair, and the detected type and term.
 PRD ref: `prd.md > True cost`, `prd.md > Fairness score and verdict`.

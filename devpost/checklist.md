@@ -180,6 +180,16 @@ Build mode: fast
   Learner check: Open the Gym sample, scroll to "What leaving early costs", move the slider and hover a bar.
   Commit: `Chart what you pay, month by month`
 
+- [x] **18. How Fine Print checked this**
+  Becomes usable: Every report ends with what the code verified and what it threw out for this contract, e.g. "6 marked passages, each found word for word", "Left out of the total: Security deposit (3 × €1,150). A deposit you get back isn't a cost."
+  Why now: The learner asked to keep expanding. The app's main idea ("the model writes, code checks") was invisible to the person reading the report; this shows it, contract by contract, with no new model call.
+  PRD ref: `prd.md > How Fine Print checked this`
+  Spec ref: `spec.md > Checks panel`
+  Build: `checks` in `buildReport` (+ `notFound` from `locateQuotes`) with a test; `Checks.tsx`; strings in five languages; retry on cut-off answers and logged stream errors; translated placeholders in the report letter; cache v9.
+  Verify (mechanical): `npm test` (55 pass) and `npm run build` pass; six samples: checks recorded on all (Mietvertrag in English and Polish lists the removed deposit 3 × 1,150 € and the checked lock-in); two of four parallel analyses first came back cut off mid-JSON with the error swallowed, which is how the missing retry was found; after the fix six parallel analyses all succeeded; the German letter's placeholders are now [Ihr Name], [Ihre Adresse], [Datum] for English and Polish reports; browser: the panel renders under the letter with ✓ and − marks. Known: the German loan once more left out the auto-enrolled protection plan (model noise seen in slice 16 too).
+  Learner check: Open the Mietvertrag sample and scroll to the end of the report.
+  Commit: `Show how each report was checked`
+
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 3 the learner tried it and asked for a phone version and an expanded web version (slices 5–6)
@@ -204,6 +214,7 @@ Activity mode: Recap. Map checked in a browser; all paths and symbols verified a
 
 ## Revisions
 
+- Added slice 18 (checks panel) — learner asked to keep expanding; agent proposal. Found on the way: cut-off streamed answers weren't retried (fixed).
 - Added slice 17 (month-by-month chart) — learner asked to keep expanding; agent proposal, no new model call.
 - Added slice 16 (exit cost) — learner asked to keep expanding; agent proposal. Found and fixed on the way: Gemini repetition loops (now streamed and aborted) and refundable deposits counted as cost (now removed in code).
 - Added slice 15 (hard words explained) — learner asked to keep expanding; agent proposal.

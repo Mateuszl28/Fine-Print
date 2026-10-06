@@ -15,6 +15,7 @@ Built for [Build With AI: Basics](https://learn-ai-basics.devpost.com/) with the
 - **True cost.** The model lists the money items; the total is added up in code (`lib/checkReport.ts`), not by the model.
 - **What leaving early costs:** drag a slider to any month and see what you'd have paid, what getting out costs (exit fee, share of what's left, months of rent, device balance), and the total. Rules are read by the model and checked against the contract's numbers; the money is added up in code (`lib/exit.ts`).
 - **Month by month:** a bar chart of each month's payments (step-ups, yearly fees, one-offs); it follows the exit slider. Shown only when the bars add up exactly to the true cost.
+- **How it was checked:** each report ends with what the code verified and threw out for that contract (quotes not found, a refundable deposit left out of the total, exit rules that didn't match the contract's numbers).
 - **Fairness score, questions to ask, and a ready-to-send letter** with a copy button.
 - **Pick your letter:** cancel, ask to change the clauses you tick, or complain about what went wrong (write it in any language). Every letter comes out in the contract's language, and code checks it: no amounts that aren't in the contract or your note, no wrong language, nothing cut off.
 - **Compare two offers** side by side: which one is really cheaper (by total, or by monthly average when the terms differ) and which is fairer.
