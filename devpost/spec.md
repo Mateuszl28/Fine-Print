@@ -127,6 +127,10 @@ PRD ref: `prd.md > Highlighted contract (the kernel)`.
 `components/AskList.tsx`, `components/Letter.tsx`: the question list; the letter in a paper-styled block with a Copy button (Clipboard API, "Copied" confirmation for 2s).
 PRD ref: `prd.md > Before you sign, ask`, `prd.md > Your letter`.
 
+### Letter picker
+`components/Letter.tsx` shows a three-way toggle (cancellation / change_request / complaint). The report's own letter is shown for its kind; the others are written by `app/api/letter/route.ts` from what the report already holds (contract text, counterparty, notice rule, the ticked clauses' titles and quotes, and the optional note), so nothing new is stored. `lib/letter.ts` (unit-tested) validates the request, builds the prompt, and checks the result in code: `unbackedAmounts` (every money amount must appear in the contract or the note), `guessLanguage` (stopword counts; the model is told the contract's language and the letter must match it), and a cut-off check. Any problem → one retry with the reasons spelled out. Gemini 2.5 Flash, thinking budget 0, temperature 0: measured 1.4–4.4 s per letter. In-memory cache per instance (24 h) and a 30-an-hour limit per address.
+PRD ref: `prd.md > Your letter`.
+
 ### Error and empty messages
 Inline in `app/page.tsx` view state: not-a-contract, too long, failed (with Retry); the input is kept. The no-money case is shown inside the **Verdict strip**.
 PRD ref: `prd.md > States and Boundaries`.
@@ -221,7 +225,8 @@ fine-print/                     (repo root = this folder)
 │   ├── globals.css             # tokens, paper texture, base typography
 │   ├── page.tsx                # view state: start → reading → report / error
 │   ├── page.module.css
-│   └── api/analyze/route.ts    # Analyze route (server)
+│   ├── api/analyze/route.ts    # Analyze route (server)
+│   └── api/letter/route.ts     # extra letters on request (server)
 ├── components/
 │   ├── StartScreen.tsx         # masthead + input + samples
 │   ├── ContractInput.tsx       # camera/upload/paste
@@ -239,6 +244,7 @@ fine-print/                     (repo root = this folder)
 │   ├── prompt.ts               # Analysis prompt
 │   ├── checkReport.ts          # quote matching + cost total (pure)
 │   ├── checkReport.test.ts     # unit tests (node:test or vitest)
+│   ├── letter.ts               # letter requests, prompt, amount/language checks (+ letter.test.ts)
 │   └── prepareFiles.ts         # client-side image resize / limits
 ├── public/                     # favicon, OG image
 ├── devpost/                    # planning docs (scope, prd, spec, checklist)

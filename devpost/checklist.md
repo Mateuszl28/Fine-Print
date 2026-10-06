@@ -140,6 +140,16 @@ Build mode: fast
   Commit: `Faster analysis: capped thinking, temperature 0, result cache`
   Follow-up: the in-memory cache missed in production (requests landed on different instances), so Vercel Runtime Cache was added as a shared level; warming the samples showed the Polish loan double-counting a financed fee, so `dropFinancedFees` now removes it in code, and the cache key carries a version.
 
+- [x] **14. Pick your letter: cancel, ask to change, or complain**
+  Becomes usable: Above the letter, three buttons switch between a cancellation, a request to change the clauses you tick, and a complaint with your own note on what happened. Each is written in a few seconds, in the contract's language.
+  Why now: The learner asked to keep expanding; "Pick the letter type" was the one item left in Possible Later Enhancements, and it turns the report into action for people who have already signed. A Q&A chat was considered and rejected: it's on the scope's cut list and the PRD's non-goals.
+  PRD ref: `prd.md > Your letter`
+  Spec ref: `spec.md > Letter picker`
+  Build: `lib/letter.ts` with tests (request validation, prompt, `unbackedAmounts`, `guessLanguage`, `letterProblems`), `app/api/letter/route.ts` (cache, rate limit, one retry with reasons), `Letter.tsx` toggle + clause ticks + note, subject-line cleanup shared with `buildReport`, strings in five languages.
+  Verify (mechanical): `npm test` (38 pass) and `npm run build` pass; every non-default letter for gym (es), Mietvertrag (pl) and loan (uk), 6 letters, HTTP 200 in 1.7–2.7 s, all in the contract's language, 0 unbacked amounts, none cut off; first run had a Ukrainian letter for an English contract and English placeholders in a German letter, both fixed by `guessLanguage` + the check; bad input → 400; in the browser, a Polish note gave a complete English complaint with the contract's $59.00, and a change request covered the ticked traps; no console errors.
+  Learner check: Open the Gym sample, scroll to the letter, tap "Złóż reklamację", tick "Roczna opłata", write what happened in Polish, and tap "Napisz ten list".
+  Commit: `Pick your letter: cancel, ask to change, or complain`
+
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 3 the learner tried it and asked for a phone version and an expanded web version (slices 5–6)
@@ -163,6 +173,8 @@ Reflection: Offered once in chat.
 Activity mode: Recap. Map checked in a browser; all paths and symbols verified against source.
 
 ## Revisions
+
+- Added slice 14 (letter picker) — learner asked to keep expanding. A question-and-answer box was the first idea but was dropped because the scope cuts chat; the letter picker came from the PRD's own Possible Later Enhancements.
 
 - Model switched to Gemini 2.5 Flash — the AI Gateway free tier blocks the originally planned model; the learner chose a different AI over buying credits. Quality checked on all samples, a PDF and a photo (100% quotes located, totals correct).
 - Samples live in `lib/samples.ts` instead of `samples/*.txt` — the page imports them directly, so no file reading on the server.

@@ -43,6 +43,19 @@ type Strings = {
   copied: string;
   subject: string;
   letterTip: string;
+  letterKinds: string;
+  kindCancel: string;
+  kindChange: string;
+  kindComplaint: string;
+  letterComplaint: string;
+  letterPick: string;
+  letterHappened: string;
+  letterHappenedHint: string;
+  letterWrite: string;
+  letterWriting: string;
+  letterFailed: string;
+  letterBusy: string;
+  letterRedo: string;
   remindTitle: string;
   remindBody: (days: number | null) => string;
   remindStart: string;
@@ -104,6 +117,19 @@ export const strings: Record<Lang, Strings> = {
     copied: 'Copied',
     subject: 'Subject',
     letterTip: 'Fill in the [brackets]. Send it the way the contract says, and keep a copy.',
+    letterKinds: 'Which letter',
+    kindCancel: 'Cancel',
+    kindChange: 'Ask to change',
+    kindComplaint: 'Complain',
+    letterComplaint: 'Something went wrong? Complain',
+    letterPick: 'Which clauses should the letter be about?',
+    letterHappened: 'What happened? (optional)',
+    letterHappenedHint: 'e.g. They charged the $49 fee twice in March. Any language is fine.',
+    letterWrite: 'Write this letter',
+    letterWriting: 'Writing it in the contract’s language…',
+    letterFailed: 'Couldn’t write the letter. Try again.',
+    letterBusy: 'That’s a lot of letters for one hour. Try again later.',
+    letterRedo: 'Change what it covers',
     remindTitle: 'Don’t miss the way out',
     remindBody: (d) =>
       d ? `You have to give ${d} days’ notice before the term ends.` : 'The contract sets a notice rule for leaving.',
@@ -164,6 +190,19 @@ export const strings: Record<Lang, Strings> = {
     copied: 'Skopiowano',
     subject: 'Temat',
     letterTip: 'List jest w języku umowy, bo trafi do drugiej strony. Uzupełnij [nawiasy], wyślij tak, jak każe umowa, i zachowaj kopię.',
+    letterKinds: 'Rodzaj listu',
+    kindCancel: 'Wypowiedz',
+    kindChange: 'Poproś o zmianę',
+    kindComplaint: 'Złóż reklamację',
+    letterComplaint: 'Coś poszło nie tak? Reklamacja',
+    letterPick: 'Których klauzul ma dotyczyć list?',
+    letterHappened: 'Co się stało? (opcjonalnie)',
+    letterHappenedHint: 'np. W marcu dwa razy pobrali opłatę 49 zł. Pisz po polsku, list i tak będzie w języku umowy.',
+    letterWrite: 'Napisz ten list',
+    letterWriting: 'Piszę go w języku umowy…',
+    letterFailed: 'Nie udało się napisać listu. Spróbuj ponownie.',
+    letterBusy: 'Za dużo listów w tej godzinie. Spróbuj później.',
+    letterRedo: 'Zmień, czego dotyczy',
     remindTitle: 'Nie przegap terminu',
     remindBody: (d) =>
       d ? `Wypowiedzenie trzeba złożyć ${d} dni przed końcem okresu.` : 'Umowa określa zasady wypowiedzenia.',
@@ -224,6 +263,19 @@ export const strings: Record<Lang, Strings> = {
     copied: 'Скопійовано',
     subject: 'Тема',
     letterTip: 'Лист мовою договору, бо його отримає інша сторона. Заповніть [дужки], надішліть так, як вимагає договір, і збережіть копію.',
+    letterKinds: 'Вид листа',
+    kindCancel: 'Розірвати',
+    kindChange: 'Попросити змінити',
+    kindComplaint: 'Поскаржитися',
+    letterComplaint: 'Щось пішло не так? Скарга',
+    letterPick: 'Яких пунктів має стосуватися лист?',
+    letterHappened: 'Що сталося? (необов’язково)',
+    letterHappenedHint: 'напр. У березні двічі списали плату 49 €. Пишіть українською, лист однаково буде мовою договору.',
+    letterWrite: 'Написати цей лист',
+    letterWriting: 'Пишу його мовою договору…',
+    letterFailed: 'Не вдалося написати лист. Спробуйте ще раз.',
+    letterBusy: 'Забагато листів за годину. Спробуйте пізніше.',
+    letterRedo: 'Змінити, чого він стосується',
     remindTitle: 'Не пропустіть термін',
     remindBody: (d) =>
       d ? `Повідомити треба за ${d} днів до кінця терміну.` : 'Договір встановлює правила розірвання.',
@@ -284,6 +336,19 @@ export const strings: Record<Lang, Strings> = {
     copied: 'Copiada',
     subject: 'Asunto',
     letterTip: 'La carta está en el idioma del contrato, porque va para la otra parte. Rellena los [corchetes], envíala como dice el contrato y guarda una copia.',
+    letterKinds: 'Tipo de carta',
+    kindCancel: 'Cancelar',
+    kindChange: 'Pedir cambios',
+    kindComplaint: 'Reclamar',
+    letterComplaint: '¿Algo salió mal? Reclama',
+    letterPick: '¿Sobre qué cláusulas debe ser la carta?',
+    letterHappened: '¿Qué pasó? (opcional)',
+    letterHappenedHint: 'p. ej. En marzo cobraron dos veces la cuota de 49 €. Escribe en español; la carta irá en el idioma del contrato.',
+    letterWrite: 'Escribir esta carta',
+    letterWriting: 'Escribiéndola en el idioma del contrato…',
+    letterFailed: 'No se pudo escribir la carta. Inténtalo de nuevo.',
+    letterBusy: 'Demasiadas cartas en una hora. Inténtalo más tarde.',
+    letterRedo: 'Cambiar de qué trata',
     remindTitle: 'No pierdas la salida',
     remindBody: (d) =>
       d ? `Debes avisar con ${d} días de antelación antes del fin del plazo.` : 'El contrato fija cómo darse de baja.',
@@ -344,6 +409,19 @@ export const strings: Record<Lang, Strings> = {
     copied: 'Kopiert',
     subject: 'Betreff',
     letterTip: 'Der Brief ist in der Vertragssprache, weil er an die Gegenseite geht. Fülle die [Klammern] aus, schick ihn so, wie der Vertrag es verlangt, und behalte eine Kopie.',
+    letterKinds: 'Art des Briefs',
+    kindCancel: 'Kündigen',
+    kindChange: 'Änderung erbitten',
+    kindComplaint: 'Beschweren',
+    letterComplaint: 'Etwas ist schiefgelaufen? Beschwerde',
+    letterPick: 'Um welche Klauseln soll es im Brief gehen?',
+    letterHappened: 'Was ist passiert? (optional)',
+    letterHappenedHint: 'z. B. Im März wurde die Gebühr von 49 € zweimal abgebucht. Schreib auf Deutsch; der Brief kommt in der Vertragssprache.',
+    letterWrite: 'Diesen Brief schreiben',
+    letterWriting: 'Ich schreibe ihn in der Vertragssprache…',
+    letterFailed: 'Der Brief konnte nicht geschrieben werden. Versuch es noch einmal.',
+    letterBusy: 'Zu viele Briefe in einer Stunde. Versuch es später.',
+    letterRedo: 'Ändern, worum es geht',
     remindTitle: 'Verpasse den Ausstieg nicht',
     remindBody: (d) =>
       d ? `Du musst ${d} Tage vor Laufzeitende kündigen.` : 'Der Vertrag regelt, wie du kündigst.',

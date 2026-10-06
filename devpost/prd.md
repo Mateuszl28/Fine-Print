@@ -78,6 +78,9 @@ Source: `scope.md > The Unique Kernel`.
 - [ ] One letter generated from the contract: a cancellation letter if the contract has a cancellation clause, otherwise a request to change the worst clause *(agent proposal)*.
 - [ ] It names the actual clause, notice period, and address/method required, if the contract states them; unknown details are left as clear [placeholders].
 - [ ] A Copy button copies the full letter; a confirmation appears ("Copied").
+- [ ] Above the letter, a choice of three letters: Cancel, Ask to change, Complain. The one that came with the report shows at once; the others are written on request in a few seconds. *(Added during the build, "rozbuduj dalej"; was in Possible Later Enhancements.)*
+- [ ] "Ask to change" lets the person tick which flagged clauses the letter covers (traps ticked to start); each gets a specific fairer alternative. "Complain" starts with nothing ticked and takes an optional note on what happened, in any language.
+- [ ] Every letter is in the contract's language, whatever language the report or the note is in. Amounts in a letter come only from the contract or the person's note; a letter that breaks this, is in the wrong language, or is cut off is rewritten once.
 
 ### Contract types
 Source: `scope.md > The POC Boundary`.
@@ -165,7 +168,6 @@ Start screen with photo/PDF/paste input and four sample contracts â†’ analysis â
 
 ## Possible Later Enhancements
 - Compare two offers side by side.
-- Pick the letter type (cancel vs change vs complaint).
 
 ## Non-Goals
 - Legal advice or country-specific legal rules: we explain the contract text, we don't judge legality.

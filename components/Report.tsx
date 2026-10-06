@@ -152,7 +152,7 @@ export function ReportView({ report, lang, onStartOver, onBackToCompare, shared,
 
           <AskList questions={report.questions} title={t.ask} />
           <Reminder report={report} lang={lang} />
-          <Letter letter={report.letter} lang={lang} />
+          <Letter report={report} lang={lang} />
         </div>
 
         <aside className={styles.panel}>

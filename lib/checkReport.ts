@@ -1,4 +1,5 @@
 import type { Analysis, LocatedClause, Report, Severity } from './schema.ts';
+import { cleanLetterBody } from './letter.ts';
 
 const rank: Record<Severity, number> = { red: 3, yellow: 2, green: 1 };
 
@@ -125,8 +126,7 @@ export function buildReport(analysis: Analysis, sourceText: string | null): Repo
       ...i,
       clauseId: i.clauseId && ids.has(i.clauseId) ? i.clauseId : null,
     })),
-    // The subject is shown above the letter; models like to repeat it in the body too.
-    letter: { ...analysis.letter, body: analysis.letter.body.replace(/^[ \t]*(subject|re):.*\n+/gim, '').trim() },
+    letter: { ...analysis.letter, body: cleanLetterBody(analysis.letter.body) },
     trueCost: totalCost(costItems),
     score: Math.min(10, Math.max(0, Math.round(analysis.score))),
     droppedQuotes: dropped,

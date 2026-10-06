@@ -65,3 +65,132 @@
   font-size: 0.85rem;
   color: var(--ink-faint);
 }
+
+.kinds {
+  display: inline-flex;
+  flex-wrap: wrap;
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.kinds button {
+  background: transparent;
+  border: 0;
+  padding: 7px 12px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.kinds button + button {
+  border-left: 1.5px solid var(--ink);
+}
+
+.kinds button[aria-pressed='true'] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.composer {
+  background: var(--paper-sheet);
+  border: 1px dashed var(--rule);
+  padding: 16px;
+  display: grid;
+  gap: 14px;
+}
+
+.pick {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.pick legend {
+  font-weight: 600;
+  margin-bottom: 6px;
+  padding: 0;
+}
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.option input {
+  margin-top: 4px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  accent-color: var(--ink);
+}
+
+.happened {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.happened textarea {
+  font: inherit;
+  font-weight: 400;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  padding: 10px;
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+  resize: vertical;
+}
+
+.write {
+  justify-self: start;
+  background: var(--ink);
+  color: var(--paper);
+  border: 0;
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  font-weight: 650;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgb(var(--hl-yellow) / 0.9);
+}
+
+.write:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.error {
+  margin: 0;
+  color: var(--stamp);
+  font-weight: 600;
+}
+
+.linkish {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--ink);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media print {
+  .kinds,
+  .copy,
+  .composer,
+  .linkish {
+    display: none !important;
+  }
+}
