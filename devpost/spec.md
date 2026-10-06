@@ -53,6 +53,7 @@ Report screen  ◄──────── final Report JSON
 - **Local:** `npm install`, put the key in `.env.local` (`AI_GATEWAY_API_KEY=...`), run `npm run dev`, open http://localhost:3000. Record the demo from here or from the deployed URL.
 - **Deployed:** https://fine-print-khaki.vercel.app (Vercel project `fine-print`, team `mateuszl28`, Hobby plan). Redeploy with `vercel deploy --prod`. The AI Gateway authenticates through Vercel's built-in OIDC, so no key is needed in project settings.
 - **Android:** see `spec.md > Android app`.
+- **Public repository:** https://github.com/Mateuszl28/Fine-Print (MIT). Only `main` is published; the skill pack stays local.
 - Original plan note: Vercel, Hobby plan. Import the GitHub repo, add `AI_GATEWAY_API_KEY` in project settings (or rely on Vercel's built-in AI Gateway auth), deploy. The URL goes in the README and the Devpost submission.
 - **Required for submission regardless:** a public GitHub repo with an open-source license (MIT) and a demo video under 3 minutes on YouTube/Vimeo. Deployment does not replace either.
 - **Phone testing:** open the deployed URL on a phone (the camera works over HTTPS; localhost on a phone needs the same Wi-Fi and won't get the camera over plain HTTP, so use the deploy).
