@@ -200,6 +200,16 @@ Build mode: fast
   Learner check: Open the Mietvertrag or the phone plan sample, scroll to "Don't miss the way out", change the start date and tap "Add these dates to your calendar".
   Commit: `List every date that matters and put them in the calendar`
 
+- [x] **20. Compare: what if you leave early**
+  Becomes usable: In the side-by-side comparison, one slider shows what each offer costs if you stop after the same month, and which is cheaper then.
+  Why now: The learner asked to keep expanding. The comparison only answered "which is cheaper if I stay"; the exit rules from slice 16 answer "and if I don't", which is often the real question between two plans. No new model call.
+  PRD ref: `prd.md > Compare two offers`
+  Spec ref: `spec.md > Compare: leaving early`
+  Build: `compareExit` with tests; slider section in `CompareView.tsx`; strings in five languages.
+  Verify (mechanical): `npm test` (62 pass) and `npm run build` pass; tests cover an offer with a first-year exit fee losing early and winning late, a lock-in, and offers without exit rules; browser, phone-plan demo: after month 6 Nimbus $1,125.94 vs Orbit $912 ("Cheaper if you leave then, by $213.94"), after month 20 $1,584.80 vs $1,500, matching slice 16's hand-checked numbers; no console errors.
+  Learner check: On the Start screen tap "Compare them side by side", then "Or try it with two phone plans", and drag the slider under the two offers.
+  Commit: `Compare what two offers cost if you leave early`
+
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 3 the learner tried it and asked for a phone version and an expanded web version (slices 5–6)
@@ -224,6 +234,7 @@ Activity mode: Recap. Map checked in a browser; all paths and symbols verified a
 
 ## Revisions
 
+- Added slice 20 (compare: leaving early) — learner asked to keep expanding; agent proposal, no new model call.
 - Added slice 19 (contract dates) — learner asked to keep expanding; agent proposal, no new model call.
 - Added slice 18 (checks panel) — learner asked to keep expanding; agent proposal. Found on the way: cut-off streamed answers weren't retried (fixed).
 - Added slice 17 (month-by-month chart) — learner asked to keep expanding; agent proposal, no new model call.

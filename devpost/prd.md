@@ -139,6 +139,7 @@ Added during the build ("rozbuduj dalej"; agent proposal, learner delegated the 
 - [ ] Both are analyzed at once; the result shows the two offers side by side: who they're with, advertised vs true cost, monthly average, score, verdict, top traps.
 - [ ] The cheaper offer is marked "Cheaper by $X" (by total when the terms match, by monthly average when they don't); the higher score is marked "Fairer deal". Different currencies are flagged and not compared.
 - [ ] Each side opens its full report, with a way back to the comparison.
+- [ ] "If you leave early": one slider for both offers shows what each costs in all if you stop after the same month (paid so far plus getting out), marks the cheaper one ("Cheaper if you leave then, by $X"), and says when an offer doesn't let you leave yet. Shown when both offers have checked exit rules and the same currency. *(Added in slice 20.)*
 
 ### If you read nothing else
 - [ ] Under the verdict, the three most serious clauses (traps first, then watch-outs) as cards with why they matter; tapping one jumps to it on the contract.

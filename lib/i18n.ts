@@ -80,6 +80,10 @@ type Strings = {
   backToCompare: string;
   currencyMismatch: string;
   sameCost: string;
+  compareLeaveTitle: string;
+  compareLeaveLede: string;
+  cheaperIfLeave: (amount: string) => string;
+  lockedShort: (m: number) => string;
   share: string;
   linkCopied: string;
   shareNote: string;
@@ -193,6 +197,10 @@ export const strings: Record<Lang, Strings> = {
     backToCompare: '← Back to the comparison',
     currencyMismatch: 'Different currencies, so the totals aren’t directly comparable.',
     sameCost: 'Same total cost',
+    compareLeaveTitle: 'If you leave early',
+    compareLeaveLede: 'What each one costs in all if you stop after the same month: what you’ve paid plus what getting out costs.',
+    cheaperIfLeave: (a) => `Cheaper if you leave then, by ${a}`,
+    lockedShort: (m) => `Can’t leave before the end of month ${m}`,
     share: 'Send it to someone',
     linkCopied: 'Link copied',
     shareNote: 'The link carries the whole report, contract text included. It isn’t stored anywhere else.',
@@ -309,6 +317,10 @@ export const strings: Record<Lang, Strings> = {
     backToCompare: '← Wróć do porównania',
     currencyMismatch: 'Różne waluty, więc sum nie da się wprost porównać.',
     sameCost: 'Ten sam koszt',
+    compareLeaveTitle: 'Jeśli odejdziesz wcześniej',
+    compareLeaveLede: 'Ile każda kosztuje w sumie, jeśli zrezygnujesz po tym samym miesiącu: to, co zapłacisz, plus koszt wyjścia.',
+    cheaperIfLeave: (a) => `Tańsza przy takim wyjściu, o ${a}`,
+    lockedShort: (m) => `Nie da się odejść przed końcem ${m}. miesiąca`,
     share: 'Wyślij komuś',
     linkCopied: 'Link skopiowany',
     shareNote: 'Link zawiera cały raport, razem z treścią umowy. Nie jest nigdzie indziej zapisywany.',
@@ -425,6 +437,10 @@ export const strings: Record<Lang, Strings> = {
     backToCompare: '← Назад до порівняння',
     currencyMismatch: 'Різні валюти, тож суми не можна порівняти напряму.',
     sameCost: 'Однакова вартість',
+    compareLeaveTitle: 'Якщо підете раніше',
+    compareLeaveLede: 'Скільки кожна коштує разом, якщо ви підете після того самого місяця: сплачене плюс вартість виходу.',
+    cheaperIfLeave: (a) => `Дешевша за такого виходу, на ${a}`,
+    lockedShort: (m) => `Не можна піти раніше кінця ${m}-го місяця`,
     share: 'Надіслати комусь',
     linkCopied: 'Посилання скопійовано',
     shareNote: 'Посилання містить увесь звіт разом із текстом договору. Більше ніде не зберігається.',
@@ -541,6 +557,10 @@ export const strings: Record<Lang, Strings> = {
     backToCompare: '← Volver a la comparación',
     currencyMismatch: 'Monedas distintas, así que los totales no se pueden comparar directamente.',
     sameCost: 'Mismo coste total',
+    compareLeaveTitle: 'Si te vas antes',
+    compareLeaveLede: 'Lo que cuesta cada una en total si lo dejas después del mismo mes: lo pagado más lo que cuesta salir.',
+    cheaperIfLeave: (a) => `Más barata si te vas entonces, por ${a}`,
+    lockedShort: (m) => `No puedes irte antes del final del mes ${m}`,
     share: 'Enviárselo a alguien',
     linkCopied: 'Enlace copiado',
     shareNote: 'El enlace lleva todo el informe, con el texto del contrato. No se guarda en ningún otro sitio.',
@@ -657,6 +677,10 @@ export const strings: Record<Lang, Strings> = {
     backToCompare: '← Zurück zum Vergleich',
     currencyMismatch: 'Unterschiedliche Währungen, die Summen sind nicht direkt vergleichbar.',
     sameCost: 'Gleiche Gesamtkosten',
+    compareLeaveTitle: 'Wenn du früher aussteigst',
+    compareLeaveLede: 'Was jedes Angebot insgesamt kostet, wenn du nach demselben Monat aufhörst: Bezahltes plus Ausstieg.',
+    cheaperIfLeave: (a) => `Günstiger bei diesem Ausstieg, um ${a}`,
+    lockedShort: (m) => `Ausstieg erst zum Ende von Monat ${m}`,
     share: 'An jemanden schicken',
     linkCopied: 'Link kopiert',
     shareNote: 'Der Link enthält den ganzen Bericht samt Vertragstext. Er wird nirgends sonst gespeichert.',

@@ -18,7 +18,7 @@ Built for [Build With AI: Basics](https://learn-ai-basics.devpost.com/) with the
 - **How it was checked:** each report ends with what the code verified and threw out for that contract (quotes not found, a refundable deposit left out of the total, exit rules that didn't match the contract's numbers).
 - **Fairness score, questions to ask, and a ready-to-send letter** with a copy button.
 - **Pick your letter:** cancel, ask to change the clauses you tick, or complain about what went wrong (write it in any language). Every letter comes out in the contract's language, and code checks it: no amounts that aren't in the contract or your note, no wrong language, nothing cut off.
-- **Compare two offers** side by side: which one is really cheaper (by total, or by monthly average when the terms differ) and which is fairer.
+- **Compare two offers** side by side: which one is really cheaper (by total, or by monthly average when the terms differ), which is fairer, and which is cheaper if you leave after a given month.
 - **"If you read nothing else":** the three most serious clauses, right under the verdict.
 - **Read it out loud** with the browser's built-in voices, in the report's language.
 - **Send it to someone:** the link carries the report itself (compressed into the `#fragment`), so nothing is stored on a server.

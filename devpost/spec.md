@@ -172,6 +172,10 @@ PRD ref: `prd.md > Save as PDF`.
 `components/CompareSetup.tsx` (two slots on the Start screen), `components/CompareView.tsx`, `lib/compare.ts` (pure, unit-tested: cheaper by total when terms match, otherwise by monthly average; fairer by score; currency check). `app/page.tsx` runs both analyses in parallel and keeps the pair so a full report can go back to it. The second phone plan sample is `phonePlanB` in `lib/samples.ts`.
 PRD ref: `prd.md > Compare two offers`.
 
+### Compare: leaving early
+`lib/compare.ts`: `compareExit(a, b, month)` (unit-tested) runs `exitAt` for both offers and returns each total (or the lock-in month), the cheaper one and the difference; null when the currencies differ or either offer has no usable exit plan. `CompareView.tsx` adds one range slider capped at the shorter term minus one.
+PRD ref: `prd.md > Compare two offers`.
+
 ### Top three and read aloud
 `lib/topClauses.ts` picks the clauses (red, then yellow, in contract order); `components/TopThree.tsx` shows them; `components/ReadAloud.tsx` uses the browser's Web Speech API (`speechSynthesis`) with the report language's voice.
 PRD ref: `prd.md > If you read nothing else`, `prd.md > Read it out loud`.

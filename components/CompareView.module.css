@@ -173,3 +173,75 @@
   color: var(--ink-faint);
   font-size: 0.85rem;
 }
+
+.leave {
+  margin-top: 32px;
+  padding: 20px;
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--paper-sheet);
+}
+
+.leaveTitle {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.leaveLede {
+  margin: 0 0 14px;
+  color: var(--ink-soft);
+  font-family: var(--font-serif);
+}
+
+.slider {
+  display: grid;
+  gap: 8px;
+  font-weight: 650;
+}
+
+.slider input {
+  width: 100%;
+  accent-color: var(--stamp);
+}
+
+.leaveCols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.leaveCol {
+  padding: 12px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.leaveTotal {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.leaveLocked {
+  margin: 0;
+  font-family: var(--font-serif);
+  color: var(--stamp);
+  font-weight: 600;
+}
+
+@media (max-width: 520px) {
+  .leaveCols {
+    grid-template-columns: 1fr;
+  }
+}
+
+.leaveCol .badge {
+  justify-self: start;
+}

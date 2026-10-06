@@ -1,9 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import type { Report } from '@/lib/schema';
 import { strings, type Lang } from '@/lib/i18n';
 import { money } from '@/lib/format';
-import { compareReports } from '@/lib/compare';
+import { compareExit, compareReports } from '@/lib/compare';
 import { topClauses } from '@/lib/topClauses';
 import styles from './CompareView.module.css';
 
@@ -17,6 +18,10 @@ type Props = {
 export function CompareView({ reports, lang, onOpen, onStartOver }: Props) {
   const t = strings[lang];
   const c = compareReports(reports[0], reports[1]);
+  // One slider for both: the shorter term sets how far it goes.
+  const shortest = Math.min(reports[0].termMonths ?? 0, reports[1].termMonths ?? 0);
+  const [month, setMonth] = useState(() => Math.max(1, Math.round(shortest / 4)));
+  const leave = shortest >= 2 ? compareExit(reports[0], reports[1], month) : null;
 
   return (
     <main className={styles.page} lang={lang}>
@@ -90,6 +95,38 @@ export function CompareView({ reports, lang, onOpen, onStartOver }: Props) {
           );
         })}
       </div>
+
+      {leave && (
+        <section className={styles.leave} aria-labelledby="leave-heading">
+          <h2 id="leave-heading" className={styles.leaveTitle}>
+            {t.compareLeaveTitle}
+          </h2>
+          <p className={styles.leaveLede}>{t.compareLeaveLede}</p>
+          <label className={styles.slider}>
+            <span>{t.exitSlider(month)}</span>
+            <input type="range" min={1} max={shortest - 1} value={month} onChange={(e) => setMonth(Number(e.target.value))} />
+          </label>
+          <div className={styles.leaveCols} aria-live="polite">
+            {reports.map((r, i) => {
+              const total = leave.totals[i];
+              const locked = leave.lockedUntil[i];
+              return (
+                <div key={i} className={`${styles.leaveCol} ${leave.cheaper === i ? styles.winner : ''}`}>
+                  <p className="label">{r.counterparty}</p>
+                  {total !== null ? (
+                    <p className={styles.leaveTotal}>{money(total, r.currency, lang)}</p>
+                  ) : (
+                    <p className={styles.leaveLocked}>{locked !== null ? t.lockedShort(locked) : '—'}</p>
+                  )}
+                  {leave.cheaper === i && leave.difference !== null && (
+                    <span className={`hl hl-green ${styles.badge}`}>{t.cheaperIfLeave(money(leave.difference, r.currency, lang))}</span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       <footer className={styles.footer}>{t.footer}</footer>
     </main>
