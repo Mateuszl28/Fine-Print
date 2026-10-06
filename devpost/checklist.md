@@ -220,6 +220,16 @@ Build mode: fast
   Learner check: Open the loan sample in a few languages; the total should always be $1,646.82, and "How Fine Print checked this" lists what was checked.
   Commit: `Check every amount against the contract`
 
+- [x] **22. Samples open instantly**
+  Becomes usable: Tapping any sample, in any of the five languages, or the two-phone-plan comparison, shows the report in under a tenth of a second, without calling the AI.
+  Why now: The learner asked to keep expanding. Slice 21 found the AI Gateway's free tier allows 5 requests a minute, shared by everyone; a judge's first tap is almost always a sample, and the server cache only keeps a report for a day.
+  PRD ref: `prd.md > Samples open instantly`
+  Spec ref: `spec.md > Prebuilt sample reports`
+  Build: `scripts/build-samples.mts` (`npm run samples`); `FINEPRINT_FRESH` mode in `/api/analyze` (fresh answers on request, no hourly limit, local only); `sampleId` on sample inputs and `prebuiltSample()` in `lib/api.ts`; 30 reports in `public/samples/`.
+  Verify (mechanical): `npm test` (70 pass) and `npm run build` pass; the builder made 30/30 reports that passed every check (gym $886.76, lease $19,054.40, phone $1,798.76, loan $1,646.82, Mietvertrag €70,080, Orbit $1,668 in all five languages; none needed a retry once the builder skipped the app's own hourly limit, which had refused the last 11 on the first run); each file ~12 KB; browser: loan in Spanish opened in 82 ms and the comparison in 95 ms with only the `/samples/*.json` requests and no `/api/analyze` call. Found on the way: `next start` only serves public files that existed when it started (a 404 until restart; not an issue on Vercel, where they're part of the build), and backgrounded `npx next start` kept dying with code 127 here, so the local server is now started with `node node_modules/next/dist/bin/next start`.
+  Learner check: Run `npm run build && npm start`, pick a language, tap any sample: the report should appear at once.
+  Commit: `Open the samples instantly from checked, prebuilt reports`
+
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 3 the learner tried it and asked for a phone version and an expanded web version (slices 5–6)
@@ -244,6 +254,7 @@ Activity mode: Recap. Map checked in a browser; all paths and symbols verified a
 
 ## Revisions
 
+- Added slice 22 (prebuilt sample reports) — learner asked to keep expanding; agent proposal so judges never hit the AI rate limit on a sample.
 - Added slice 21 (amount checks) — learner asked to keep expanding; agent proposal after tracing the loan's occasional wrong total. A full re-read was tried first and rejected (it re-added the purchase price); the shipped version swaps only the worked-out item.
 - Added slice 20 (compare: leaving early) — learner asked to keep expanding; agent proposal, no new model call.
 - Added slice 19 (contract dates) — learner asked to keep expanding; agent proposal, no new model call.

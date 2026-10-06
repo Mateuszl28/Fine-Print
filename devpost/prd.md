@@ -180,6 +180,11 @@ Added during the build at the learner's request ("zrób wersję również na tel
 ### Fair use
 - [ ] One address can run 20 analyses an hour; after that the Start screen says to come back later (protects the AI budget behind the public link).
 
+### Samples open instantly
+Added during the build ("rozbuduj dalej"; agent proposal after finding the AI Gateway's 5-requests-a-minute limit).
+- [ ] Every sample (and the two-phone-plan comparison) opens at once in all five languages, without calling the AI, so several judges trying it in the same minute never see "Busy". The reports are real model output, made once and checked (right total, enough clauses, quotes found, every amount in the contract).
+- [ ] If a sample's text has changed since its report was made, the app ignores the stored report and analyzes it live.
+
 ## States and Boundaries
 - **First use:** the Start screen with samples, so a judge can see the result without owning a contract.
 - **Reading:** progress messages for the ~10–20 seconds of analysis; the user can cancel and go back. The same pasted contract in the same language comes back instantly the second time (samples included).

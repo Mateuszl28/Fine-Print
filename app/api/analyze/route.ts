@@ -79,10 +79,13 @@ export async function POST(req: Request) {
   // Cached answers cost nothing, so they don't count against the hourly limit.
   // Bump CACHE_VERSION whenever the prompt or the checker changes what a report contains.
   const key = text ? cacheKey(CACHE_VERSION, MODEL, String(THINKING_BUDGET), lang, text) : null;
-  const cached = key ? await cachedReport(key) : undefined;
+  // `npm run samples` asks for a fresh answer when a sample's report fails its checks.
+  const fresh = process.env.FINEPRINT_FRESH === '1' && req.headers.get('x-fineprint-fresh') === '1';
+  const cached = key && !fresh ? await cachedReport(key) : undefined;
   if (cached) return Response.json(cached, { headers: { 'x-fineprint-cache': 'hit' } });
 
-  const allowed = limit(clientKey(req.headers));
+  // The sample builder (local, FINEPRINT_FRESH=1) makes 30 reports in a row; the hourly limit is for the public.
+  const allowed = process.env.FINEPRINT_FRESH === '1' ? { ok: true, retryAfterSeconds: 0 } : limit(clientKey(req.headers));
   if (!allowed.ok) {
     return Response.json({ error: 'rate_limited' } satisfies AnalyzeError, {
       status: 429,

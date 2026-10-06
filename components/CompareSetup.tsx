@@ -125,8 +125,8 @@ export function CompareSetup({ onCompare, onError, onClose, lang }: Props) {
           className={styles.link}
           onClick={() =>
             onCompare(
-              { kind: 'text', text: phoneA.text, label: 'Nimbus Mobile' },
-              { kind: 'text', text: phonePlanB.text, label: 'Orbit Wireless' },
+              { kind: 'text', text: phoneA.text, label: 'Nimbus Mobile', sampleId: phoneA.id },
+              { kind: 'text', text: phonePlanB.text, label: 'Orbit Wireless', sampleId: phonePlanB.id },
             )
           }
         >

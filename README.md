@@ -31,7 +31,7 @@ Built for [Build With AI: Basics](https://learn-ai-basics.devpost.com/) with the
 - **Your dates:** from the start date, every price change, yearly fee, the last day to give notice and the end of the term, all in one calendar file (.ics).
 - **Save as PDF** with the highlights kept.
 - **Phone:** installable web app, plus an Android app (Capacitor shell around the live site).
-- Fictional sample contracts to try without your own.
+- Fictional sample contracts to try without your own. Their reports (real model output, checked) ship with the app, so a sample opens instantly in every language without calling the AI.
 
 ## Run it locally
 
@@ -46,6 +46,7 @@ npm run dev                  # http://localhost:3000
 Other commands:
 
 ```bash
+npm run samples  # remake the samples' reports (needs a local server: FINEPRINT_FRESH=1 npm start)
 npm test         # unit tests (quote matching, cost totals, letters, calendar file, comparison, share links)
 npm run build    # production build
 ```

@@ -1,13 +1,14 @@
 {
   "name": "fine-print",
-  "version": "1.21.0",
+  "version": "1.22.0",
   "private": true,
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "node --test \"lib/**/*.test.ts\""
+    "test": "node --test \"lib/**/*.test.ts\"",
+    "samples": "node scripts/build-samples.mts"
   },
   "dependencies": {
     "@capacitor-community/text-to-speech": "^8.0.2",

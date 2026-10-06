@@ -101,7 +101,7 @@ export function StartScreen(props: Props) {
         lang={lang}
       />
 
-      <SampleCards lang={lang} onPick={(s) => onSubmit({ kind: 'text', text: s.text, label: s.label })} />
+      <SampleCards lang={lang} onPick={(s) => onSubmit({ kind: 'text', text: s.text, label: s.label, sampleId: s.id })} />
 
       <section className={styles.honest} aria-labelledby="honest-heading">
         <h2 id="honest-heading" className={styles.honestHeading}>
