@@ -61,6 +61,14 @@ export const analysisSchema = z.object({
       whatToDo: z.string(),
     }),
   ),
+  glossary: z
+    .array(
+      z.object({
+        term: z.string().describe('The word or short phrase exactly as it is written in the contract, in its original language'),
+        plain: z.string().describe('One short sentence: what it means here, in plain words'),
+      }),
+    )
+    .describe('Legal or technical words a first-time signer may not know. Empty if none.'),
   questions: z.array(z.string()),
   letter: z.object({
     kind: z.enum(['cancellation', 'change_request']),
@@ -80,9 +88,13 @@ export type LocatedClause = Analysis['clauses'][number] & {
   boxes: PhotoBox[];
 };
 
-export type Report = Omit<Analysis, 'transcript' | 'clauses'> & {
+export type LocatedTerm = Analysis['glossary'][number] & { start: number; end: number };
+
+export type Report = Omit<Analysis, 'transcript' | 'clauses' | 'glossary'> & {
   text: string;
   clauses: LocatedClause[];
+  /** Missing on reports saved or shared before the glossary existed. */
+  terms?: LocatedTerm[];
   trueCost: number | null;
   droppedQuotes: number;
 };

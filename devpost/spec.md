@@ -111,6 +111,10 @@ PRD ref: `prd.md > Highlighted contract (the kernel)`, `prd.md > True cost`.
 `components/Report.tsx`: the layout (single column on phone; two columns on desktop), plus a "Scan another" button and the "Not legal advice" footer.
 PRD ref: `prd.md > Screens and Layout`.
 
+### Glossary
+`lib/schema.ts` asks for `glossary` (term exactly as written + one plain sentence); prompt rule 12 says 3–8 terms. `locateTerms` in `lib/checkReport.ts` (unit-tested) finds each term's first whole-word occurrence (same folding as quotes), drops terms not in the text, duplicates, overlaps, and any that would straddle a highlight's edge, and stores `terms` (with start/end) on the Report (optional, so older reports still load). `HighlightedDoc.tsx` splits each text run and each highlight by terms; a term is a focusable dotted-underline span whose click doesn't bubble to the clause, and the explanation bubble is positioned under the word in JS, clamped inside the sheet. `CACHE_VERSION` bumped to v3.
+PRD ref: `prd.md > Hard words, explained on the page`.
+
 ### Verdict strip
 `components/VerdictStrip.tsx`: advertised price vs true cost (big numbers), cost breakdown (each line links/scrolls to its clause), the score "4/10" with a one-line verdict, the counts of traps/watch-outs/fair, and the detected type and term.
 PRD ref: `prd.md > True cost`, `prd.md > Fairness score and verdict`.

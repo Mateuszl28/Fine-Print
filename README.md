@@ -11,6 +11,7 @@ Built for [Build With AI: Basics](https://learn-ai-basics.devpost.com/) with the
 ## Features
 
 - **Highlights on the contract itself.** Every highlight is a verbatim quote that the server finds in the contract text; quotes the model can't back up are dropped.
+- **Hard words explained on the page.** Jargon like "arbitration" or "Nettokaltmiete" gets a dotted underline; tap it for one plain sentence. Only words found in the contract are marked.
 - **True cost.** The model lists the money items; the total is added up in code (`lib/checkReport.ts`), not by the model.
 - **Fairness score, questions to ask, and a ready-to-send letter** with a copy button.
 - **Pick your letter:** cancel, ask to change the clauses you tick, or complain about what went wrong (write it in any language). Every letter comes out in the contract's language, and code checks it: no amounts that aren't in the contract or your note, no wrong language, nothing cut off.

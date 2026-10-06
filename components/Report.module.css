@@ -235,6 +235,20 @@
     break-before: page;
   }
 
+  .printTerms {
+    margin: 0;
+    font-family: var(--font-serif);
+  }
+
+  .printTerms dt {
+    font-weight: 700;
+    margin-top: 8px;
+  }
+
+  .printTerms dd {
+    margin: 0;
+  }
+
   .printNotes h2 {
     font-family: var(--font-display);
     font-size: 1.4rem;

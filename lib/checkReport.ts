@@ -1,4 +1,4 @@
-import type { Analysis, LocatedClause, Report, Severity } from './schema.ts';
+import type { Analysis, LocatedClause, LocatedTerm, Report, Severity } from './schema.ts';
 import { cleanLetterBody } from './letter.ts';
 
 const rank: Record<Severity, number> = { red: 3, yellow: 2, green: 1 };
@@ -87,6 +87,41 @@ export function locateQuotes(
   return { located: kept, dropped };
 }
 
+const isWordChar = (ch: string | undefined) => ch !== undefined && /[\p{L}\p{N}]/u.test(ch);
+
+/**
+ * Finds each explained word where it first appears as a whole word. Words the model can't
+ * back up are dropped, and so is a word that would straddle the edge of a highlight.
+ */
+export function locateTerms(text: string, glossary: Analysis['glossary'], clauses: LocatedClause[]): LocatedTerm[] {
+  const folded = fold(text);
+  const found: LocatedTerm[] = [];
+  const seen = new Set<string>();
+  for (const g of glossary) {
+    const needle = fold(trimQuote(g.term)).folded.trim();
+    if (needle.length < 2 || seen.has(needle)) continue;
+    let from = 0;
+    let range: { start: number; end: number } | null = null;
+    while (from <= folded.folded.length) {
+      const at = folded.folded.indexOf(needle, from);
+      if (at === -1) break;
+      const start = folded.map[at];
+      const end = folded.map[at + needle.length - 1] + 1;
+      const straddles = clauses.some((c) => (start < c.start && end > c.start) || (start < c.end && end > c.end));
+      if (!isWordChar(text[start - 1]) && !isWordChar(text[end]) && !straddles) {
+        range = { start, end };
+        break;
+      }
+      from = at + 1;
+    }
+    if (!range) continue;
+    if (found.some((f) => range.start < f.end && f.start < range.end)) continue;
+    seen.add(needle);
+    found.push({ term: text.slice(range.start, range.end), plain: g.plain, ...range });
+  }
+  return found.sort((a, b) => a.start - b.start).slice(0, 10);
+}
+
 // A fee the contract says is financed (added to the loan, so repaid inside the installments)
 // must not be counted again. Models sometimes do; this catches it from the contract's own words.
 const FINANCED = /added to the amount financed|added to the (?:loan|principal|balance)|included in the amount financed|is financed|wird mitfinanziert|zum (?:Darlehens|Kredit)betrag hinzugerechnet|doliczon[aey]? do kwoty kredytu|se suma al importe financiado/i;
@@ -117,11 +152,12 @@ export function buildReport(analysis: Analysis, sourceText: string | null): Repo
   const { located, dropped } = locateQuotes(text, analysis.clauses);
   const ids = new Set(located.map((c) => c.id));
   const costItems = dropFinancedFees(text, analysis.costItems);
-  const { transcript: _transcript, clauses: _clauses, ...rest } = analysis;
+  const { transcript: _transcript, clauses: _clauses, glossary, ...rest } = analysis;
   return {
     ...rest,
     text,
     clauses: located,
+    terms: locateTerms(text, glossary ?? [], located),
     costItems: costItems.map((i) => ({
       ...i,
       clauseId: i.clauseId && ids.has(i.clauseId) ? i.clauseId : null,

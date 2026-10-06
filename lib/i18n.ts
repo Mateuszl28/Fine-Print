@@ -86,6 +86,8 @@ type Strings = {
   photoWorking: string;
   photoMissing: (n: number) => string;
   photoFailed: string;
+  termsHint: string;
+  termsHeading: string;
 };
 
 export const strings: Record<Lang, Strings> = {
@@ -161,6 +163,8 @@ export const strings: Record<Lang, Strings> = {
     photoWorking: 'Reading your photo to find the marks…',
     photoMissing: (n) => `${n} ${n === 1 ? 'clause wasn’t' : 'clauses weren’t'} found on the photo; ${n === 1 ? 'it’s' : 'they’re'} still marked in the text view.`,
     photoFailed: 'Couldn’t read the photo well enough to place the marks. The text view has them all.',
+    termsHint: 'Words with a dotted line are explained. Tap one.',
+    termsHeading: 'Words explained',
   },
   pl: {
     scanAnother: '← Sprawdź kolejną',
@@ -234,6 +238,8 @@ export const strings: Record<Lang, Strings> = {
     photoWorking: 'Czytam zdjęcie, żeby znaleźć zaznaczenia…',
     photoMissing: (n) => `${n} ${n === 1 ? 'zapisu nie znaleziono' : 'zapisów nie znaleziono'} na zdjęciu; nadal są zaznaczone w widoku tekstu.`,
     photoFailed: 'Nie udało się odczytać zdjęcia na tyle dobrze. Wszystkie zaznaczenia są w widoku tekstu.',
+    termsHint: 'Słowa podkreślone kropkami mają objaśnienie. Dotknij jednego.',
+    termsHeading: 'Trudne słowa',
   },
   uk: {
     scanAnother: '← Перевірити інший',
@@ -307,6 +313,8 @@ export const strings: Record<Lang, Strings> = {
     photoWorking: 'Читаю фото, щоб знайти позначки…',
     photoMissing: (n) => `${n} пункт(и) не знайдено на фото; вони й далі позначені в текстовому вигляді.`,
     photoFailed: 'Не вдалося достатньо добре прочитати фото. Усі позначки є в текстовому вигляді.',
+    termsHint: 'Слова з крапковим підкресленням мають пояснення. Торкніться одного.',
+    termsHeading: 'Складні слова',
   },
   es: {
     scanAnother: '← Revisar otro',
@@ -380,6 +388,8 @@ export const strings: Record<Lang, Strings> = {
     photoWorking: 'Leyendo tu foto para encontrar las marcas…',
     photoMissing: (n) => `${n} ${n === 1 ? 'cláusula no se encontró' : 'cláusulas no se encontraron'} en la foto; siguen marcadas en la vista de texto.`,
     photoFailed: 'No se pudo leer la foto lo bastante bien. La vista de texto las tiene todas.',
+    termsHint: 'Las palabras con subrayado punteado tienen explicación. Toca una.',
+    termsHeading: 'Palabras explicadas',
   },
   de: {
     scanAnother: '← Anderen prüfen',
@@ -453,5 +463,7 @@ export const strings: Record<Lang, Strings> = {
     photoWorking: 'Lese dein Foto, um die Markierungen zu finden…',
     photoMissing: (n) => `${n} ${n === 1 ? 'Klausel wurde' : 'Klauseln wurden'} auf dem Foto nicht gefunden; in der Textansicht sind sie markiert.`,
     photoFailed: 'Das Foto ließ sich nicht gut genug lesen. Die Textansicht hat alle Markierungen.',
+    termsHint: 'Gepunktet unterstrichene Wörter sind erklärt. Tipp eins an.',
+    termsHeading: 'Begriffe erklärt',
   },
 };

@@ -77,7 +77,7 @@ test('removes a repeated subject line from the letter body', async () => {
     {
       isContract: true, transcript: null, contractType: 'gym', title: 't', termMonths: 24,
       advertised: { label: '$1', amount: 1 }, currency: 'USD', costItems: [], costAssumption: '',
-      score: 3, verdict: 'v', clauses: [], questions: [],
+      score: 3, verdict: 'v', clauses: [], questions: [], glossary: [],
       counterparty: "Gym", notice: null, letter: { kind: "cancellation", subject: "Cancel", body: '[Your name]\n\nSubject: Cancel\n\nDear Gym,' },
     },
     'some contract text',
@@ -105,4 +105,32 @@ test('fees that are not financed stay', async () => {
   const contract = 'ENROLLMENT FEE. A one-time enrollment fee of $49.00 is due at signing.';
   const items = [{ label: 'Enrollment', amount: 49, times: 1, clauseId: null }];
   assert.equal(dropFinancedFees(contract, items).length, 1);
+});
+
+test('explained words are found as whole words, once, and only if they are really there', async () => {
+  const { locateTerms } = await import('./checkReport.ts');
+  const contract = 'The Initial Term is 24 months. Disputes go to binding arbitration. Arbitration is final.';
+  const terms = locateTerms(contract, [
+    { term: 'arbitration', plain: 'A private judge instead of a court.' },
+    { term: 'Initial Term', plain: 'The first, locked-in period.' },
+    { term: 'liquidated damages', plain: 'Not in this contract.' },
+    { term: 'Term', plain: 'Duplicate inside "Initial Term".' },
+  ], []);
+  assert.deepEqual(terms.map((t) => t.term), ['Initial Term', 'arbitration']);
+  assert.equal(contract.slice(terms[1].start, terms[1].end), 'arbitration');
+});
+
+test('a word is not matched inside a longer word', async () => {
+  const { locateTerms } = await import('./checkReport.ts');
+  const terms = locateTerms('Kaution und Kautionskonto.', [{ term: 'Kautionskonto', plain: 'x' }, { term: 'Kaut', plain: 'y' }], []);
+  assert.deepEqual(terms.map((t) => t.term), ['Kautionskonto']);
+});
+
+test('a word never straddles the edge of a highlight', async () => {
+  const { locateTerms } = await import('./checkReport.ts');
+  const contract = 'You agree to binding arbitration of all disputes.';
+  const clause = { ...{ id: 'a', severity: 'yellow' as const, quote: '', title: '', meaning: '', whyItMatters: '', whatToDo: '' }, start: 0, end: 27, boxes: [] };
+  // "binding arbitration" crosses the end of the highlight (index 27); "arbitration" alone doesn't fit either.
+  const terms = locateTerms(contract, [{ term: 'binding arbitration', plain: 'x' }, { term: 'disputes', plain: 'y' }], [clause]);
+  assert.deepEqual(terms.map((t) => t.term), ['disputes']);
 });

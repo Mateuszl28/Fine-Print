@@ -60,6 +60,12 @@ Source: `scope.md > The Unique Kernel`.
   - [ ] Every flagged passage appears verbatim in the contract text (no invented quotes).
   - [ ] A typical consumer contract yields roughly 4–10 highlights, with at least one green when something is genuinely fair.
 
+### Hard words, explained on the page
+Added during the build ("rozbuduj dalej"; agent proposal, learner delegated the choice).
+- [ ] Up to 10 legal, financial or technical words in the contract (e.g. "arbitration", "Amount Financed", "Nettokaltmiete") get a dotted underline where they first appear, also inside highlights.
+- [ ] Tapping one shows a one-sentence plain explanation in the report's language, just under the word; tapping elsewhere or Escape closes it. It doesn't select the clause around it.
+- [ ] Only words actually found in the contract are underlined. Printed reports list them after the clause notes. Older saved or shared reports simply have none.
+
 ### True cost
 - As someone comparing "$29/month" to reality, I want one number for what this actually costs me.
   - [ ] The verdict strip shows the advertised price (as the contract presents it) and the true cost over the minimum term.

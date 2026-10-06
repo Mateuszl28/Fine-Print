@@ -150,6 +150,16 @@ Build mode: fast
   Learner check: Open the Gym sample, scroll to the letter, tap "Złóż reklamację", tick "Roczna opłata", write what happened in Polish, and tap "Napisz ten list".
   Commit: `Pick your letter: cancel, ask to change, or complain`
 
+- [x] **15. Hard words, explained on the page**
+  Becomes usable: Jargon in the contract ("arbitration", "Amount Financed", "Staffelmiete") has a dotted underline; tapping it shows what it means in one plain sentence, in the report's language, right under the word.
+  Why now: The learner asked to keep expanding. First-time signers are the sharpest audience in the PRD, and this keeps the kernel's rule: everything sits on the contract text and is checked in code before it's shown.
+  PRD ref: `prd.md > Hard words, explained on the page`
+  Spec ref: `spec.md > Glossary`
+  Build: `glossary` in the schema and prompt rule 12; `locateTerms` with tests; terms on the Report (optional); tappable terms + bubble in `HighlightedDoc.tsx`; hint line and print list; strings in five languages; cache v3.
+  Verify (mechanical): `npm test` (41 pass) and `npm run build` pass; all six samples in five report languages: 3–7 terms each (31 total), every stored term equals the contract text at its offsets, 0 dropped quotes; totals checked against production: gym, phone, phone-b equal; loan and Mietvertrag now correct where production was wrong (protection plan included, deposit excluded); one Polish lease run missed the $225 fixed deduction, then 3/3 Polish reruns and 4/4 other languages were right, so model noise rather than a regression; in the browser, tapping a word inside a highlight shows its bubble without selecting the clause, bubbles stay inside a 360 px sheet, no horizontal scroll, no console errors.
+  Learner check: Open the Gym sample and tap "non-refundable" or "Initial Term" in the contract.
+  Commit: `Explain hard words on the contract itself`
+
 ## Hands-on Checkpoints
 
 - [x] Early usable behavior explored — after slice 3 the learner tried it and asked for a phone version and an expanded web version (slices 5–6)
@@ -174,6 +184,7 @@ Activity mode: Recap. Map checked in a browser; all paths and symbols verified a
 
 ## Revisions
 
+- Added slice 15 (hard words explained) — learner asked to keep expanding; agent proposal.
 - Added slice 14 (letter picker) — learner asked to keep expanding. A question-and-answer box was the first idea but was dropped because the scope cuts chat; the letter picker came from the PRD's own Possible Later Enhancements.
 
 - Model switched to Gemini 2.5 Flash — the AI Gateway free tier blocks the originally planned model; the learner chose a different AI over buying credits. Quality checked on all samples, a PDF and a photo (100% quotes located, totals correct).

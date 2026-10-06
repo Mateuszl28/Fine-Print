@@ -23,7 +23,7 @@ const MAX_BASE64 = 5_600_000; // ~4.2 MB of file data in total
 // Two levels: this instance's memory, then Vercel's Runtime Cache, which every instance
 // in the region shares (locally it falls back to memory too).
 const DAY = 24 * 60 * 60;
-const CACHE_VERSION = 'v2';
+const CACHE_VERSION = 'v3';
 const local = createCache<Report>(200, DAY * 1000);
 const shared = getCache({ namespace: 'fineprint-report' });
 

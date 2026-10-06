@@ -13,6 +13,7 @@
 }
 
 .text {
+  position: relative;
   font-family: var(--font-serif);
   font-size: 1.02rem;
   line-height: 1.75;
@@ -41,4 +42,48 @@
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
   text-decoration-color: var(--ink);
+}
+
+.term {
+  text-decoration: underline dotted;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--ink-soft);
+  cursor: help;
+}
+
+.term:hover,
+.termOpen {
+  text-decoration-color: var(--stamp);
+}
+
+.bubble {
+  position: absolute;
+  z-index: 5;
+  width: min(300px, 100%);
+  padding: 10px 12px;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: var(--radius);
+  box-shadow: 3px 3px 0 rgb(var(--hl-yellow) / 0.9);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  white-space: normal;
+  hyphens: none;
+}
+
+.bubble strong {
+  display: block;
+  margin-bottom: 2px;
+}
+
+@media print {
+  .bubble {
+    display: none;
+  }
+
+  .term {
+    text-decoration: none;
+  }
 }

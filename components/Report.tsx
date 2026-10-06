@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import type { Report } from '@/lib/schema';
 import { strings, type Lang } from '@/lib/i18n';
 import { HighlightedDoc } from './HighlightedDoc';
@@ -111,7 +111,10 @@ export function ReportView({ report, lang, onStartOver, onBackToCompare, shared,
       <div className={styles.grid}>
         <div className={styles.docCol}>
           <div className={styles.docHead}>
-            <p className={styles.tapHint}>{t.tapHint}</p>
+            <p className={styles.tapHint}>
+              {t.tapHint}
+              {!onPhoto && report.terms?.length ? ` ${t.termsHint}` : ''}
+            </p>
             {canShowPhoto && (
               <div className={styles.toggle} role="group">
                 <button type="button" aria-pressed={!onPhoto} onClick={() => setOnPhoto(false)}>
@@ -136,6 +139,7 @@ export function ReportView({ report, lang, onStartOver, onBackToCompare, shared,
             <HighlightedDoc
               text={report.text}
               clauses={report.clauses}
+              terms={report.terms}
               selectedId={selectedId}
               onSelect={setSelectedId}
               lang={lang}
@@ -148,6 +152,19 @@ export function ReportView({ report, lang, onStartOver, onBackToCompare, shared,
             {report.clauses.map((c) => (
               <ClauseNote key={c.id} clause={c} lang={lang} />
             ))}
+            {report.terms && report.terms.length > 0 && (
+              <>
+                <h2>{t.termsHeading}</h2>
+                <dl className={styles.printTerms}>
+                  {report.terms.map((term) => (
+                    <Fragment key={term.start}>
+                      <dt>{term.term}</dt>
+                      <dd>{term.plain}</dd>
+                    </Fragment>
+                  ))}
+                </dl>
+              </>
+            )}
           </section>
 
           <AskList questions={report.questions} title={t.ask} />
