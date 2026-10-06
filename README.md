@@ -4,6 +4,8 @@ Read the contract before you sign it. Fine Print takes a photo, PDF or pasted te
 
 **Live:** https://fine-print-khaki.vercel.app
 
+**Android:** [download the APK](https://github.com/Mateuszl28/Fine-Print/raw/main/apk/FinePrint-1.9.0.apk) (4 MB). On the phone, open the file and allow "Install unknown apps" for your browser or file manager when Android asks; the APK is debug-signed, not from the Play Store. The app opens the live site full screen, with the phone's camera, share sheet and voice.
+
 Built for [Build With AI: Basics](https://learn-ai-basics.devpost.com/) with the Devpost Learn skill pack. The planning documents live in [`devpost/`](devpost/): [scope](devpost/scope.md), [PRD](devpost/prd.md), [spec](devpost/spec.md), [build checklist](devpost/checklist.md), and an [app map](devpost/app-map.html).
 
 > Not legal advice. Nothing you upload is stored on a server.
@@ -63,7 +65,7 @@ On Vercel the AI Gateway authenticates through the project's OIDC token, so no k
 
 ## Android app
 
-The app in `android/` loads the deployed site (`capacitor.config.ts` → `server.url`). Capacitor 8 needs **JDK 21**.
+A ready-to-install build is in [`apk/`](apk/). The app in `android/` loads the deployed site (`capacitor.config.ts` → `server.url`). To build it yourself, Capacitor 8 needs **JDK 21**.
 
 ```bash
 cd android
